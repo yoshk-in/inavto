@@ -4,10 +4,12 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Engines;
+use common\models\Generations;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * EnginesController implements the CRUD actions for Engines model.
@@ -20,27 +22,42 @@ class EnginesController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['login', 'error'],
+                        'allow' => true,
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'logout' => ['post'],
                 ],
             ],
         ];
     }
-
     /**
      * Lists all Engines models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id)
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Engines::find(),
+            'query' => Engines::find()->where(['generation_id' => $id]),
         ]);
-
+        
+        $generation = Generations::findOne($id);
+        
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'generation' => $generation
         ]);
     }
 
@@ -62,16 +79,20 @@ class EnginesController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
         $model = new Engines();
+        
+        $generation = Generations::findOne($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Двигатель добавлен");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'generation' => $generation
         ]);
     }
 
@@ -85,13 +106,17 @@ class EnginesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
+        $generation = Generations::findOne($model->generation_id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Двигатель изменен");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'generation' => $generation
         ]);
     }
 
@@ -104,9 +129,11 @@ class EnginesController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+        $item = $model->generation_id;
+        $model->delete();
+        Yii::$app->session->setFlash('success', "Двигатель удален");
+        return $this->redirect(['index', 'id' => $item]);
     }
 
     /**

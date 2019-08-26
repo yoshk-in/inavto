@@ -23,7 +23,19 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'title',
+            [
+                'attribute' => 'title',
+                'format' => 'html',
+                'value' => function($data){
+                    return Html::a(
+                        $data->title,
+                        \yii\helpers\Url::to(['/engines', 'id' => $data->id]),
+                        [
+                            'title' => 'Перейти к двигателям',
+                        ]
+                    );
+                } 
+            ],
             [
                 'attribute' => 'car_id',
                 'format' => 'html',

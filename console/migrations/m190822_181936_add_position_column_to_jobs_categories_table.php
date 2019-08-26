@@ -12,7 +12,7 @@ class m190822_181936_add_position_column_to_jobs_categories_table extends Migrat
      */
     public function safeUp()
     {
-        $this->addColumn('jobs_categories', 'car_id', $this->integer(5)->notNull());
+        $this->addColumn('jobs_categories', 'car_id', $this->integer(5));
         
         $this->createIndex(
             'idx-jobs_categories-car_id',

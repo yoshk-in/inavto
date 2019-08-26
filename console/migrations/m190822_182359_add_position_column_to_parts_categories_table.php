@@ -12,7 +12,7 @@ class m190822_182359_add_position_column_to_parts_categories_table extends Migra
      */
     public function safeUp()
     {
-        $this->addColumn('parts_categories', 'car_id', $this->integer(5)->notNull());
+        $this->addColumn('parts_categories', 'car_id', $this->integer(5));
         
         $this->createIndex(
             'idx-parts_categories-car_id',

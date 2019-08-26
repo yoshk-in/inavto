@@ -7,28 +7,12 @@ use common\models\PartsCategories;
 use backend\models\SearchPartsCategories;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * PartsCategoriesController implements the CRUD actions for PartsCategories model.
  */
-class Parts_categoriesController extends Controller
+class Parts_categoriesController extends SiteController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * Lists all PartsCategories models.
      * @return mixed

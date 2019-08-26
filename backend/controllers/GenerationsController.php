@@ -26,6 +26,10 @@ class GenerationsController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
+                        'actions' => ['login', 'error'],
+                        'allow' => true,
+                    ],
+                    [
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -34,12 +38,11 @@ class GenerationsController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'logout' => ['post'],
                 ],
             ],
         ];
     }
-
     /**
      * Lists all Generations models.
      * @return mixed
@@ -103,6 +106,8 @@ class GenerationsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
+        $car = Cars::findOne($model->car_id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Поколение изменено");
@@ -111,6 +116,7 @@ class GenerationsController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'car' => $car
         ]);
     }
 
@@ -123,9 +129,11 @@ class GenerationsController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $item = $model->car_id;
+        $model->delete();
         Yii::$app->session->setFlash('success', "Поколение удалено");
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'id' => $item]);
     }
 
     /**

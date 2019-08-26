@@ -6,15 +6,14 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Engines';
+$this->title = 'Двигатели ' . $generation->car->title . ' ' . $generation->title;
+$this->params['breadcrumbs'][] = ['label' => $generation->car->title . ' ' . $generation->title, 'url' => ['/generations/view', 'id' => $generation->id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="engines-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create Engines', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить двигатель', ['create', 'id' => $generation->id], ['class' => 'btn btn-success']) ?>
     </p>
 
 
@@ -26,7 +25,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'alter_title',
-            'generation_id',
+            [
+                'attribute' => 'generation_id',
+                'format' => 'html',
+                'value' => function($data){
+                    return Html::a(
+                        $data->generation->title,
+                        \yii\helpers\Url::to(['/generations/view', 'id' => $data->generation_id]),
+                        [
+                            'title' => 'Перейти к поколению',
+                        ]
+                    );
+                } 
+            ],
             'created',
             //'modified',
 

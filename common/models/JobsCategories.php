@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use yii\behaviors\SluggableBehavior;
 use yii\db\Expression;
 
 /**
@@ -40,8 +41,14 @@ class JobsCategories extends \yii\db\ActiveRecord
                 // если вместо метки времени UNIX используется datetime:
                 'value' => new Expression('NOW()'),
             ],
+            [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'menu_title',
+                'slugAttribute' => 'alias',
+            ],
         ];
     }
+    
     /**
      * {@inheritdoc}
      */
@@ -56,11 +63,11 @@ class JobsCategories extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'alias'], 'required'],
+            [['title'], 'required'],
             [['body', 'description', 'keywords'], 'string'],
             [['parent', 'service', 'car_id'], 'integer'],
             [['created', 'modified'], 'safe'],
-            [['title', 'alias', 'meta_title'], 'string', 'max' => 255],
+            [['title', 'alias', 'meta_title', 'menu_title'], 'string', 'max' => 255],
             [['car_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cars::className(), 'targetAttribute' => ['car_id' => 'id']],
         ];
     }
@@ -75,6 +82,7 @@ class JobsCategories extends \yii\db\ActiveRecord
             'title' => 'Название',
             'alias' => 'Alias',
             'meta_title' => 'Мета-заголовок',
+            'menu_title' => 'Короткое название',
             'body' => 'Текст',
             'parent' => 'Родительская категория',
             'service' => 'Обслуживание',

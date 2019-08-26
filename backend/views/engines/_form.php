@@ -16,14 +16,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'alter_title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'generation_id')->textInput() ?>
-
-    <?= $form->field($model, 'created')->textInput() ?>
-
-    <?= $form->field($model, 'modified')->textInput() ?>
+    <?= $form->field($model, 'generation_id', ['template' => "{input}"])->hiddenInput(['value' => $generation->id]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

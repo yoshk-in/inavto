@@ -26,10 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'title',
-            'alias',
-            'meta_title',
-            'body:ntext',
-            //'parent',
+            'parent',
             //'service',
             //'description:ntext',
             //'keywords:ntext',

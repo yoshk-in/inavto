@@ -3,6 +3,9 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "engines".
@@ -19,6 +22,20 @@ use Yii;
  */
 class Engines extends \yii\db\ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'modified'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['modified'],
+                ],
+                // если вместо метки времени UNIX используется datetime:
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -33,7 +50,7 @@ class Engines extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'alter_title', 'created', 'modified'], 'required'],
+            [['title', 'alter_title'], 'required'],
             [['generation_id'], 'integer'],
             [['created', 'modified'], 'safe'],
             [['title', 'alter_title'], 'string', 'max' => 50],
@@ -48,11 +65,11 @@ class Engines extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'alter_title' => 'Alter Title',
-            'generation_id' => 'Generation ID',
-            'created' => 'Created',
-            'modified' => 'Modified',
+            'title' => 'Название',
+            'alter_title' => 'Краткое название',
+            'generation_id' => 'Поколение авто',
+            'created' => 'Дата создания',
+            'modified' => 'Дата изменения',
         ];
     }
 

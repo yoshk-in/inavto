@@ -35,6 +35,7 @@ if (Yii::$app->controller->action->id === 'login') {
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
+        <script type="text/javascript">var readyjs = [];</script>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
     <?php $this->beginBody() ?>
@@ -59,6 +60,13 @@ if (Yii::$app->controller->action->id === 'login') {
     </div>
 
     <?php $this->endBody() ?>
+      <script type="text/javascript" >
+        $(document).ready(function(){
+          if(readyjs)
+          for(var i=0; i < readyjs.length; i++)
+          setTimeout(readyjs[i]);  
+        });
+       </script>
     </body>
     </html>
     <?php $this->endPage() ?>

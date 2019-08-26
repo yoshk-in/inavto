@@ -4,31 +4,16 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\JobsCategories;
+use common\models\Cars;
 use backend\models\SearchJobsCategories;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * JobsCategoriesController implements the CRUD actions for JobsCategories model.
  */
-class Jobs_categoriesController extends Controller
+class Jobs_categoriesController extends SiteController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * Lists all JobsCategories models.
      * @return mixed
@@ -65,13 +50,22 @@ class Jobs_categoriesController extends Controller
     public function actionCreate()
     {
         $model = new JobsCategories();
-
+        
+        $cars = Cars::find()->select(['id', 'title'])->asArray()->indexBy('id')->all();
+        $cars = \common\helpers\HelpersFunctions::arrForList($cars);
+        
+        $parents = JobsCategories::find()->where(['parent' => null])->select(['id', 'title'])->asArray()->indexBy('id')->all();
+        $parents = \common\helpers\HelpersFunctions::arrForList($parents);
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Категория добавлена");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'cars' => $cars,
+            'parents' => $parents
         ]);
     }
 
@@ -85,13 +79,22 @@ class Jobs_categoriesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
+        $cars = Cars::find()->select(['id', 'title'])->asArray()->indexBy('id')->all();
+        $cars = \common\helpers\HelpersFunctions::arrForList($cars);
+        
+        $parents = JobsCategories::find()->where(['parent' => null])->andWhere(['!=', 'id', $id])->select(['id', 'title'])->asArray()->indexBy('id')->all();
+        $parents = \common\helpers\HelpersFunctions::arrForList($parents);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Категория изменена");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'cars' => $cars,
+            'parents' => $parents
         ]);
     }
 
@@ -124,4 +127,17 @@ class Jobs_categoriesController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    
+   /* public function setAlias($model)
+    {
+        if(!$model->alias){
+            $model->on(JobsCategories::EVENT_AFTER_INSERT, function($event){
+               $cat = $this->findModel($event->data);
+               $cat->alias = \common\helpers\HelpersFunctions::translit($cat->menu_title);
+               $cat->save();
+            }, $model->id);
+            $model->trigger(JobsCategories::EVENT_AFTER_INSERT);
+        }
+    }*/
+    
 }

@@ -7,23 +7,22 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Engines */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Engines', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Двигатели ' . $model->generation->car->title . ' ' . $model->generation->title, 'url' => ['index', 'id' => $model->generation_id]];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="engines-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('Добавить', ['create', 'id' => $model->generation_id], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -32,7 +31,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'alter_title',
-            'generation_id',
+            [
+                'attribute' => 'generation_id',
+                'format' => 'html',
+                'value' => function($data){
+                    return Html::a(
+                        $data->generation->car->title . ' ' . $data->generation->title,
+                        \yii\helpers\Url::to(['/generations/view', 'id' => $data->generation_id]),
+                        [
+                            'title' => 'Перейти к поколениям ' . $data->generation->car->title,
+                        ]
+                    );
+                } 
+            ],
             'created',
             'modified',
         ],
