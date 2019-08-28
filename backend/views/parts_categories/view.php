@@ -22,9 +22,9 @@ $this->params['breadcrumbs'][] = ['label' => 'Категории запчаст�
             ],
         ]) ?>
         <?= Html::a('Добавить', ['create', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
-        <? if($model->parent): ?>
+        <?php if($model->parent): ?>
             <?= Html::a('Список запчастей', ['/parts', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
-        <? endif; ?>
+        <?php endif; ?>
     </p>
 
     <?= DetailView::widget([
