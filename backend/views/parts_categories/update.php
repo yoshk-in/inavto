@@ -5,17 +5,16 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\PartsCategories */
 
-$this->title = 'Update Parts Categories: ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Parts Categories', 'url' => ['index']];
+$this->title = 'Изменить категорию';
+$this->params['breadcrumbs'][] = ['label' => 'Категории запчастей', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="parts-categories-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <?= $this->render('_form', [
         'model' => $model,
+        'cars' => $cars,
+        'parents' => $parents
     ]) ?>
 
 </div>

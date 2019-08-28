@@ -7,20 +7,49 @@ use common\models\Parts;
 use backend\models\SearchParts;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * PartsController implements the CRUD actions for Parts model.
  */
-class PartsController extends SiteController
+class PartsController extends Controller
 {
+     /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['login', 'error'],
+                        'allow' => true,
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
     /**
      * Lists all Parts models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id)
     {
         $searchModel = new SearchParts();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -51,6 +80,7 @@ class PartsController extends SiteController
         $model = new Parts();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Запчасть добавлена");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -71,6 +101,7 @@ class PartsController extends SiteController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Запчасть изменена");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -89,7 +120,7 @@ class PartsController extends SiteController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('success', "Запчасть удалена");
         return $this->redirect(['index']);
     }
 

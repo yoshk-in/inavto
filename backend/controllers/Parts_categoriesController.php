@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\PartsCategories;
 use backend\models\SearchPartsCategories;
+use common\models\Cars;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -49,13 +50,20 @@ class Parts_categoriesController extends SiteController
     public function actionCreate()
     {
         $model = new PartsCategories();
+        
+        $cars = \yii\helpers\ArrayHelper::map(Cars::find()->select(['id', 'title'])->asArray()->indexBy('id')->all(), 'id', 'title');
+        
+        $parents = \yii\helpers\ArrayHelper::map(PartsCategories::find()->where(['parent' => null])->select(['id', 'title'])->asArray()->indexBy('id')->all(), 'id', 'title');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Категория добавлена");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'cars' => $cars,
+            'parents' => $parents
         ]);
     }
 
@@ -69,13 +77,20 @@ class Parts_categoriesController extends SiteController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
+        $cars = \yii\helpers\ArrayHelper::map(Cars::find()->select(['id', 'title'])->asArray()->indexBy('id')->all(), 'id', 'title');
+        
+        $parents = \yii\helpers\ArrayHelper::map(PartsCategories::find()->where(['parent' => null])->andWhere(['!=', 'id', $id])->select(['id', 'title'])->asArray()->indexBy('id')->all(), 'id', 'title');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Категория изменена");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'cars' => $cars,
+            'parents' => $parents
         ]);
     }
 
@@ -89,7 +104,7 @@ class Parts_categoriesController extends SiteController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('success', "Категория удалена");
         return $this->redirect(['index']);
     }
 

@@ -35,32 +35,14 @@
                     ['label' => 'Работы', 'icon' => 'circle-o', 'url' => ['/jobs_categories'],],
                     ['label' => 'Запчасти', 'icon' => 'circle-o', 'url' => ['/parts_categories'],],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
-                    /*[
+                    [
                         'label' => 'Справочник',
                         'icon' => 'share',
                         'url' => '#',
                         'items' => [
-                            ['label' => 'Работы', 'icon' => 'circle-o', 'url' => ['/jobs_categories'],],
-                            ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug'],],
-                            [
-                                'label' => 'Работы',
-                                'icon' => 'circle-o',
-                                'url' => '#',
-                                'items' => [
-                                    ['label' => 'Ктегории', 'icon' => 'circle-o', 'url' => '#',],
-                                    [
-                                        'label' => 'Level Two',
-                                        'icon' => 'circle-o',
-                                        'url' => '#',
-                                        'items' => [
-                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                                        ],
-                                    ],
-                                ],
-                            ],
+                            ['label' => 'Года эксплуотации', 'icon' => 'circle-o', 'url' => ['/years'],],
                         ],
-                    ],*/
+                    ],
                 ],
             ]
         ) ?>

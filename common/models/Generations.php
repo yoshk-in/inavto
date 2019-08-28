@@ -54,6 +54,7 @@ class Generations extends \yii\db\ActiveRecord
             [['car_id'], 'integer'],
             [['created', 'modified'], 'safe'],
             [['title'], 'string', 'max' => 50],
+            [['alter_title'], 'string', 'max' => 10],
             [['car_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cars::className(), 'targetAttribute' => ['car_id' => 'id']],
         ];
     }
@@ -66,6 +67,7 @@ class Generations extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => 'Поколение',
+            'alter_title' => 'Короткое название',
             'car_id' => 'Автомобиль',
             'created' => 'Дата создания',
             'modified' => 'Дата изменения',

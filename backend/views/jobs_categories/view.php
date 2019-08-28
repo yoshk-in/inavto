@@ -8,7 +8,6 @@ use yii\widgets\DetailView;
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Категории работ', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="jobs-categories-view">
@@ -18,11 +17,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
                 'method' => 'post',
             ],
         ]) ?>
         <?= Html::a('Добавить', ['create', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+        <? if($model->parent): ?>
+            <?= Html::a('Список работ', ['/jobs', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
+        <? endif; ?>
     </p>
 
     <?= DetailView::widget([

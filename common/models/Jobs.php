@@ -3,6 +3,11 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
+use common\models\Engines;
+use common\models\Years;
 
 /**
  * This is the model class for table "jobs".
@@ -21,6 +26,23 @@ use Yii;
  */
 class Jobs extends \yii\db\ActiveRecord
 {
+    public $engines;
+    public $years;
+    
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'modified'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['modified'],
+                ],
+                // если вместо метки времени UNIX используется datetime:
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -35,10 +57,10 @@ class Jobs extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'created', 'modified'], 'required'],
+            [['title'], 'required'],
             [['jc_id', 'recomended'], 'integer'],
             [['price'], 'number'],
-            [['created', 'modified'], 'safe'],
+            [['created', 'modified', 'engines', 'years'], 'safe'],
             [['title'], 'string', 'max' => 255],
             [['jc_id'], 'exist', 'skipOnError' => true, 'targetClass' => JobsCategories::className(), 'targetAttribute' => ['jc_id' => 'id']],
         ];
@@ -51,12 +73,14 @@ class Jobs extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'jc_id' => 'Jc ID',
-            'price' => 'Price',
-            'recomended' => 'Recomended',
-            'created' => 'Created',
-            'modified' => 'Modified',
+            'title' => 'Название',
+            'jc_id' => 'Категория',
+            'price' => 'Цена',
+            'recomended' => 'Рекомендованная работа',
+            'created' => 'Дата создания',
+            'modified' => 'Дата изменения',
+            'engines' => 'Выбрать поколение и двигатель',
+            'years' => 'Срок эксплуотации авто'
         ];
     }
 
@@ -76,11 +100,32 @@ class Jobs extends \yii\db\ActiveRecord
         return $this->hasMany(Parts::className(), ['job_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getYearsJobs()
+    public function getMotors()
     {
-        return $this->hasMany(YearsJobs::className(), ['job_id' => 'id']);
+        return $this->hasMany(Engines::className(), ['id' => 'engine_id'])->viaTable('engines_jobs', ['job_id' => 'id']);
+    }
+    
+    public function getPeriods()
+    {
+        return $this->hasMany(Years::className(), ['id' => 'year_id'])->viaTable('years_jobs', ['job_id' => 'id']);
+    }
+    
+    public function afterSave($insert, $changedAttributes)
+    {
+       $this->unlinkAll('periods', true);
+       if($this->years && !empty($this->years))
+        foreach($this->years as $value){
+            $item = Years::findOne($value);
+            $this->link('periods', $item);
+        }
+        
+        $this->unlinkAll('motors', true);
+        if($this->engines && !empty($this->engines))
+        foreach($this->engines as $value){
+            $item = Engines::findOne($value);
+            $this->link('motors', $item);
+        }
+        
+        parent::afterSave($insert, $changedAttributes);
     }
 }

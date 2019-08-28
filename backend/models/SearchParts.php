@@ -39,7 +39,7 @@ class SearchParts extends Parts
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $id)
     {
         $query = Parts::find();
 
@@ -60,7 +60,8 @@ class SearchParts extends Parts
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'pc_id' => $this->pc_id,
+          //  'pc_id' => $this->pc_id,
+            'pc_id' => $id,
             'car_id' => $this->car_id,
             'engine_id' => $this->engine_id,
             'generation_id' => $this->generation_id,

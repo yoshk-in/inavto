@@ -51,11 +51,9 @@ class Jobs_categoriesController extends SiteController
     {
         $model = new JobsCategories();
         
-        $cars = Cars::find()->select(['id', 'title'])->asArray()->indexBy('id')->all();
-        $cars = \common\helpers\HelpersFunctions::arrForList($cars);
+        $cars = \yii\helpers\ArrayHelper::map(Cars::find()->select(['id', 'title'])->asArray()->indexBy('id')->all(), 'id', 'title');
         
-        $parents = JobsCategories::find()->where(['parent' => null])->select(['id', 'title'])->asArray()->indexBy('id')->all();
-        $parents = \common\helpers\HelpersFunctions::arrForList($parents);
+        $parents = \yii\helpers\ArrayHelper::map(JobsCategories::find()->where(['parent' => null])->select(['id', 'title'])->asArray()->indexBy('id')->all(), 'id', 'title');
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Категория добавлена");
@@ -80,11 +78,9 @@ class Jobs_categoriesController extends SiteController
     {
         $model = $this->findModel($id);
         
-        $cars = Cars::find()->select(['id', 'title'])->asArray()->indexBy('id')->all();
-        $cars = \common\helpers\HelpersFunctions::arrForList($cars);
+        $cars = \yii\helpers\ArrayHelper::map(Cars::find()->select(['id', 'title'])->asArray()->indexBy('id')->all(), 'id', 'title');
         
-        $parents = JobsCategories::find()->where(['parent' => null])->andWhere(['!=', 'id', $id])->select(['id', 'title'])->asArray()->indexBy('id')->all();
-        $parents = \common\helpers\HelpersFunctions::arrForList($parents);
+        $parents = \yii\helpers\ArrayHelper::map(JobsCategories::find()->where(['parent' => null])->andWhere(['!=', 'id', $id])->select(['id', 'title'])->asArray()->indexBy('id')->all(), 'id', 'title');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Категория изменена");
@@ -108,7 +104,7 @@ class Jobs_categoriesController extends SiteController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('success', "Категория удалена");
         return $this->redirect(['index']);
     }
 

@@ -7,15 +7,13 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\SearchPartsCategories */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Parts Categories';
+$this->title = 'Категории запчастей';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="parts-categories-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create Parts Categories', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -27,11 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'title',
-            'meta_title',
-            'alias',
-            'body:ntext',
-            //'parent',
+            [
+              'attribute' => 'title',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->parent ? Html::a($data->title, \yii\helpers\Url::to(['/parts', 'id' => $data->id]), ['title' => 'Перейти к списку запчастей']) : '<span>' . $data->title . '</span>';
+                }
+            ],
+            'parent',
             //'description:ntext',
             //'keywords:ntext',
             //'created',

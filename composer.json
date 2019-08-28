@@ -21,7 +21,8 @@
         "dmstr/yii2-adminlte-asset": "^2.1",
         "kartik-v/yii2-widget-select2": "@dev",
         "mihaildev/yii2-elfinder": "*",
-        "mihaildev/yii2-ckeditor": "*"
+        "mihaildev/yii2-ckeditor": "*",
+        "kartik-v/yii2-widget-typeahead": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
