@@ -5,13 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Years */
 
-$this->title = 'Create Years';
-$this->params['breadcrumbs'][] = ['label' => 'Years', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Добавить год эксплуотации';
+$this->params['breadcrumbs'][] = ['label' => 'Года эксплуотации', 'url' => ['index']];
 ?>
 <div class="years-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

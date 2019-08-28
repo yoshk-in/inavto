@@ -3,6 +3,10 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
+use yii\behaviors\SluggableBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "parts_categories".
@@ -24,6 +28,25 @@ use Yii;
  */
 class PartsCategories extends \yii\db\ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'modified'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['modified'],
+                ],
+                // если вместо метки времени UNIX используется datetime:
+                'value' => new Expression('NOW()'),
+            ],
+            [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'title',
+                'slugAttribute' => 'alias',
+            ],
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -38,11 +61,11 @@ class PartsCategories extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'meta_title', 'alias', 'body', 'description', 'keywords', 'created', 'modified', 'car_id'], 'required'],
+            [['title'], 'required'],
             [['body', 'description', 'keywords'], 'string'],
             [['parent', 'car_id'], 'integer'],
             [['created', 'modified'], 'safe'],
-            [['title', 'meta_title', 'alias'], 'string', 'max' => 255],
+            [['title', 'meta_title', 'alias', 'menu_title'], 'string', 'max' => 255],
             [['car_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cars::className(), 'targetAttribute' => ['car_id' => 'id']],
         ];
     }
@@ -54,16 +77,17 @@ class PartsCategories extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'meta_title' => 'Meta Title',
+            'title' => 'Название',
+            'meta_title' => 'Мета-заголовок',
+            'menu_title' => 'Короткое название',
             'alias' => 'Alias',
-            'body' => 'Body',
-            'parent' => 'Parent',
-            'description' => 'Description',
-            'keywords' => 'Keywords',
-            'created' => 'Created',
-            'modified' => 'Modified',
-            'car_id' => 'Car ID',
+            'body' => 'Текст',
+            'parent' => 'Родительская категория',
+            'description' => 'Мета-описание',
+            'keywords' => 'Ключевые слова',
+            'created' => 'Дата создания',
+            'modified' => 'Дата изменения',
+            'car_id' => 'Авто',
         ];
     }
 

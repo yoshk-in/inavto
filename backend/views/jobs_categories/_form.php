@@ -61,15 +61,22 @@ mihaildev\elfinder\Assets::noConflict($this);
     <?php ActiveForm::end(); ?>
     <script type="text/javascript">
         if(readyjs) readyjs[readyjs.length] = function(){ 
-            $('#jobscategories-parent').change(function(){
-                 var val_item = $(this).val();
-                 var class_arr = ('.field-jobscategories-alias, .field-jobscategories-meta_title, .field-jobscategories-body, .field-jobscategories-meta_title, .field-jobscategories-description, .field-jobscategories-keywords, .field-jobscategories-car_id');
+           $(document).ready(function(){
+            var item = $('#jobscategories-parent');
+            showItems(item);
+            item.change(function(){
+                showItems(item);
+             });
+             function showItems(item){
+                 var val_item = item.val();
+                 var class_arr = ('.field-jobscategories-alias, .field-jobscategories-meta_title, .field-jobscategories-body, .field-jobscategories-description, .field-jobscategories-keywords');
                  if(val_item){
                      $(class_arr).hide();
                  }else{
                      $(class_arr).show();
                  }
-             });
+             }
+           });
         }
     </script>
 </div>

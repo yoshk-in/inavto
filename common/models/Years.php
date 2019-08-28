@@ -3,6 +3,9 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "years".
@@ -17,6 +20,20 @@ use Yii;
  */
 class Years extends \yii\db\ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'modified'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['modified'],
+                ],
+                // если вместо метки времени UNIX используется datetime:
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -31,7 +48,8 @@ class Years extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'created', 'modified'], 'required'],
+            [['title', 'mileage'], 'required'],
+            [['title'], 'integer'],
             [['mileage'], 'integer'],
             [['created', 'modified'], 'safe'],
             [['title'], 'string', 'max' => 50],
@@ -45,18 +63,14 @@ class Years extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'mileage' => 'Mileage',
-            'created' => 'Created',
-            'modified' => 'Modified',
+            'title' => 'Количество лет',
+            'mileage' => 'Пробег (км)',
+            'created' => 'Дата создания',
+            'modified' => 'Дата изменения',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getYearsJobs()
-    {
-        return $this->hasMany(YearsJobs::className(), ['year_id' => 'id']);
-    }
 }

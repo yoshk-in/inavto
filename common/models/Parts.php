@@ -3,6 +3,9 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "parts".
@@ -31,6 +34,20 @@ use Yii;
  */
 class Parts extends \yii\db\ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'modified'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['modified'],
+                ],
+                // если вместо метки времени UNIX используется datetime:
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -45,7 +62,7 @@ class Parts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'code', 'created', 'modified'], 'required'],
+            [['title'], 'required'],
             [['pc_id', 'car_id', 'engine_id', 'generation_id', 'brand_id', 'job_id', 'check', 'original'], 'integer'],
             [['price'], 'number'],
             [['created', 'modified'], 'safe'],
@@ -66,19 +83,19 @@ class Parts extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'pc_id' => 'Pc ID',
-            'car_id' => 'Car ID',
-            'engine_id' => 'Engine ID',
-            'generation_id' => 'Generation ID',
-            'brand_id' => 'Brand ID',
-            'job_id' => 'Job ID',
-            'price' => 'Price',
-            'check' => 'Check',
-            'original' => 'Original',
-            'code' => 'Code',
-            'created' => 'Created',
-            'modified' => 'Modified',
+            'title' => 'Название',
+            'pc_id' => 'Категория',
+            'car_id' => 'Авто',
+            'engine_id' => 'Двигатель',
+            'generation_id' => 'Поколение авто',
+            'brand_id' => 'Бренд',
+            'job_id' => 'Работа',
+            'price' => 'Цена',
+            'check' => 'В наличии',
+            'original' => 'Оригинал',
+            'code' => 'Артикул',
+            'created' => 'Дата создания',
+            'modified' => 'Дата изменения',
         ];
     }
 

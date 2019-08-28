@@ -63,7 +63,7 @@ class JobsCategories extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title'], 'required'],
+            [['title', 'car_id'], 'required'],
             [['body', 'description', 'keywords'], 'string'],
             [['parent', 'service', 'car_id'], 'integer'],
             [['created', 'modified'], 'safe'],

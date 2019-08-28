@@ -25,7 +25,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'title',
+            [
+              'attribute' => 'title',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->parent ? Html::a($data->title, \yii\helpers\Url::to(['/jobs', 'id' => $data->id]), ['title' => 'Перейти к списку работ']) : '<span>' . $data->title . '</span>';
+                }
+            ],
             'parent',
             //'service',
             //'description:ntext',

@@ -14,8 +14,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'alter_title')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'generation_id', ['template' => "{input}"])->hiddenInput(['value' => $generation->id]) ?>
 
     <div class="form-group">

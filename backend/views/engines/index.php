@@ -24,7 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'title',
-            'alter_title',
             [
                 'attribute' => 'generation_id',
                 'format' => 'html',

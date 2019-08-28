@@ -6,15 +6,13 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Jobs';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Работы категории ' . $job_category->title;
+$this->params['breadcrumbs'][] = ['label' => 'Категории работ', 'url' => ['/jobs_categories']];
 ?>
 <div class="jobs-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create Jobs', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить работу', ['create', 'id' => $job_category->id], ['class' => 'btn btn-success']) ?>
     </p>
 
 
@@ -25,9 +23,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'title',
-            'jc_id',
             'price',
-            'recomended',
+            [
+               'attribute' => 'recomended',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->recomended ? '<span>Да</span>' : '<span>Нет</span>';
+                }
+            ],
             //'created',
             //'modified',
 

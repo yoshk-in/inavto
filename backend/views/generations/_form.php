@@ -13,6 +13,8 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'alter_title')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'car_id', ['template' => "{input}"])->hiddenInput(['value' => $car->id]) ?>
 

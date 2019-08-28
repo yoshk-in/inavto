@@ -7,23 +7,24 @@ use yii\widgets\DetailView;
 /* @var $model common\models\PartsCategories */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Parts Categories', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => 'Категории запчастей', 'url' => ['index']];
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="parts-categories-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('Добавить', ['create', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+        <? if($model->parent): ?>
+            <?= Html::a('Список запчастей', ['/parts', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
+        <? endif; ?>
     </p>
 
     <?= DetailView::widget([
@@ -31,15 +32,34 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'title',
+            'menu_title',
             'meta_title',
             'alias',
-            'body:ntext',
-            'parent',
+            'body:html',
+            [
+                'attribute' => 'parent',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->parent ? $data->parent : '<span>Самостоятельная категория</span>';
+                } 
+            ],
             'description:ntext',
             'keywords:ntext',
             'created',
             'modified',
-            'car_id',
+            [
+                'attribute' => 'car_id',
+                'format' => 'html',
+                'value' => function($data){
+                    return Html::a(
+                        $data->car->title,
+                        \yii\helpers\Url::to(['/cars/view', 'id' => $data->car_id]),
+                        [
+                            'title' => 'Перейти к автомобилю',
+                        ]
+                    );
+                } 
+            ],
         ],
     ]) ?>
 
