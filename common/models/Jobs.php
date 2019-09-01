@@ -7,7 +7,9 @@ use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 use common\models\Engines;
+use common\models\Generations;
 use common\models\Years;
+use common\models\JobsCategories;
 
 /**
  * This is the model class for table "jobs".
@@ -28,6 +30,9 @@ class Jobs extends \yii\db\ActiveRecord
 {
     public $engines;
     public $years;
+    public $works;
+    public $car_id;
+    public $generations;
     
     public function behaviors()
     {
@@ -60,7 +65,7 @@ class Jobs extends \yii\db\ActiveRecord
             [['title'], 'required'],
             [['jc_id', 'recomended'], 'integer'],
             [['price'], 'number'],
-            [['created', 'modified', 'engines', 'years'], 'safe'],
+            [['created', 'modified', 'engines', 'generations', 'years', 'works'], 'safe'],
             [['title'], 'string', 'max' => 255],
             [['jc_id'], 'exist', 'skipOnError' => true, 'targetClass' => JobsCategories::className(), 'targetAttribute' => ['jc_id' => 'id']],
         ];
@@ -74,12 +79,13 @@ class Jobs extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => 'Название',
-            'jc_id' => 'Категория',
+            'works' => 'Список категорий',
             'price' => 'Цена',
             'recomended' => 'Рекомендованная работа',
             'created' => 'Дата создания',
             'modified' => 'Дата изменения',
-            'engines' => 'Выбрать поколение и двигатель',
+            'generations' => 'Поколения авто',
+            'engines' => 'Выбрать двигатели',
             'years' => 'Срок эксплуотации авто'
         ];
     }
@@ -87,10 +93,10 @@ class Jobs extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getJc()
+   /* public function getJc()
     {
         return $this->hasOne(JobsCategories::className(), ['id' => 'jc_id']);
-    }
+    }*/
 
     /**
      * @return \yii\db\ActiveQuery
@@ -110,6 +116,16 @@ class Jobs extends \yii\db\ActiveRecord
         return $this->hasMany(Years::className(), ['id' => 'year_id'])->viaTable('years_jobs', ['job_id' => 'id']);
     }
     
+    public function getCats()
+    {
+        return $this->hasMany(JobsCategories::className(), ['id' => 'job_category_id'])->viaTable('jobcats_jobs', ['job_id' => 'id']);
+    }
+    
+    public function getGeneration()
+    {
+        return $this->hasMany(Generations::className(), ['id' => 'generation_id'])->viaTable('jobs_generations', ['job_id' => 'id']);
+    }
+    
     public function afterSave($insert, $changedAttributes)
     {
        $this->unlinkAll('periods', true);
@@ -124,6 +140,20 @@ class Jobs extends \yii\db\ActiveRecord
         foreach($this->engines as $value){
             $item = Engines::findOne($value);
             $this->link('motors', $item);
+        }
+        
+        $this->unlinkAll('generation', true);
+        if($this->generations && !empty($this->generations))
+        foreach($this->generations as $value){
+            $item = Generations::findOne($value);
+            $this->link('generation', $item);
+        }
+        
+        $this->unlinkAll('cats', true);
+        if($this->works && !empty($this->works))
+        foreach($this->works as $value){
+            $item = JobsCategories::findOne($value);
+            $this->link('cats', $item);
         }
         
         parent::afterSave($insert, $changedAttributes);

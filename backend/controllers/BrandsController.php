@@ -51,6 +51,7 @@ class BrandsController extends SiteController
         $model = new Brands();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Бренд добавлен");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -71,6 +72,7 @@ class BrandsController extends SiteController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Бренд изменен");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -89,7 +91,7 @@ class BrandsController extends SiteController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('success', "Бренд удален");
         return $this->redirect(['index']);
     }
 

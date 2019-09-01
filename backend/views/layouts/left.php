@@ -41,6 +41,7 @@
                         'url' => '#',
                         'items' => [
                             ['label' => 'Года эксплуотации', 'icon' => 'circle-o', 'url' => ['/years'],],
+                            ['label' => 'Бренды', 'icon' => 'circle-o', 'url' => ['/brands'],],
                         ],
                     ],
                 ],

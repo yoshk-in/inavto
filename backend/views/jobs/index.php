@@ -6,6 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+$cat = $job_category->id;
 $this->title = 'Работы категории ' . $job_category->title;
 $this->params['breadcrumbs'][] = ['label' => 'Категории работ', 'url' => ['/jobs_categories']];
 ?>
@@ -34,7 +35,18 @@ $this->params['breadcrumbs'][] = ['label' => 'Категории работ', 'u
             //'created',
             //'modified',
 
-            ['class' => 'yii\grid\ActionColumn'],
+       //     ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'urlCreator' => function ($action, $model, $key, $index) use ($cat) {
+                    if ($action === 'update') {
+                        return yii\helpers\Url::to(['update', 'cat_id' => $cat, 'id' => $model->id]);
+                    }elseif($action === 'view'){
+                        return yii\helpers\Url::to(['view', 'cat_id' => $cat, 'id' => $model->id]);
+                    }
+                    return yii\helpers\Url::to(['delete', 'cat_id' => $cat, 'id' => $model->id]);
+                }
+            ]
         ],
     ]); ?>
 

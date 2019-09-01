@@ -7,15 +7,13 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\SearchParts */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Parts';
+$this->title = 'Запчасти - ' . $category->title;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="parts-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create Parts', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить', ['create', 'id' => $category->id], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -28,9 +26,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'title',
-            'pc_id',
-            'car_id',
-            'engine_id',
+           // 'car_id',
+           [
+                'attribute' => 'check',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->check ? '<span>Да</span>' : '<span>Нет</span>';
+                }
+            ],
+            [
+                'attribute' => 'original',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->original ? '<span>Да</span>' : '<span>Нет</span>';
+                }
+            ],
             //'generation_id',
             //'brand_id',
             //'job_id',

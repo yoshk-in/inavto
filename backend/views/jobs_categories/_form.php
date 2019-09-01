@@ -22,7 +22,6 @@ mihaildev\elfinder\Assets::noConflict($this);
     
     <?=$form->field($model, 'parent')->widget(Select2::classname(), [
         'data' => $parents,
-        'hideSearch' => true,
         'options' => ['placeholder' => 'Выбрать родительскую категорию', 'value' => $model->parent],
         'pluginOptions' => [
             'allowClear' => true,

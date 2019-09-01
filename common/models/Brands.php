@@ -3,6 +3,9 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "brands".
@@ -16,6 +19,20 @@ use Yii;
  */
 class Brands extends \yii\db\ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'modified'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['modified'],
+                ],
+                // если вместо метки времени UNIX используется datetime:
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -30,7 +47,7 @@ class Brands extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'created', 'modified'], 'required'],
+            [['title'], 'required'],
             [['created', 'modified'], 'safe'],
             [['title'], 'string', 'max' => 100],
         ];
@@ -43,9 +60,9 @@ class Brands extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'created' => 'Created',
-            'modified' => 'Modified',
+            'title' => 'Название',
+            'created' => 'Дата создания',
+            'modified' => 'Дата добавления',
         ];
     }
 

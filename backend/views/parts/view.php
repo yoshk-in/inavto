@@ -7,23 +7,21 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Parts */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Parts', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => 'Запчасти', 'url' => ['index']];
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="parts-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('Добавить', ['create', 'id' => $model->pc_id], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -31,15 +29,73 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'title',
-            'pc_id',
-            'car_id',
-            'engine_id',
-            'generation_id',
-            'brand_id',
-            'job_id',
+            [
+                'attribute' => 'pc_id',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->pc_id ? yii\helpers\Html::a($data->pc->title, yii\helpers\Url::to(['index', 'id' => $data->pc_id])) : '';
+                }
+            ],
+            [
+                'attribute' => 'car_id',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->car_id ? yii\helpers\Html::a($data->car->title, yii\helpers\Url::to(['/cars/view', 'id' => $data->car_id])) : '';
+                }
+            ],
+            [
+                'attribute' => 'generations',
+                'format' => 'html',
+                'value' => function($data){
+                    $html = '';
+                    if($data->generation && !empty($data->generation))
+                    foreach($data->generation as $key => $value){
+                        $html .= Html::a($value->title, yii\helpers\Url::to(['/generations/view', 'id' => $value->id])) . ' ';
+                    }
+                    return $html;
+                }
+            ],
+            [
+                'attribute' => 'engines',
+                'format' => 'html',
+                'value' => function($data){
+                    $html = '';
+                    if($data->engine && !empty($data->engine))
+                    foreach($data->engine as $key => $value){
+                        $html .= Html::a($value->title, yii\helpers\Url::to(['/engines/view', 'id' => $value->id])) . ' ';
+                    }
+                    return $html;
+                }
+            ],
+            [
+                'attribute' => 'brand_id',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->brand_id ? yii\helpers\Html::a($data->brand->title, yii\helpers\Url::to(['/brands/view', 'id' => $data->brand_id])) : '';
+                }
+            ],
+            [
+                'attribute' => 'job_id',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->job_id ? '<span>' . $data->job->title . '</span>' : '';
+                }
+            ],
             'price',
-            'check',
-            'original',
+            [
+                'attribute' => 'check',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->check ? '<span>Да</span>' : '<span>Нет</span>';
+                }
+            ],
+            [
+                'attribute' => 'original',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->original ? '<span>Да</span>' : '<span>Нет</span>';
+                }
+            ],
             'code',
             'created',
             'modified',

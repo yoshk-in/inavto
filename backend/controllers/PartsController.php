@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\Parts;
 use backend\models\SearchParts;
+use common\models\PartsCategories;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -50,10 +51,12 @@ class PartsController extends Controller
     {
         $searchModel = new SearchParts();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
+        $category = PartsCategories::findOne($id);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'category' => $category
         ]);
     }
 
@@ -75,9 +78,11 @@ class PartsController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
         $model = new Parts();
+        
+        $part_category = PartsCategories::findOne($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Запчасть добавлена");
@@ -86,6 +91,7 @@ class PartsController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'part_category' => $part_category
         ]);
     }
 
@@ -99,6 +105,8 @@ class PartsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
+        $part_category = PartsCategories::findOne($model->pc_id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Запчасть изменена");
@@ -107,6 +115,7 @@ class PartsController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'part_category' => $part_category
         ]);
     }
 
@@ -119,9 +128,11 @@ class PartsController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $item = $model->pc_id;
+        $model->delete();
         Yii::$app->session->setFlash('success', "Запчасть удалена");
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'id' => $item]);
     }
 
     /**
@@ -138,5 +149,29 @@ class PartsController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    public function actionGenerations($id = null, $current_id = null)
+    {
+        $arr = array();
+        if($current_id){
+            $arr = str_split($current_id);
+        }
+        $data = \common\models\Generations::find()->select(['id', 'title'])->where(['car_id' => $id])->all();
+        return $this->renderAjax('_option_generations', compact('data', 'arr'));
+    }
+    
+    public function actionEngines($id = null, $current_id = null)
+    {
+        $arr = array();
+        $default_arr = array();
+        if($id){
+            $arr = str_split($id);
+        }
+        if($current_id){
+            $default_arr = str_split($current_id);
+        }
+        $data = \common\models\Engines::find()->select(['id', 'title'])->where(['generation_id' => $arr])->all();
+        return $this->renderAjax('_option_engines', compact('data', 'default_arr'));
     }
 }
