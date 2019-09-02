@@ -7,6 +7,9 @@ use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 use common\models\Generations;
+use common\models\PartsCategories;
+use common\models\Cars;
+use common\models\Jobs;
 
 /**
  * This is the model class for table "parts".
@@ -37,6 +40,9 @@ class Parts extends \yii\db\ActiveRecord
 {
     public $generations;
     public $engines;
+    public $works;
+    public $cars;
+    public $categories;
     
     public function behaviors()
     {
@@ -69,7 +75,7 @@ class Parts extends \yii\db\ActiveRecord
             [['title'], 'required'],
             [['pc_id', 'car_id', 'engine_id', 'brand_id', 'job_id', 'check', 'original'], 'integer'],
             [['price'], 'number'],
-            [['created', 'modified', 'generations', 'engines'], 'safe'],
+            [['created', 'modified', 'generations', 'engines', 'works', 'cars', 'categories'], 'safe'],
             [['title', 'code'], 'string', 'max' => 255],
             [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => Brands::className(), 'targetAttribute' => ['brand_id' => 'id']],
             [['car_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cars::className(), 'targetAttribute' => ['car_id' => 'id']],
@@ -88,8 +94,9 @@ class Parts extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => 'Название',
-            'pc_id' => 'Категория',
-            'car_id' => 'Авто',
+         //   'pc_id' => 'Категория',
+            'categories' => 'Список категорий',
+           // 'car_id' => 'Авто',
            // 'engine_id' => 'Двигатель',
            // 'generation_id' => 'Поколение авто',
             'brand_id' => 'Бренд',
@@ -101,7 +108,9 @@ class Parts extends \yii\db\ActiveRecord
             'created' => 'Дата создания',
             'modified' => 'Дата изменения',
             'generations' => 'Поколения авто',
-            'engines' => 'Двигатели'
+            'engines' => 'Двигатели',
+            'works' => 'Список работ',
+            'cars' => 'Автомобили',
         ];
     }
 
@@ -140,17 +149,23 @@ class Parts extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getJob()
+    public function getJobs()
     {
-        return $this->hasOne(Jobs::className(), ['id' => 'job_id']);
+        return $this->hasMany(Engines::className(), ['id' => 'job_id'])->viaTable('parts_jobs', ['part_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPc()
+   
+    public function getCats()
     {
-        return $this->hasOne(PartsCategories::className(), ['id' => 'pc_id']);
+        return $this->hasMany(PartsCategories::className(), ['id' => 'part_category_id'])->viaTable('partcats_parts', ['part_id' => 'id']);
+    }
+    
+    public function getAvtos()
+    {
+        return $this->hasMany(Cars::className(), ['id' => 'car_id'])->viaTable('parts_cars', ['part_id' => 'id']);
     }
     
     public function getGeneration()
@@ -177,6 +192,27 @@ class Parts extends \yii\db\ActiveRecord
         foreach($this->engines as $value){
             $item = Engines::findOne($value);
             $this->link('engine', $item);
+        }
+        
+        $this->unlinkAll('cats', true);
+        if($this->categories && !empty($this->categories))
+        foreach($this->categories as $value){
+            $item = PartsCategories::findOne($value);
+            $this->link('cats', $item);
+        }
+        
+        $this->unlinkAll('avtos', true);
+        if($this->cars && !empty($this->cars))
+        foreach($this->cars as $value){
+            $item = Cars::findOne($value);
+            $this->link('avtos', $item);
+        }
+        
+        $this->unlinkAll('jobs', true);
+        if($this->works && !empty($this->works))
+        foreach($this->works as $value){
+            $item = Jobs::findOne($value);
+            $this->link('jobs', $item);
         }
         
         parent::afterSave($insert, $changedAttributes);

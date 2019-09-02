@@ -12,8 +12,13 @@ $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'i
 <div class="parts-update">
 
     <?= $this->render('_form', [
-        'model' => $model,
-        'part_category' => $part_category
+       'model' => $model,
+            'part_categories' => $part_categories,
+            'current_category' => $current_category,
+            'value_cats' => $value_cats,
+            'engines' => $engines,
+            'cars' => $cars,
+            'value_cars' => $value_cars,
     ]) ?>
 
 </div>

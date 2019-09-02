@@ -13,15 +13,15 @@ $this->params['breadcrumbs'][] = ['label' => 'Запчасти', 'url' => ['inde
 <div class="parts-view">
 
     <p>
-        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
+        <?= Html::a('Изменить', ['update','cat_id' => $cat_id, 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete','cat_id' => $cat_id, 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a('Добавить', ['create', 'id' => $model->pc_id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить', ['create', 'id' => $cat_id], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -30,17 +30,26 @@ $this->params['breadcrumbs'][] = ['label' => 'Запчасти', 'url' => ['inde
             'id',
             'title',
             [
-                'attribute' => 'pc_id',
+               'attribute' => 'categories',
                 'format' => 'html',
                 'value' => function($data){
-                    return $data->pc_id ? yii\helpers\Html::a($data->pc->title, yii\helpers\Url::to(['index', 'id' => $data->pc_id])) : '';
+                    $html = '';
+                    foreach($data->cats as $key => $value){
+                        $html .= '<p>' . Html::a($value->title, yii\helpers\Url::to(['index', 'id' => $value->id])) . '</p>';
+                    }
+                    return $html;
                 }
             ],
-            [
-                'attribute' => 'car_id',
+             [
+                'attribute' => 'cars',
                 'format' => 'html',
                 'value' => function($data){
-                    return $data->car_id ? yii\helpers\Html::a($data->car->title, yii\helpers\Url::to(['/cars/view', 'id' => $data->car_id])) : '';
+                    $html = '';
+                    if($data->avtos && !empty($data->avtos))
+                    foreach($data->avtos as $key => $value){
+                        $html .= Html::a($value->title, yii\helpers\Url::to(['/cars/view', 'id' => $value->id])) . ' ';
+                    }
+                    return $html;
                 }
             ],
             [
@@ -75,10 +84,15 @@ $this->params['breadcrumbs'][] = ['label' => 'Запчасти', 'url' => ['inde
                 }
             ],
             [
-                'attribute' => 'job_id',
+                'attribute' => 'works',
                 'format' => 'html',
                 'value' => function($data){
-                    return $data->job_id ? '<span>' . $data->job->title . '</span>' : '';
+                    $html = '';
+                    if($data->jobs && !empty($data->jobs))
+                    foreach($data->jobs as $key => $value){
+                        $html .= Html::a($value->title, yii\helpers\Url::to(['/jobs/view', 'id' => $value->id])) . ' ';
+                    }
+                    return $html;
                 }
             ],
             'price',

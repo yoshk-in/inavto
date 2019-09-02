@@ -7,13 +7,14 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\SearchParts */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Запчасти - ' . $category->title;
-$this->params['breadcrumbs'][] = $this->title;
+$cat = $part_category->id;
+$this->title = 'Запчасти - ' . $part_category->title;;
+$this->params['breadcrumbs'][] = ['label' => 'Категории запчастей', 'url' => ['/parts_categories']];
 ?>
 <div class="parts-index">
 
     <p>
-        <?= Html::a('Добавить', ['create', 'id' => $category->id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить', ['create', 'id' => $part_category->id], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -51,7 +52,17 @@ $this->params['breadcrumbs'][] = $this->title;
             //'created',
             //'modified',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'urlCreator' => function ($action, $model, $key, $index) use ($cat) {
+                    if ($action === 'update') {
+                        return yii\helpers\Url::to(['update', 'cat_id' => $cat, 'id' => $model->id]);
+                    }elseif($action === 'view'){
+                        return yii\helpers\Url::to(['view', 'cat_id' => $cat, 'id' => $model->id]);
+                    }
+                    return yii\helpers\Url::to(['delete', 'cat_id' => $cat, 'id' => $model->id]);
+                }
+            ]
         ],
     ]); ?>
 

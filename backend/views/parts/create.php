@@ -12,7 +12,12 @@ $this->params['breadcrumbs'][] = ['label' => 'Запчасти', 'url' => ['inde
 
     <?= $this->render('_form', [
         'model' => $model,
-        'part_category' => $part_category
+            'part_categories' => $part_categories,
+            'current_category' => $current_category,
+            'value_cats' => $value_cats,
+            'engines' => $engines,
+            'cars' => $cars,
+            'value_cars' => $value_cars,
     ]) ?>
 
 </div>

@@ -6,6 +6,8 @@ use Yii;
 use common\models\PartsCategories;
 use backend\models\SearchPartsCategories;
 use common\models\Cars;
+use common\models\Parts;
+use common\models\Brands;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -122,5 +124,35 @@ class Parts_categoriesController extends SiteController
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    public function actionSet()
+    {
+      $cats = PartsCategories::find()->where(['>', 'parent', 0])->all();
+      $parts = \common\helpers\HelpersFunctions::jobsArr();
+      
+        foreach($cats as $key => $value){
+            foreach($parts as $k => $v){
+                $model = Parts::find()->where(['title' => $v['name'], 'pc_id' => $value->id])->one();
+                if(!$model && $value->alias == $v['system']){
+                        $model = new Parts();
+                        $brand = Brands::find()->where(['title' => $v['vendor']])->one();
+                        if(!$brand){
+                            $brand = new Brands();
+                            $brand->title = $v['vendor'];
+                            $brand->save();
+                        }
+                        $model->title = $v['partName'];
+                        $model->car_id = $value->car_id;
+                        $model->pc_id = $value->id;
+                        $model->original = $v['original'] ? $v['original'] : null;
+                        $model->code = $v['articul'];
+                        $model->price = $v['price'];
+                        $model->brand_id = $brand->id;
+                        $model->save();
+                }
+             }
+          }
+      exit();
     }
 }

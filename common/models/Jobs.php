@@ -101,9 +101,10 @@ class Jobs extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    
     public function getParts()
     {
-        return $this->hasMany(Parts::className(), ['job_id' => 'id']);
+        return $this->hasMany(Engines::className(), ['id' => 'part_id'])->viaTable('parts_jobs', ['job_id' => 'id']);
     }
 
     public function getMotors()

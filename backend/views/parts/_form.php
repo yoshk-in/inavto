@@ -15,17 +15,24 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'pc_id', ['template' => "{input}"])->hiddenInput(['value' => $part_category->id]) ?>
-
-    <?=$form->field($model, 'car_id')->widget(Select2::classname(), [
-        'data' => yii\helpers\ArrayHelper::map(common\models\Cars::find()->select(['id', 'title'])->all(), 'id', 'title'),
-        'hideSearch' => true,
-        'options' => ['placeholder' => 'Выбрать авто', 'value' => $model->car_id],
+    <?//= $form->field($model, 'pc_id', ['template' => "{input}"])->hiddenInput(['value' => $part_category->id]) ?>
+    
+    <?=$form->field($model, 'categories')->widget(Select2::classname(), [
+        'data' => $part_categories,
+        'options' => ['placeholder' => 'Выбрать категории', 'multiple' => 'multiple', 'value' => $value_cats ? $value_cats  : ''],
         'pluginOptions' => [
-            'allowClear' => true,
+            'allowClear' => true
         ],
     ]);?>
-
+    
+    <?=$form->field($model, 'cars')->widget(Select2::classname(), [
+        'data' => $cars,
+        'options' => ['placeholder' => 'Выбрать авто', 'multiple' => 'multiple', 'value' => $model->avtos && !empty($model->avtos) ? \yii\helpers\ArrayHelper::map($model->avtos, 'id', 'title')  : ''],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]);?>
+    
     <?=$form->field($model, 'generations')->widget(Select2::classname(), [
     //    'data' => yii\helpers\ArrayHelper::map(common\models\Generations::find()->select(['id', 'title'])->all(), 'id', 'title'),
         'options' => ['placeholder' => 'Выбрать поколения авто', 'multiple' => 'multiple', 'value' => $model->generation && !empty($model->generation) ? \yii\helpers\ArrayHelper::map($model->generation, 'id', 'title') : ''],
@@ -36,7 +43,7 @@ use kartik\select2\Select2;
     
     <?=$form->field($model, 'engines')->widget(Select2::classname(), [
     //    'data' => yii\helpers\ArrayHelper::map(common\models\Generations::find()->select(['id', 'title'])->all(), 'id', 'title'),
-        'options' => ['placeholder' => 'Выбрать двигатель', 'multiple' => 'multiple', 'value' => $model->engine && !empty($model->engine) ? \common\helpers\HelpersFunctions::arrForObjectList($model->engine) : ''],
+        'options' => ['placeholder' => 'Выбрать двигатель', 'multiple' => 'multiple', 'value' => $model->engine && !empty($model->engine) ? \yii\helpers\ArrayHelper::map($model->engine, 'id', 'title') : ''],
         'pluginOptions' => [
             'allowClear' => true
         ],
@@ -76,7 +83,7 @@ use kartik\select2\Select2;
     <script type="text/javascript">
         if(readyjs) readyjs[readyjs.length] = function(){ 
            $(document).ready(function(){
-            var car_id = $('#parts-car_id');
+            var car_id = $('#parts-cars');
             var generation_wrap = $('.field-parts-generations');
             var generations = $('#parts-generations');
           //var generations = $("input[name='Parts[generations]']");
@@ -84,13 +91,14 @@ use kartik\select2\Select2;
             var engine_id = $('#parts-engines');
             
             showItems(car_id, generation_wrap);
-            getGenerations(car_id.val(), generations);
+            getGenerations(String(car_id.val()), generations);
             showItems(generations, engine_wrap);
             getEngines(String(generations.val()), engine_id);
             
             car_id.change(function(){
+                var car_id = $('#parts-cars');
                 showItems(car_id, generation_wrap);
-                getGenerations(car_id.val(), generations);
+                getGenerations(String(car_id.val()), generations);
              });
              
              generations.change(function(){
