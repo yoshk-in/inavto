@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Jobs */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Список работ', 'url' => ['index', 'id' => $model->jc_id]];
+$this->params['breadcrumbs'][] = ['label' => 'Список работ', 'url' => ['index', 'id' => $cat_id]];
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="jobs-view">

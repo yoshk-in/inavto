@@ -93,7 +93,7 @@ class JobsController extends Controller
         $vaule_cats = $current_category->id;
         $job_categories = \yii\helpers\ArrayHelper::map(JobsCategories::find()
                 ->where(['>', 'parent', 0])
-                ->andWhere(['car_id' => $current_category->car_id])
+                ->andWhere(['car_id' => $current_category->car_id, 'alias' => $current_category->alias])
                 ->all(), 'id', 'title');
         $generations = \common\helpers\HelpersFunctions::idList(Generations::find()->where(['car_id' => $current_category->car_id])->indexBy('id')->asArray()->all());
         $engines = Engines::find()->where(['generation_id' => $generations])
@@ -107,7 +107,10 @@ class JobsController extends Controller
      //   $engines = \common\helpers\HelpersFunctions::arrForEnginesList($engines, $job_category->car->title);
         
         $years = \yii\helpers\ArrayHelper::map(Years::find()->select(['id', 'title'])->asArray()->all(), 'id', 'title');
-        
+        /*if($model->Load(Yii::$app->request->post())){
+            print_r($model);
+            exit();
+        }*/
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Работа добавлена");
             return $this->redirect(['view', 'cat_id' => $current_category->id, 'id' => $model->id]);
@@ -138,7 +141,11 @@ class JobsController extends Controller
         $vaule_cats = \yii\helpers\ArrayHelper::map($selected_categories, 'id', 'id');
         $current_category = JobsCategories::find()->where(['id' => $cat_id])->one();
        
-        $job_categories = \yii\helpers\ArrayHelper::map(JobsCategories::find()->where(['>', 'parent', 0])->all(), 'id', 'title');
+       // $job_categories = \yii\helpers\ArrayHelper::map(JobsCategories::find()->where(['>', 'parent', 0])->all(), 'id', 'title');
+        $job_categories = \yii\helpers\ArrayHelper::map(JobsCategories::find()
+                ->where(['>', 'parent', 0])
+                ->andWhere(['car_id' => $current_category->car_id, 'alias' => $current_category->alias])
+                ->all(), 'id', 'title');
         $generations = \common\helpers\HelpersFunctions::idList(Generations::find()->where(['car_id' => $current_category->car_id])->indexBy('id')->asArray()->all());
         $engines = Engines::find()->where(['generation_id' => $generations])
                     ->select(['engines.id', 'engines.title', 'engines.generation_id'])

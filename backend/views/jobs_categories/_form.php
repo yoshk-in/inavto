@@ -68,7 +68,7 @@ mihaildev\elfinder\Assets::noConflict($this);
              });
              function showItems(item){
                  var val_item = item.val();
-                 var class_arr = ('.field-jobscategories-alias, .field-jobscategories-meta_title, .field-jobscategories-body, .field-jobscategories-description, .field-jobscategories-keywords');
+                 var class_arr = ('.field-jobscategories-meta_title, .field-jobscategories-body, .field-jobscategories-description, .field-jobscategories-keywords');
                  if(val_item){
                      $(class_arr).hide();
                  }else{
