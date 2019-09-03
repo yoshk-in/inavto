@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $model common\models\Parts */
 
 $this->title = 'Изменить запчасть';
-$this->params['breadcrumbs'][] = ['label' => 'Запчасти', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => 'Запчасти', 'url' => ['index', 'id' => $current_category->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'cat_id' => $current_category->id, 'id' => $model->id]];
 ?>
 <div class="parts-update">
 

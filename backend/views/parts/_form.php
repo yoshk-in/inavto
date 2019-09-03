@@ -27,7 +27,7 @@ use kartik\select2\Select2;
     
     <?=$form->field($model, 'cars')->widget(Select2::classname(), [
         'data' => $cars,
-        'options' => ['placeholder' => 'Выбрать авто', 'multiple' => 'multiple', 'value' => $model->avtos && !empty($model->avtos) ? \yii\helpers\ArrayHelper::map($model->avtos, 'id', 'title')  : ''],
+        'options' => ['placeholder' => 'Выбрать авто', 'multiple' => 'multiple', 'value' => $value_cars && !empty($value_cars) ? $value_cars  : ''],
         'pluginOptions' => [
             'allowClear' => true
         ],
@@ -86,7 +86,6 @@ use kartik\select2\Select2;
             var car_id = $('#parts-cars');
             var generation_wrap = $('.field-parts-generations');
             var generations = $('#parts-generations');
-          //var generations = $("input[name='Parts[generations]']");
             var engine_wrap = $('.field-parts-engines');
             var engine_id = $('#parts-engines');
             

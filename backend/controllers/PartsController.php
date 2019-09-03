@@ -108,6 +108,7 @@ class PartsController extends Controller
                     ->indexBy('id')->asArray()->all();
         
         $value_cars = $current_category->car->id;
+      //  print_r($value_cats);
         $cars = \yii\helpers\ArrayHelper::map(Cars::find()->all(), 'id', 'title');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -160,7 +161,7 @@ class PartsController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Запчасть изменена");
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'cat_id' => $cat_id, 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -211,12 +212,14 @@ class PartsController extends Controller
         $arr = array();
         $default_arr = array();
         if($id){
-            $arr = str_split($id);
+            $arr = json_decode($id, true);
         }
         if($current_id){
-            $default_arr = str_split($current_id);
+            $items = json_decode($current_id, true);
+            $default_arr = \yii\helpers\ArrayHelper::map(Generations::find()->where(['title' => $items, 'car_id' => $arr])->all(), 'id', 'id');
         }
-        $data = \common\models\Generations::find()->select(['id', 'title'])->where(['car_id' => $arr])->all();
+        $data = \common\models\Generations::find()->select(['id', 'title', 'car_id'])->where(['car_id' => $arr])->all();
+     //   print_r($current_id);
         return $this->renderAjax('_option_generations', compact('data', 'default_arr'));
     }
     
@@ -225,12 +228,12 @@ class PartsController extends Controller
         $arr = array();
         $default_arr = array();
         if($id){
-            $arr = str_split($id);
+            $arr = array_keys(json_decode($id, true));
         }
         if($current_id){
-            $default_arr = str_split($current_id);
+            $default_arr = array_keys(json_decode($current_id, true));
         }
-        $data = \common\models\Engines::find()->select(['id', 'title'])->where(['generation_id' => $arr])->all();
+        $data = \common\models\Engines::find()->select(['id', 'title', 'generation_id'])->where(['generation_id' => $arr])->all();
         return $this->renderAjax('_option_engines', compact('data', 'default_arr'));
     }
 }
