@@ -130,26 +130,45 @@ class Parts_categoriesController extends SiteController
     {
       $cats = PartsCategories::find()->where(['>', 'parent', 0])->all();
       $parts = \common\helpers\HelpersFunctions::jobsArr();
-      
+    //  print_r($parts);
         foreach($cats as $key => $value){
+            $car_arr = array();
+            $cats_arr = array();
             foreach($parts as $k => $v){
-                $model = Parts::find()->where(['title' => $v['name'], 'pc_id' => $value->id])->one();
-                if(!$model && $value->alias == $v['system']){
-                        $model = new Parts();
-                        $brand = Brands::find()->where(['title' => $v['vendor']])->one();
-                        if(!$brand){
-                            $brand = new Brands();
-                            $brand->title = $v['vendor'];
-                            $brand->save();
+                if(in_array($value->car_id, $v['id_car'])){
+                    if(!in_array($value->car_id, $car_arr)){
+                        $car_arr[] = $value->car_id;
+                    }
+                    if(!in_array($value->id, $cats_arr)){
+                        $cats_arr[] = $value->id;
+                    }
+                    $gen_arr = array();
+                    foreach($value->car->generations as $g_k => $g_v){
+                        if(in_array($g_v->id, $v['id_gen'])){
+                            if(!in_array($g_v->id, $gen_arr)){
+                                $gen_arr[] = $g_v->id;
+                            }
+                            $model = Parts::find()->where(['title' => $v['title'], 'code' => $v['code'],'price' => $v['price']])->one();
+                            if(!$model){
+                                $model = new Parts();
+                            }
+                            $brand = Brands::find()->where(['title' => $v['brand']])->one();
+                            if(!$brand){
+                                $brand = new Brands();
+                                $brand->title = $v['vendor'];
+                                $brand->save();
+                            }
+                            $model->title = $v['title'];
+                            $model->price = $v['price'];
+                            $model->code = $v['code'];
+                            $model->original = $v['original'];
+                            $model->brand_id = $brand->id;
+                            $model->generations = $gen_arr;
+                            $model->cars = $car_arr;
+                            $model->categories = $cats_arr;
+                            $model->save();
                         }
-                        $model->title = $v['partName'];
-                        $model->car_id = $value->car_id;
-                        $model->pc_id = $value->id;
-                        $model->original = $v['original'] ? $v['original'] : null;
-                        $model->code = $v['articul'];
-                        $model->price = $v['price'];
-                        $model->brand_id = $brand->id;
-                        $model->save();
+                    }
                 }
              }
           }

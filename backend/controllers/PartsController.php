@@ -112,7 +112,7 @@ class PartsController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Запчасть добавлена");
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'cat_id' => $current_category->id, 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -144,7 +144,7 @@ class PartsController extends Controller
         $current_category = PartsCategories::find()->where(['id' => $cat_id])->one();
         $part_categories = \yii\helpers\ArrayHelper::map(PartsCategories::find()
                 ->where(['>', 'parent', 0])
-                ->andWhere(['car_id' => $current_category->car_id, 'alias' => $current_category->alias])
+                ->andWhere(['alias' => $current_category->alias])
                 ->all(), 'id', 'title');
         $generations = \yii\helpers\ArrayHelper::map((Generations::find()->where(['car_id' => $value_cars])->indexBy('id')->asArray()->all()), 'id', 'id');
         $engines = Engines::find()->where(['generation_id' => $generations])
@@ -160,7 +160,7 @@ class PartsController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Запчасть изменена");
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'cat_id' => $current_category->id, 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -181,13 +181,11 @@ class PartsController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($cat_id, $id)
     {
-        $model = $this->findModel($id);
-        $item = $model->pc_id;
-        $model->delete();
+        $this->findModel($id)->delete();
         Yii::$app->session->setFlash('success', "Запчасть удалена");
-        return $this->redirect(['index', 'id' => $item]);
+        return $this->redirect(['index', 'id' => $cat_id]);
     }
 
     /**
@@ -211,12 +209,12 @@ class PartsController extends Controller
         $arr = array();
         $default_arr = array();
         if($id){
-            $arr = str_split($id);
+            $arr = explode(',',$id);
         }
         if($current_id){
-            $default_arr = str_split($current_id);
+            $default_arr = explode(',',$current_id);
         }
-        $data = \common\models\Generations::find()->select(['id', 'title'])->where(['car_id' => $arr])->all();
+        $data = \common\models\Generations::find()->select(['id', 'title', 'car_id'])->where(['car_id' => $arr])->all();
         return $this->renderAjax('_option_generations', compact('data', 'default_arr'));
     }
     
@@ -225,12 +223,43 @@ class PartsController extends Controller
         $arr = array();
         $default_arr = array();
         if($id){
-            $arr = str_split($id);
+            $arr = explode(',',$id);
         }
         if($current_id){
-            $default_arr = str_split($current_id);
+            $default_arr = explode(',', $current_id);
         }
-        $data = \common\models\Engines::find()->select(['id', 'title'])->where(['generation_id' => $arr])->all();
+        $data = \common\models\Engines::find()->select(['id', 'title', 'generation_id'])->where(['generation_id' => $arr])->all();
         return $this->renderAjax('_option_engines', compact('data', 'default_arr'));
+    }
+    
+    public function actionJobs($id = null, $current_id = null)
+    {
+        $arr = array();
+        $default_arr = array();
+        $job_cats = array();
+        if($id){
+            $arr = explode(',',$id);
+            $job_cats = \common\models\JobsCategories::find()
+                    ->select(['id', 'car_id'])
+                    ->with([
+                        'car' => function($query){
+                            $query->select('id, title');
+                        },
+                        'jobs' => function($query){
+                            $query->select('id, title');
+                        }
+                      ])
+                    ->where(['car_id'=>$arr])->asArray()->all();
+             foreach($job_cats as $key => $value){
+                 foreach($value['jobs'] as $k => $v){
+                     $data[$key]['job_id'] = $v['id'];
+                     $data[$key]['job_title'] = $value['car']['title'] . ' - ' . $v['title'];
+                 }
+             }
+        }
+        if($current_id){
+            $default_arr = explode(',', $current_id);
+        }
+        return $this->renderAjax('_option_jobs', compact('data', 'default_arr'));
     }
 }

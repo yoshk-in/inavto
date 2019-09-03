@@ -848,13 +848,27 @@ class HelpersFunctions
             array('id_part' => '226','id_car' => '9','id_gen' => '16')
           );
         
+        $mew_arr = array();
         foreach($srv_parts as $key => $value){
+            $mew_arr[$key]['title'] = $value['partName'];
+            $mew_arr[$key]['code'] = $value['articul'];
+            $mew_arr[$key]['price'] = $value['price'];
+            $mew_arr[$key]['original'] = $value['original'] ? $value['original'] : null;
+            $mew_arr[$key]['brand'] = $value['vendor'];
+            $mew_arr[$key]['alias'] = $value['system'];
+            $mew_arr[$key]['id_car'] = array();
+            $mew_arr[$key]['id_gen'] = array();
             foreach($srv_parts_cars as $k => $v){
-                if($v['id_part' == $value['id_part']]){
-                    $srv_parts[$key]['car_id'][] = 
+                if($v['id_part'] == $value['id_part']){
+                    if(!in_array($v['id_car'], $mew_arr[$key]['id_car'])){
+                        $mew_arr[$key]['id_car'][] = $v['id_car'];
+                    }
+                    if(!in_array($v['id_gen'], $mew_arr[$key]['id_gen'])){
+                        $mew_arr[$key]['id_gen'][] = $v['id_gen'];
+                    }
                 }
             }
         }
-        return $srv_parts;
+        return $mew_arr;
     }
 }

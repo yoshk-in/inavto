@@ -99,7 +99,7 @@ class JobsCategories extends \yii\db\ActiveRecord
      */
     public function getJobs()
     {
-        return $this->hasMany(Jobs::className(), ['jc_id' => 'id']);
+        return $this->hasMany(Jobs::className(), ['id' => 'job_id'])->viaTable('jobcats_jobs', ['job_category_id' => 'id']);
     }
 
     /**

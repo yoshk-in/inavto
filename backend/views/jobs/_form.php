@@ -29,7 +29,7 @@ use kartik\select2\Select2;
     
     <?=$form->field($model, 'generations')->widget(Select2::classname(), [
     //    'data' => yii\helpers\ArrayHelper::map(common\models\Generations::find()->select(['id', 'title'])->all(), 'id', 'title'),
-        'options' => ['placeholder' => 'Выбрать поколения авто', 'multiple' => 'multiple', 'value' => $model->generation && !empty($model->generation) ? \yii\helpers\ArrayHelper::map($model->generation, 'id', 'title') : ''],
+        'options' => ['placeholder' => 'Выбрать поколения авто', 'multiple' => 'multiple', 'value' => $model->generation && !empty($model->generation) ? \yii\helpers\ArrayHelper::map($model->generation, 'id', 'id') : ''],
         'pluginOptions' => [
             'allowClear' => true
         ],
@@ -37,7 +37,7 @@ use kartik\select2\Select2;
     
     <?=$form->field($model, 'engines')->widget(Select2::classname(), [
     //    'data' => yii\helpers\ArrayHelper::map(common\models\Generations::find()->select(['id', 'title'])->all(), 'id', 'title'),
-        'options' => ['placeholder' => 'Выбрать двигатель', 'multiple' => 'multiple', 'value' => $model->motors && !empty($model->motors) ? \yii\helpers\ArrayHelper::map($model->motors, 'id', 'title') : ''],
+        'options' => ['placeholder' => 'Выбрать двигатель', 'multiple' => 'multiple', 'value' => $model->motors && !empty($model->motors) ? \yii\helpers\ArrayHelper::map($model->motors, 'id', 'id') : ''],
         'pluginOptions' => [
             'allowClear' => true
         ],

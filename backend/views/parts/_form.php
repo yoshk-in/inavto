@@ -27,7 +27,7 @@ use kartik\select2\Select2;
     
     <?=$form->field($model, 'cars')->widget(Select2::classname(), [
         'data' => $cars,
-        'options' => ['placeholder' => 'Выбрать авто', 'multiple' => 'multiple', 'value' => $model->avtos && !empty($model->avtos) ? \yii\helpers\ArrayHelper::map($model->avtos, 'id', 'title')  : ''],
+        'options' => ['placeholder' => 'Выбрать авто', 'multiple' => 'multiple', 'value' => $model->avtos && !empty($model->avtos) ? \yii\helpers\ArrayHelper::map($model->avtos, 'id', 'id')  : ''],
         'pluginOptions' => [
             'allowClear' => true
         ],
@@ -35,7 +35,7 @@ use kartik\select2\Select2;
     
     <?=$form->field($model, 'generations')->widget(Select2::classname(), [
     //    'data' => yii\helpers\ArrayHelper::map(common\models\Generations::find()->select(['id', 'title'])->all(), 'id', 'title'),
-        'options' => ['placeholder' => 'Выбрать поколения авто', 'multiple' => 'multiple', 'value' => $model->generation && !empty($model->generation) ? \yii\helpers\ArrayHelper::map($model->generation, 'id', 'title') : ''],
+        'options' => ['placeholder' => 'Выбрать поколения авто', 'multiple' => 'multiple', 'value' => $model->generation && !empty($model->generation) ? \yii\helpers\ArrayHelper::map($model->generation, 'id', 'id') : ''],
         'pluginOptions' => [
             'allowClear' => true
         ],
@@ -43,7 +43,7 @@ use kartik\select2\Select2;
     
     <?=$form->field($model, 'engines')->widget(Select2::classname(), [
     //    'data' => yii\helpers\ArrayHelper::map(common\models\Generations::find()->select(['id', 'title'])->all(), 'id', 'title'),
-        'options' => ['placeholder' => 'Выбрать двигатель', 'multiple' => 'multiple', 'value' => $model->engine && !empty($model->engine) ? \yii\helpers\ArrayHelper::map($model->engine, 'id', 'title') : ''],
+        'options' => ['placeholder' => 'Выбрать двигатель', 'multiple' => 'multiple', 'value' => $model->engine && !empty($model->engine) ? \yii\helpers\ArrayHelper::map($model->engine, 'id', 'id') : ''],
         'pluginOptions' => [
             'allowClear' => true
         ],
@@ -56,12 +56,12 @@ use kartik\select2\Select2;
             'allowClear' => true,
         ],
     ]);?>
-
-    <?=$form->field($model, 'job_id')->widget(Select2::classname(), [
-        'data' => yii\helpers\ArrayHelper::map(common\models\Jobs::find()->select(['id', 'title'])->all(), 'id', 'title'),
-        'options' => ['placeholder' => 'Выбрать работу для которой будет использована запчасть', 'value' => $model->job_id],
+    
+    <?=$form->field($model, 'works')->widget(Select2::classname(), [
+     //   'data' => yii\helpers\ArrayHelper::map(common\models\Jobs::find()->select(['id', 'title'])->all(), 'id', 'title'),
+        'options' => ['placeholder' => 'Выбрать работы под данную запчасть', 'multiple' => 'multiple', 'value' => $model->jobs && !empty($model->jobs) ? \yii\helpers\ArrayHelper::map($model->jobs, 'id', 'id') : ''],
         'pluginOptions' => [
-            'allowClear' => true,
+            'allowClear' => true
         ],
     ]);?>
 
@@ -89,20 +89,29 @@ use kartik\select2\Select2;
           //var generations = $("input[name='Parts[generations]']");
             var engine_wrap = $('.field-parts-engines');
             var engine_id = $('#parts-engines');
+            var jobs = $('#parts-works');
             
             showItems(car_id, generation_wrap);
             getGenerations(String(car_id.val()), generations);
             showItems(generations, engine_wrap);
             getEngines(String(generations.val()), engine_id);
+            getJobs(String(car_id.val()), jobs);
             
             car_id.change(function(){
-                var car_id = $('#parts-cars');
+                if(car_id.val() == ''){
+                    generations.val('');
+                }
                 showItems(car_id, generation_wrap);
                 getGenerations(String(car_id.val()), generations);
+                showItems(generations, engine_wrap);
+                getEngines(String(generations.val()), engine_id);
+                getJobs(String(car_id.val()), jobs);
              });
              
              generations.change(function(){
-                var generations = $('#parts-generations');
+                 if(generations.val() == ''){
+                    engine_id.val('');
+                }
                 showItems(generations, engine_wrap);
                 getEngines(String(generations.val()), engine_id);
              });
@@ -136,6 +145,20 @@ use kartik\select2\Select2;
                      $.ajax({
                         type: "GET",
                         url: '<?= yii\helpers\Url::to(['parts/engines']); ?>', 
+                        data: "id="+val_item+"&current_id="+selector.val(),
+                        success: function(res){
+                            selector.empty().append(res);
+                        }, 
+                        error: function(){
+                          alert('error');
+                        }
+                    });
+                  }
+                    
+                    function getJobs(val_item, selector){
+                     $.ajax({
+                        type: "GET",
+                        url: '<?= yii\helpers\Url::to(['parts/jobs']); ?>', 
                         data: "id="+val_item+"&current_id="+selector.val(),
                         success: function(res){
                             selector.empty().append(res);
