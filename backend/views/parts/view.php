@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Parts */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Запчасти', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Запчасти', 'url' => ['index', 'id' => $cat_id]];
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="parts-view">

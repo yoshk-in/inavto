@@ -61,13 +61,11 @@ class PartsController extends Controller
         ]);
         
         $part_category = PartsCategories::findOne($id);
-
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'part_category' => $part_category
         ]);
     }
-
     /**
      * Displays a single Parts model.
      * @param integer $id
@@ -81,7 +79,6 @@ class PartsController extends Controller
             'cat_id' => $cat_id
         ]);
     }
-
     /**
      * Creates a new Parts model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -108,14 +105,11 @@ class PartsController extends Controller
                     ->indexBy('id')->asArray()->all();
         
         $value_cars = $current_category->car->id;
-      //  print_r($value_cats);
         $cars = \yii\helpers\ArrayHelper::map(Cars::find()->all(), 'id', 'title');
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Запчасть добавлена");
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'cat_id' => $current_category->id, 'id' => $model->id]);
         }
-
         return $this->render('create', [
             'model' => $model,
             'part_categories' => $part_categories,
@@ -126,7 +120,6 @@ class PartsController extends Controller
             'value_cars' => $value_cars,
         ]);
     }
-
     /**
      * Updates an existing Parts model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -145,7 +138,7 @@ class PartsController extends Controller
         $current_category = PartsCategories::find()->where(['id' => $cat_id])->one();
         $part_categories = \yii\helpers\ArrayHelper::map(PartsCategories::find()
                 ->where(['>', 'parent', 0])
-                ->andWhere(['car_id' => $current_category->car_id, 'alias' => $current_category->alias])
+                ->andWhere(['alias' => $current_category->alias])
                 ->all(), 'id', 'title');
         $generations = \yii\helpers\ArrayHelper::map((Generations::find()->where(['car_id' => $value_cars])->indexBy('id')->asArray()->all()), 'id', 'id');
         $engines = Engines::find()->where(['generation_id' => $generations])
@@ -158,12 +151,10 @@ class PartsController extends Controller
                     ->indexBy('id')->asArray()->all();
         
         $cars = \yii\helpers\ArrayHelper::map(Cars::find()->all(), 'id', 'title');
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Запчасть изменена");
-            return $this->redirect(['view', 'cat_id' => $cat_id, 'id' => $model->id]);
+            return $this->redirect(['view', 'cat_id' => $current_category->id, 'id' => $model->id]);
         }
-
         return $this->render('update', [
             'model' => $model,
             'part_categories' => $part_categories,
@@ -174,7 +165,6 @@ class PartsController extends Controller
             'value_cars' => $value_cars,
         ]);
     }
-
     /**
      * Deletes an existing Parts model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -182,15 +172,12 @@ class PartsController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($cat_id, $id)
     {
-        $model = $this->findModel($id);
-        $item = $model->pc_id;
-        $model->delete();
+        $this->findModel($id)->delete();
         Yii::$app->session->setFlash('success', "Запчасть удалена");
-        return $this->redirect(['index', 'id' => $item]);
+        return $this->redirect(['index', 'id' => $cat_id]);
     }
-
     /**
      * Finds the Parts model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -203,7 +190,6 @@ class PartsController extends Controller
         if (($model = Parts::findOne($id)) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException('The requested page does not exist.');
     }
     
@@ -212,14 +198,12 @@ class PartsController extends Controller
         $arr = array();
         $default_arr = array();
         if($id){
-            $arr = json_decode($id, true);
+            $arr = explode(',',$id);
         }
         if($current_id){
-            $items = json_decode($current_id, true);
-            $default_arr = \yii\helpers\ArrayHelper::map(Generations::find()->where(['title' => $items, 'car_id' => $arr])->all(), 'id', 'id');
+            $default_arr = explode(',',$current_id);
         }
         $data = \common\models\Generations::find()->select(['id', 'title', 'car_id'])->where(['car_id' => $arr])->all();
-     //   print_r($current_id);
         return $this->renderAjax('_option_generations', compact('data', 'default_arr'));
     }
     
@@ -228,12 +212,43 @@ class PartsController extends Controller
         $arr = array();
         $default_arr = array();
         if($id){
-            $arr = array_keys(json_decode($id, true));
+            $arr = explode(',',$id);
         }
         if($current_id){
-            $default_arr = array_keys(json_decode($current_id, true));
+            $default_arr = explode(',', $current_id);
         }
         $data = \common\models\Engines::find()->select(['id', 'title', 'generation_id'])->where(['generation_id' => $arr])->all();
         return $this->renderAjax('_option_engines', compact('data', 'default_arr'));
+    }
+    
+    public function actionJobs($id = null, $current_id = null)
+    {
+        $arr = array();
+        $default_arr = array();
+        $job_cats = array();
+        if($id){
+            $arr = explode(',',$id);
+            $job_cats = \common\models\JobsCategories::find()
+                    ->select(['id', 'car_id'])
+                    ->with([
+                        'car' => function($query){
+                            $query->select('id, title');
+                        },
+                        'jobs' => function($query){
+                            $query->select('id, title');
+                        }
+                      ])
+                    ->where(['car_id'=>$arr])->asArray()->all();
+             foreach($job_cats as $key => $value){
+                 foreach($value['jobs'] as $k => $v){
+                     $data[$key]['job_id'] = $v['id'];
+                     $data[$key]['job_title'] = $value['car']['title'] . ' - ' . $v['title'];
+                 }
+             }
+        }
+        if($current_id){
+            $default_arr = explode(',', $current_id);
+        }
+        return $this->renderAjax('_option_jobs', compact('data', 'default_arr'));
     }
 }
