@@ -59,92 +59,29 @@
 			<div class="popup">
 				<div class="in">
 					<div class="close"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#clear"></use></svg></div>
-					<div class="row grid">
-						<div class="span4">
-							<strong class="topic"><a href="/zapchasti/volvo-xc90">Запчасти Volvo XC90</a></strong>
-							<a href="/zapchasti/volvo-xc90" class="volvocar xc90"></a>
+					<?php if($parts_cats && !empty($parts_cats)): ?>
+                                            <?php $flag = 0; ?>
+                                            <?php foreach($parts_cats as $key => $value): ?>
+                                                <?php if($flag%3 == 0): ?>
+                                                    <div class="row grid">
+                                                <?php endif; ?>
+                                                <div class="span4">
+							<strong class="topic"><a href="<?= \yii\helpers\Url::to(['/zapchasti/category', 'alias' => $value['alias']]); ?>"><?=$value['title']; ?></a></strong>
+                                                        <a href="<?= \yii\helpers\Url::to(['/zapchasti/category', 'alias' => $value['alias']]); ?>" class="volvocar <?=str_replace('volvo-', '', $value['alias']);?>"></a>
 							<ul>
-								<li><a href="/zapchasti/volvo-xc90?s=tormoz#tormoz">Тормозная система</a></li>
-								<li><a href="/zapchasti/volvo-xc90?s=dvigatel#dvigatel">Двигатель</a></li>
-								<li><a href="/zapchasti/volvo-xc90?s=podveska#podveska">Подвеска</a></li>
-								<li><a href="/zapchasti/volvo-xc90?s=akpp#akpp">Коробка передач</a></li>
+                                                            <?php if($value['childs'] && !empty($value['childs'])): ?>
+                                                                <?php foreach($value['childs'] as $k => $v): ?>
+                                                            <li><a href="<?= \yii\helpers\Url::to(['/zapchasti/subcategory', 'alias' => $value['alias'], 's' => $v['alias'], '#' => $v['alias']])?>"><?=$v['menu_title']; ?></a></li>
+                                                                <?php endforeach; ?>
+                                                            <?php endif; ?>
 							</ul>
 						</div>
-						<div class="span4">
-							<strong class="topic"><a href="/zapchasti/volvo-xc70">Запчасти Volvo XC70</a></strong>
-							<a href="/zapchasti/volvo-xc70" class="volvocar xc70"></a>
-							<ul>
-								<li><a href="/zapchasti/volvo-xc70?s=tormoz#tormoz">Тормозная система</a></li>
-								<li><a href="/zapchasti/volvo-xc70?s=dvigatel#dvigatel">Двигатель</a></li>
-								<li><a href="/zapchasti/volvo-xc70?s=podveska#podveska">Подвеска</a></li>
-								<li><a href="/zapchasti/volvo-xc70?s=akpp#akpp">Коробка передач</a></li>
-							</ul>
-						</div>
-						<div class="span4">
-							<strong class="topic"><a href="/zapchasti/volvo-xc60">Запчасти Volvo XC60</a></strong>
-							<a href="/zapchasti/volvo-xc60" class="volvocar xc60"></a>
-							<ul>
-								<li><a href="/zapchasti/volvo-xc60?s=tormoz#tormoz">Тормозная система</a></li>
-								<li><a href="/zapchasti/volvo-xc60?s=dvigatel#dvigatel">Двигатель</a></li>
-								<li><a href="/zapchasti/volvo-xc60?s=podveska#podveska">Подвеска</a></li>
-								<li><a href="/zapchasti/volvo-xc60?s=akpp#akpp">Коробка передач</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="row grid">
-						<div class="span4">
-							<a href="/zapchasti/volvo-s80" class="volvocar s80"></a>
-							<strong class="topic"><a href="/zapchasti/volvo-s80">Запчасти Volvo S80</a></strong>
-							<ul>
-								<li><a href="/zapchasti/volvo-s80?s=tormoz#tormoz">Тормозная система</a></li>
-								<li><a href="/zapchasti/volvo-s80?s=dvigatel#dvigatel">Двигатель</a></li>
-								<li><a href="/zapchasti/volvo-s80?s=podveska#podveska">Подвеска</a></li>
-								<li><a href="/zapchasti/volvo-s80?s=akpp#akpp">Коробка передач</a></li>
-							</ul>
-						</div>
-						<div class="span4">
-							<strong class="topic"><a href="/zapchasti/volvo-s60">Запчасти Volvo S60</a></strong>
-							<a href="/zapchasti/volvo-s60" class="volvocar s60"></a>
-							<ul>
-								<li><a href="/zapchasti/volvo-s60?s=tormoz#tormoz">Тормозная система</a></li>
-								<li><a href="/zapchasti/volvo-s60?s=dvigatel#dvigatel">Двигатель</a></li>
-								<li><a href="/zapchasti/volvo-s60?s=podveska#podveska">Подвеска</a></li>
-								<li><a href="/zapchasti/volvo-s60?s=akpp#akpp">Коробка передач</a></li>
-							</ul>
-						</div>
-						<div class="span4">
-							<strong class="topic"><a href="/zapchasti/volvo-s40-v40">Запчасти Volvo S40 и V40</a></strong>
-							<a href="/zapchasti/volvo-s40-v40" class="volvocar s40-v40"></a>
-							<ul>
-								<li><a href="/zapchasti/volvo-s40-v40?s=tormoz#tormoz">Тормозная система</a></li>
-								<li><a href="/zapchasti/volvo-s40-v40?s=dvigatel#dvigatel">Двигатель</a></li>
-								<li><a href="/zapchasti/volvo-s40-v40?s=podveska#podveska">Подвеска</a></li>
-								<li><a href="/zapchasti/volvo-s40-v40?s=akpp#akpp">Коробка передач</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="row grid">
-						<div class="span4">
-							<strong class="topic"><a href="/zapchasti/volvo-v50">Запчасти Volvo V50</a></strong>
-							<a href="/zapchasti/volvo-v50" class="volvocar v50"></a>
-							<ul>
-								<li><a href="/zapchasti/volvo-v50?s=tormoz#tormoz">Тормозная система</a></li>
-								<li><a href="/zapchasti/volvo-v50?s=dvigatel#dvigatel">Двигатель</a></li>
-								<li><a href="/zapchasti/volvo-v50?s=podveska#podveska">Подвеска и рулевое управление</a></li>
-								<li><a href="/zapchasti/volvo-v50?s=akpp#akpp">Коробка передач</a></li>
-							</ul>
-						</div>
-						<div class="span4">
-							<strong class="topic"><a href="/zapchasti/volvo-c30">Запчасти Volvo C30</a></strong>
-							<a href="/zapchasti/volvo-c30" class="volvocar c30"></a>
-							<ul>
-								<li><a href="/zapchasti/volvo-c30?s=tormoz#tormoz">Тормозная система</a></li>
-								<li><a href="/zapchasti/volvo-c30?s=dvigatel#dvigatel">Двигатель</a></li>
-								<li><a href="/zapchasti/volvo-c30?s=podveska#podveska">Подвеска</a></li>
-								<li><a href="/zapchasti/volvo-c30?s=akpp#akpp">Коробка передач</a></li>
-							</ul>
-						</div>
-					</div>
+                                               <?php if(($flag+1)%3 == 0 || $flag == 7): ?>
+                                                    </div>
+                                                <?php endif; ?> 
+                                                <?php $flag++ ?>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
 				</div>
 			</div>
 		</li>
@@ -153,100 +90,29 @@
 			<div class="popup">
 				<div class="in">
 					<div class="close"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#clear"></use></svg></div>
-					<div class="row grid">
-						<div class="span4">
-							<strong class="topic"><a href="/remont/volvo-xc90">Ремонт Volvo XC90</a></strong>
-							<a href="/remont/volvo-xc90" class="volvocar xc90"></a>
+					<?php if($repair_cats && !empty($repair_cats)): ?>
+                                            <?php $flag = 0; ?>
+                                            <?php foreach($repair_cats as $key => $value): ?>
+                                                <?php if($flag%3 == 0): ?>
+                                                    <div class="row grid">
+                                                <?php endif; ?>
+                                                <div class="span4">
+							<strong class="topic"><a href="<?= \yii\helpers\Url::to(['/remont/category', 'alias' => $value['alias']]); ?>"><?=$value['title']; ?></a></strong>
+                                                        <a href="<?= \yii\helpers\Url::to(['/remont/category', 'alias' => $value['alias']]); ?>" class="volvocar <?=str_replace('volvo-', '', $value['alias']);?>"></a>
 							<ul>
-								<li><a href="/remont/volvo-xc90?s=dvigatel#dvigatel">Ремонт двигателя</a></li>
-								<li><a href="/remont/volvo-xc90?s=akpp#akpp">Ремонт АКПП</a></li>
-								<li><a href="/remont/volvo-xc90?s=elektro#elektro">Ремонт электрики</a></li>
-								<li><a href="/remont/volvo-xc90?s=podveska#podveska">Ремонт подвески</a></li>
-								<li><a href="/remont/volvo-xc90?s=tormoz#tormoz">Ремонт тормозной системы</a></li>
+                                                            <?php if($value['childs'] && !empty($value['childs'])): ?>
+                                                                <?php foreach($value['childs'] as $k => $v): ?>
+                                                            <li><a href="<?= \yii\helpers\Url::to(['/remont/subcategory', 'alias' => $value['alias'], 's' => $v['alias'], '#' => $v['alias']])?>"><?=$v['menu_title']; ?></a></li>
+                                                                <?php endforeach; ?>
+                                                            <?php endif; ?>
 							</ul>
 						</div>
-						<div class="span4">
-							<strong class="topic"><a href="/remont/volvo-xc70">Ремонт Volvo XC70</a></strong>
-							<a href="/remont/volvo-xc70" class="volvocar xc70"></a>
-							<ul>
-								<li><a href="/remont/volvo-xc70?s=dvigatel#dvigatel">Ремонт двигателя</a></li>
-								<li><a href="/remont/volvo-xc70?s=akpp#akpp">Ремонт АКПП</a></li>
-								<li><a href="/remont/volvo-xc90?s=elektro#elektro">Ремонт электрики</a></li>
-								<li><a href="/remont/volvo-xc70?s=podveska#podveska">Ремонт подвески</a></li>
-								<li><a href="/remont/volvo-xc70?s=tormoz#tormoz">Ремонт тормозной системы</a></li>
-							</ul>
-						</div>
-						<div class="span4">
-							<strong class="topic"><a href="/remont/volvo-xc60">Ремонт Volvo XC60</a></strong>
-							<a href="/remont/volvo-xc60" class="volvocar xc60"></a>
-							<ul>
-								<li><a href="/remont/volvo-xc60?s=dvigatel#dvigatel">Ремонт двигателя</a></li>
-								<li><a href="/remont/volvo-xc60?s=akpp#akpp">Ремонт АКПП</a></li>
-								<li><a href="/remont/volvo-xc90?s=elektro#elektro">Ремонт электрики</a></li>
-								<li><a href="/remont/volvo-xc60?s=podveska#podveska">Ремонт подвески</a></li>
-								<li><a href="/remont/volvo-xc60?s=tormoz#tormoz">Ремонт тормозной системы</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="row grid">
-						<div class="span4">
-							<a href="/remont/volvo-s80" class="volvocar s80"></a>
-							<strong class="topic"><a href="/remont/volvo-s80">Ремонт Volvo S80</a></strong>
-							<ul>
-								<li><a href="/remont/volvo-s80?s=dvigatel#dvigatel">Ремонт двигателя</a></li>
-								<li><a href="/remont/volvo-s80?s=akpp#akpp">Ремонт АКПП</a></li>
-								<li><a href="/remont/volvo-xc90?s=elektro#elektro">Ремонт электрики</a></li>
-								<li><a href="/remont/volvo-s80?s=podveska#podveska">Ремонт подвески</a></li>
-								<li><a href="/remont/volvo-s80?s=tormoz#tormoz">Ремонт тормозной системы</a></li>
-							</ul>
-						</div>
-						<div class="span4">
-							<strong class="topic"><a href="/remont/volvo-s60">Ремонт Volvo S60</a></strong>
-							<a href="/remont/volvo-s60" class="volvocar s60"></a>
-							<ul>
-								<li><a href="/remont/volvo-s60?s=dvigatel#dvigatel">Ремонт двигателя</a></li>
-								<li><a href="/remont/volvo-s60?s=akpp#akpp">Ремонт АКПП</a></li>
-								<li><a href="/remont/volvo-xc90?s=elektro#elektro">Ремонт электрики</a></li>
-								<li><a href="/remont/volvo-s60?s=podveska#podveska">Ремонт подвески</a></li>
-								<li><a href="/remont/volvo-s60?s=tormoz#tormoz">Ремонт тормозной системы</a></li>
-							</ul>
-						</div>
-						<div class="span4">
-							<strong class="topic"><a href="/remont/volvo-s40-v40">Ремонт Volvo S40 и V40</a></strong>
-							<a href="/remont/volvo-s40-v40" class="volvocar s40-v40"></a>
-							<ul>
-								<li><a href="/remont/volvo-s40-v40?s=dvigatel#dvigatel">Ремонт двигателя</a></li>
-								<li><a href="/remont/volvo-s40-v40?s=akpp#akpp">Ремонт АКПП</a></li>
-								<li><a href="/remont/volvo-xc90?s=elektro#elektro">Ремонт электрики</a></li>
-								<li><a href="/remont/volvo-s40-v40?s=podveska#podveska">Ремонт подвески</a></li>
-								<li><a href="/remont/volvo-s40-v40?s=tormoz#tormoz">Ремонт тормозной системы</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="row grid">
-						<div class="span4">
-							<strong class="topic"><a href="/remont/volvo-v50">Ремонт Volvo V50</a></strong>
-							<a href="/remont/volvo-v50" class="volvocar v50"></a>
-							<ul>
-								<li><a href="/remont/volvo-v50?s=dvigatel">Ремонт двигателя</a></li>
-								<li><a href="/remont/volvo-v50?s=akpp">Ремонт АКПП</a></li>
-								<li><a href="/remont/volvo-xc90?s=elektro#elektro">Ремонт электрики</a></li>
-								<li><a href="/remont/volvo-v50?s=podveska">Ремонт подвески</a></li>
-								<li><a href="/remont/volvo-v50?s=tormoz">Ремонт тормозной системы</a></li>
-							</ul>
-						</div>
-						<div class="span4">
-							<strong class="topic"><a href="/remont/volvo-c30">Ремонт Volvo C30</a></strong>
-							<a href="/remont/volvo-c30" class="volvocar c30"></a>
-							<ul>
-								<li><a href="/remont/volvo-c30?s=dvigatel">Ремонт двигателя</a></li>
-								<li><a href="/remont/volvo-c30?s=akpp">Ремонт АКПП</a></li>
-								<li><a href="/remont/volvo-c30?s=elektro#elektro">Ремонт электрики</a></li>
-								<li><a href="/remont/volvo-c30?s=podveska">Ремонт подвески</a></li>
-								<li><a href="/remont/volvo-c30?s=tormoz">Ремонт тормозной системы</a></li>
-							</ul>
-						</div>
-					</div>
+                                               <?php if(($flag+1)%3 == 0 || $flag == 7): ?>
+                                                    </div>
+                                                <?php endif; ?> 
+                                                <?php $flag++ ?>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
 				</div>
 			</div>
 		</li>
@@ -255,92 +121,29 @@
 			<div class="popup">
 				<div class="in">
 					<div class="close"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#clear"></use></svg></div>
-					<div class="row grid">
-						<div class="span4">
-							<strong class="topic"><a href="/obsluzhivanie/volvo-xc90">Обслуживание Volvo XC90</a></strong>
-							<a href="/obsluzhivanie/volvo-xc90" class="volvocar xc90"></a>
+					<?php if($service_cats && !empty($service_cats)): ?>
+                                            <?php $flag = 0; ?>
+                                            <?php foreach($service_cats as $key => $value): ?>
+                                                <?php if($flag%3 == 0): ?>
+                                                    <div class="row grid">
+                                                <?php endif; ?>
+                                                <div class="span4">
+							<strong class="topic"><a href="<?= \yii\helpers\Url::to(['/obsluzhivanie/category', 'alias' => $value['alias']]); ?>"><?=$value['menu_title']; ?></a></strong>
+                                                        <a href="<?= \yii\helpers\Url::to(['/obsluzhivanie/category', 'alias' => $value['alias']]); ?>" class="volvocar <?=str_replace('volvo-', '', $value['alias']);?>"></a>
 							<ul>
-								<li><a href="/obsluzhivanie/volvo-xc90?s=dvigatel#dvigatel">Обслуживание двигателя</a></li>
-								<li><a href="/obsluzhivanie/volvo-xc90?s=akpp#akpp">Обслуживание АКПП</a></li>
-								<li><a href="/obsluzhivanie/volvo-xc90?s=podveska#podveska">Обслуживание подвески</a></li>
-								<li><a href="/obsluzhivanie/volvo-xc90?s=tormoz#tormoz">Обслуживание тормозов</a></li>
+                                                            <?php if($value['childs'] && !empty($value['childs'])): ?>
+                                                                <?php foreach($value['childs'] as $k => $v): ?>
+                                                            <li><a href="<?= \yii\helpers\Url::to(['/obsluzhivanie/subcategory', 'alias' => $value['alias'], 's' => $v['alias'], '#' => $v['alias']])?>"><?=$v['menu_title']; ?></a></li>
+                                                                <?php endforeach; ?>
+                                                            <?php endif; ?>
 							</ul>
 						</div>
-						<div class="span4">
-							<strong class="topic"><a href="/obsluzhivanie/volvo-xc70">Обслуживание Volvo XC70</a></strong>
-							<a href="/obsluzhivanie/volvo-xc70" class="volvocar xc70"></a>
-							<ul>
-								<li><a href="/obsluzhivanie/volvo-xc70?s=dvigatel#dvigatel">Обслуживание двигателя</a></li>
-								<li><a href="/obsluzhivanie/volvo-xc70?s=akpp#akpp">Обслуживание АКПП</a></li>
-								<li><a href="/obsluzhivanie/volvo-xc70?s=podveska#podveska">Обслуживание подвески</a></li>
-								<li><a href="/obsluzhivanie/volvo-xc70?s=tormoz#tormoz">Обслуживание тормозов</a></li>
-							</ul>
-						</div>
-						<div class="span4">
-							<strong class="topic"><a href="/obsluzhivanie/volvo-xc60">Обслуживание Volvo XC60</a></strong>
-							<a href="/obsluzhivanie/volvo-xc60" class="volvocar xc60"></a>
-							<ul>
-								<li><a href="/obsluzhivanie/volvo-xc60?s=dvigatel#dvigatel">Обслуживание двигателя</a></li>
-								<li><a href="/obsluzhivanie/volvo-xc60?s=akpp#akpp">Обслуживание АКПП</a></li>
-								<li><a href="/obsluzhivanie/volvo-xc60?s=podveska#podveska">Обслуживание подвески</a></li>
-								<li><a href="/obsluzhivanie/volvo-xc60?s=tormoz#tormoz">Обслуживание тормозов</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="row grid">
-						<div class="span4">
-							<a href="/obsluzhivanie/volvo-s80" class="volvocar s80"></a>
-							<strong class="topic"><a href="/obsluzhivanie/volvo-s80">Обслуживание Volvo S80</a></strong>
-							<ul>
-								<li><a href="/obsluzhivanie/volvo-s80?s=dvigatel#dvigatel">Обслуживание двигателя</a></li>
-								<li><a href="/obsluzhivanie/volvo-s80?s=akpp#akpp">Обслуживание АКПП</a></li>
-								<li><a href="/obsluzhivanie/volvo-s80?s=podveska#podveska">Обслуживание подвески</a></li>
-								<li><a href="/obsluzhivanie/volvo-s80?s=tormoz#tormoz">Обслуживание тормозов</a></li>
-							</ul>
-						</div>
-						<div class="span4">
-							<strong class="topic"><a href="/obsluzhivanie/volvo-s60">Обслуживание Volvo S60</a></strong>
-							<a href="/obsluzhivanie/volvo-s60" class="volvocar s60"></a>
-							<ul>
-								<li><a href="/obsluzhivanie/volvo-s60?s=dvigatel#dvigatel">Обслуживание двигателя</a></li>
-								<li><a href="/obsluzhivanie/volvo-s60?s=akpp#akpp">Обслуживание АКПП</a></li>
-								<li><a href="/obsluzhivanie/volvo-s60?s=podveska#podveska">Обслуживание подвески</a></li>
-								<li><a href="/obsluzhivanie/volvo-s60?s=tormoz#tormoz">Обслуживание тормозов</a></li>
-							</ul>
-						</div>
-						<div class="span4">
-							<strong class="topic"><a href="/obsluzhivanie/volvo-s40-v40">Обслуживание Volvo S40 и V40</a></strong>
-							<a href="/obsluzhivanie/volvo-s40-v40" class="volvocar s40-v40"></a>
-							<ul>
-								<li><a href="/obsluzhivanie/volvo-s40-v40?s=dvigatel#dvigatel">Обслуживание двигателя</a></li>
-								<li><a href="/obsluzhivanie/volvo-s40-v40?s=akpp#akpp">Обслуживание АКПП</a></li>
-								<li><a href="/obsluzhivanie/volvo-s40-v40?s=podveska#podveska">Обслуживание подвески</a></li>
-								<li><a href="/obsluzhivanie/volvo-s40-v40?s=tormoz#tormoz">Обслуживание тормозов</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="row grid">
-						<div class="span4">
-							<strong class="topic"><a href="/obsluzhivanie/volvo-v50">Обслуживание Volvo V50</a></strong>
-							<a href="/obsluzhivanie/volvo-v50" class="volvocar v50"></a>
-							<ul>
-								<li><a href="/obsluzhivanie/volvo-v50?s=dvigatel#dvigatel">Обслуживание двигателя</a></li>
-								<li><a href="/obsluzhivanie/volvo-v50?s=akpp#akpp">Обслуживание АКПП</a></li>
-								<li><a href="/obsluzhivanie/volvo-v50?s=podveska#podveska">Обслуживание подвески</a></li>
-								<li><a href="/obsluzhivanie/volvo-v50?s=tormoz#tormoz">Обслуживание тормозов</a></li>
-							</ul>
-						</div>
-						<div class="span4">
-							<strong class="topic"><a href="/obsluzhivanie/volvo-c30">Обслуживание Volvo C30</a></strong>
-							<a href="/obsluzhivanie/volvo-c30" class="volvocar c30"></a>
-							<ul>
-								<li><a href="/obsluzhivanie/volvo-c30?s=dvigatel#dvigatel">Обслуживание двигателя</a></li>
-								<li><a href="/obsluzhivanie/volvo-c30?s=akpp#akpp">Обслуживание АКПП</a></li>
-								<li><a href="/obsluzhivanie/volvo-c30?s=podveska#podveska">Обслуживание подвески</a></li>
-								<li><a href="/obsluzhivanie/volvo-c30?s=tormoz#tormoz">Обслуживание тормозов</a></li>
-							</ul>
-						</div>
-					</div>
+                                               <?php if(($flag+1)%3 == 0 || $flag == 7): ?>
+                                                    </div>
+                                                <?php endif; ?> 
+                                                <?php $flag++ ?>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
 				</div>
 			</div>
 		</li>

@@ -63,7 +63,7 @@ class PartsCategories extends \yii\db\ActiveRecord
         return [
             [['title'], 'required'],
             [['body', 'description', 'keywords'], 'string'],
-            [['parent', 'car_id'], 'integer'],
+            [['parent', 'car_id', 'in_menu'], 'integer'],
             [['created', 'modified'], 'safe'],
             [['title', 'meta_title', 'alias', 'menu_title'], 'string', 'max' => 255],
             [['car_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cars::className(), 'targetAttribute' => ['car_id' => 'id']],
@@ -88,6 +88,7 @@ class PartsCategories extends \yii\db\ActiveRecord
             'created' => 'Дата создания',
             'modified' => 'Дата изменения',
             'car_id' => 'Авто',
+            'in_menu' => 'Отображать в меню'
         ];
     }
 

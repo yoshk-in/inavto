@@ -38,7 +38,7 @@ mihaildev\elfinder\Assets::noConflict($this);
         ]);
     ?>
 
-    <?= $form->field($model, 'service')->checkbox(['0', '1', 'checked' => true]) ?>
+    <?= $form->field($model, 'service')->checkbox(['0', '1']) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
@@ -52,6 +52,8 @@ mihaildev\elfinder\Assets::noConflict($this);
             'allowClear' => true,
         ],
     ]);?>
+    
+   <?= $form->field($model, 'in_menu')->checkbox(['0', '1']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
