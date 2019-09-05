@@ -42,21 +42,47 @@ class ZapchastiController extends SiteController
             $model = PartsCategories::find()->where(['alias' => $alias])->andWhere(['is', 'parent', null])->one();
             Yii::$app->cache->set('part_category_'.$model->alias, $model, $this->cache_time);
         }
+        
         if(!$model){
              throw new \yii\web\HttpException(404, 'Такой страницы нет');
         }
+        
+        $slug = '';
+        if(Yii::$app->request->get('s')){
+            $slug = Yii::$app->request->get('s');
+        }
+        
         $cats = Yii::$app->cache->get('parts_subcats_'.$model->alias);
         if(!$cats){
             $cats = PartsCategories::find()->where(['parent' => $model->id])->with(['parts'])->all();
             Yii::$app->cache->set('parts_subcats_'.$model->alias, $cats, $this->cache_time);
         }
         
+        $parents = Yii::$app->cache->get('parents_cats_parts');
+        if(!$parents){
+            $parents = PartsCategories::find()->where(['is', 'parent', null])->all();
+            Yii::$app->cache->set('parents_cats_parts', $parents, $this->cache_time);
+        }
+        
+        $f_gen = '';
+        if ($_COOKIE['fGen'] !== null) {
+            $f_gen = $_COOKIE['fGen'];
+        }
+        if($_COOKIE['fModel'] && $_COOKIE['fModel'] != $model->id){
+            setcookie('fModel', '', time() - 100, '/');
+            setcookie('fGen', '', time() - 100, '/');
+            $f_gen = '';
+        }
+        
         return $this->render('view', [
             'model' => $model,
-            'cats' => $cats
+            'cats' => $cats,
+            'parents' => $parents,
+            'f_gen' => $f_gen,
+            'slug' => $slug
         ]);
     }
-
+    
     /**
      * Creates a new PartsCategories model.
      * If creation is successful, the browser will be redirected to the 'view' page.

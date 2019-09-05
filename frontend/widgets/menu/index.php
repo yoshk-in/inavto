@@ -71,7 +71,7 @@
 							<ul>
                                                             <?php if($value['childs'] && !empty($value['childs'])): ?>
                                                                 <?php foreach($value['childs'] as $k => $v): ?>
-                                                            <li><a href="<?= \yii\helpers\Url::to(['/zapchasti/subcategory', 'alias' => $value['alias'], 's' => $v['alias'], '#' => $v['alias']])?>"><?=$v['menu_title']; ?></a></li>
+                                                            <li><a href="<?= \yii\helpers\Url::to(['/zapchasti/subcategory', 'alias' => $value['alias'], 'slug' => $v['alias'], '#' => $v['alias']])?>"><?=$v['menu_title']; ?></a></li>
                                                                 <?php endforeach; ?>
                                                             <?php endif; ?>
 							</ul>

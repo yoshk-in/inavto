@@ -1,15 +1,3 @@
-<?php
-
-use yii\helpers\Html;
-use yii\widgets\DetailView;
-
-/* @var $this yii\web\View */
-/* @var $model common\models\PartsCategories */
-
-$this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Parts Categories', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
-?>
 <?= \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'cache_time' => 60]); ?>
 <section class="content">
 		<div class="row">
@@ -24,13 +12,23 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="userCarSelect">
 		<span><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#filter-list"></use></svg> Уточните поколение и двигатель:</span>
 		<select name="car" id="modelSelect">
-			<option data-url="zapchasti/volvo-xc90" value="12" selected="selected">Volvo XC90</option><option data-url="zapchasti/volvo-xc70" value="27">Volvo XC70</option><option data-url="zapchasti/volvo-xc60" value="1">Volvo XC60</option><option data-url="zapchasti/volvo-v50" value="24">Volvo V50</option><option data-url="zapchasti/volvo-s80" value="29">Volvo S80</option><option data-url="zapchasti/volvo-s60" value="28">Volvo S60</option><option data-url="zapchasti/volvo-s40/v40" value="30">Volvo S40 и V40</option><option data-url="zapchasti/volvo-c30" value="31">Volvo C30</option>
+                    <?php if($parents): ?>
+                        <?php foreach($parents as $key => $value): ?>
+                    <option data-url="zapchasti/<?=$value->alias; ?>" value="<?=$value->id; ?>" <?=$value->id == $model->id ? 'selected="selected"' : ''; ?>><?=$value->car->title; ?></option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
 		</select>
 		<select name="generation" id="generationSelect">
 			<option>все поколения</option>
-			<option value="20">II ( 2007 - 2015 )</option><option value="48">I ( 2002 - 2006 )</option>
+                        <?php if(@$model->car->generations): ?>
+                            <?php foreach(@$model->car->generations as $key => $value): ?>
+                                <option value="<?=$value->id;?>" <?=$value->id == $f_gen ? 'selected="selected"' : '';?>><?=$value->title;?></option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
 		</select>
-		
+                <?php if($f_gen): ?>
+                <a class="filterReset" id="filterReset" href="<?= yii\helpers\Url::to(['zapchasti/category', 'alias' => $model->alias]); ?>">Сбросить уточнение</a>
+                <?php endif; ?>
 	</div>
 </div>
 <div class="row">
@@ -51,25 +49,43 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 
-
+<?php if ($this->beginCache('parts_cat_'.$model->alias . $f_gen . $slug, ['duration' => 6])):?>
 <div class="carParts table bordered">
+    <?php
+        $current_gen = array();
+        if(@$model->car->generations){
+            foreach(@$model->car->generations as $key => $value){
+                $current_gen[] = $value->id;
+            }
+        }
+    ?>
     <?php if($cats && !empty($cats)): ?>
         <?php $flag = 1; ?>
         <?php foreach($cats as $key => $value): ?>
             <?php if(!empty($value->parts)): ?>
             <a name="<?=$value->alias; ?>"></a>
-            <div class="row subtopic active">
+            <?php
+                $open = '';
+                $active = '';
+                $check = '';
+                if($slug && $slug == $value->alias || !$slug){
+                    $open = 'open';
+                    $active = 'active';
+                    $check = 'checked="checked"';
+                }
+            ?>
+            <div class="row subtopic <?=$active; ?>">
                     <div class="name">
                             <h3><label for="sys_<?=$value->alias; ?>"><?=$value->title; ?></label></h3>
                     </div>
                     <div class="toggle">
                             <label class="btn">
-                                    <input type="checkbox" checked="checked" value="slide_<?=$value->alias; ?>" name="sys_<?=$value->alias; ?>" id="sys_<?=$value->alias; ?>">
+                                <input type="checkbox" <?=$check; ?> value="slide_<?=$value->alias; ?>" name="sys_<?=$value->alias; ?>" id="sys_<?=$value->alias; ?>">
                                     <svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#keyboard-down"></use></svg>
                             </label>&nbsp;
                     </div>
             </div>
-            <div class="sys_slide_12 slide open" id="slide_<?=$value->alias; ?>">
+            <div class="sys_slide_12 slide <?=$open; ?>" id="slide_<?=$value->alias; ?>">
                     <div class="row flex header">
                             <div class="num">
                                     №:
@@ -91,38 +107,53 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                     </div>
                     <?php foreach($value->parts as $k => $v): ?>
-                        <div class="row flex part">
-                                <div class="num">
-                                        <?=$flag; ?>.
-                                </div>
-                                <div class="partName">
-                                        <?=$v->title; ?>
-                                        <div class="compatibleGenerations">XC90 II, XC90 I</div>
+                        <?php
+                            $gen_str = array();
+                            $gen_id = array();
+                            if(@$v->generation){
+                                foreach($v->generation as $a_k => $a_v){
+                                    if(in_array($a_v->id, $current_gen)){
+                                         $gen_str[$a_k] = str_replace('Volvo ', '', $a_v->car->title) . ' ' . $a_v->alter_title;
+                                         $gen_id[] = $a_v->id;
+                                    }
+                                 }
+                             }
+                            if($f_gen && !in_array($f_gen, $gen_id)){
+                                continue;
+                            }
+                          ?>
+                            <div class="row flex part">
+                                    <div class="num">
+                                            <?=$flag; ?>.
+                                    </div>
+                                    <div class="partName">
+                                            <?=$v->title; ?>
+                                            <div class="compatibleGenerations"><?=implode(', ', $gen_str); ?></div>
 
-                                </div>
-                                <div class="original ">
-                                        <?=$v->brand->title; ?>
-                                        <?=$v->original ? '<div class="isOriginal">оригинальная запчасть</div>' : ''; ?>
-                                </div>
-                                <div class="articul">
-                                        <?=$v->code; ?>
-                                </div>
-                                <div class="amount">
-                                    <?php 
-                                        $check = '<span class="medium">отсутствует</span>';
-                                        if($v->check == 1){
-                                            $check = '<span class="medium">в наличии</span>';
-                                        }elseif($v->check == 2){
-                                            $check = '<span class="lot">много</span>';
-                                        }
-                                     
-                                    ?>
-                                        <?=$check; ?>
-                                </div>
-                                <div class="price">
-                                        <?=Yii::$app->formatter->asInteger($v->price); ?>  <span class="ruble">p</span>
-                                </div>
-                        </div>
+                                    </div>
+                                    <div class="original ">
+                                            <?=$v->brand->title; ?>
+                                            <?=$v->original ? '<div class="isOriginal">оригинальная запчасть</div>' : ''; ?>
+                                    </div>
+                                    <div class="articul">
+                                            <?=$v->code; ?>
+                                    </div>
+                                    <div class="amount">
+                                        <?php 
+                                            $check = '<span class="medium">отсутствует</span>';
+                                            if($v->check == 1){
+                                                $check = '<span class="medium">в наличии</span>';
+                                            }elseif($v->check == 2){
+                                                $check = '<span class="lot">много</span>';
+                                            }
+
+                                        ?>
+                                            <?=$check; ?>
+                                    </div>
+                                    <div class="price">
+                                            <?=Yii::$app->formatter->asInteger($v->price); ?>  <span class="ruble">p</span>
+                                    </div>
+                            </div>
                       <?php $flag++; ?>
                     <?php endforeach; ?>
             </div>
@@ -130,6 +161,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endforeach; ?>
     <?php endif; ?>
 </div>
+<?php $this->endCache(); ?>
+<?php endif; ?>
 <script type="text/javascript">
 	$(document).ready(function(){
 
