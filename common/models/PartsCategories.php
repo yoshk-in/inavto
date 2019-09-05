@@ -97,7 +97,7 @@ class PartsCategories extends \yii\db\ActiveRecord
      */
     public function getParts()
     {
-        return $this->hasMany(Parts::className(), ['pc_id' => 'id']);
+        return $this->hasMany(Parts::className(), ['id' => 'part_id'])->viaTable('partcats_parts', ['part_category_id' => 'id']);
     }
 
     /**

@@ -100,7 +100,13 @@ $this->params['breadcrumbs'][] = ['label' => 'Запчасти', 'url' => ['inde
                 'attribute' => 'check',
                 'format' => 'html',
                 'value' => function($data){
-                    return $data->check ? '<span>Да</span>' : '<span>Нет</span>';
+                    $check = '<span>Нет</span>';
+                    if($data->check == 1){
+                        $check = '<span>Да</span>';
+                    }elseif($data->check == 2){
+                        $check = '<span>Много</span>';
+                    }
+                    return $check;
                 }
             ],
             [

@@ -20,6 +20,7 @@ use frontend\models\ContactForm;
  */
 class SiteController extends Controller
 {
+    public $cache_time = 60;
     /**
      * {@inheritdoc}
      */

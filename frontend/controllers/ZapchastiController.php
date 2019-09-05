@@ -12,23 +12,8 @@ use yii\filters\VerbFilter;
 /**
  * ZapchastiController implements the CRUD actions for PartsCategories model.
  */
-class ZapchastiController extends Controller
+class ZapchastiController extends SiteController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * Lists all PartsCategories models.
      * @return mixed
@@ -50,10 +35,25 @@ class ZapchastiController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionCategory($alias)
     {
+        $model = Yii::$app->cache->get('part_category_'.$alias);
+        if(!$model){
+            $model = PartsCategories::find()->where(['alias' => $alias])->andWhere(['is', 'parent', null])->one();
+            Yii::$app->cache->set('part_category_'.$model->alias, $model, $this->cache_time);
+        }
+        if(!$model){
+             throw new \yii\web\HttpException(404, 'Такой страницы нет');
+        }
+        $cats = Yii::$app->cache->get('parts_subcats_'.$model->alias);
+        if(!$cats){
+            $cats = PartsCategories::find()->where(['parent' => $model->id])->with(['parts'])->all();
+            Yii::$app->cache->set('parts_subcats_'.$model->alias, $cats, $this->cache_time);
+        }
+        
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'cats' => $cats
         ]);
     }
 

@@ -871,4 +871,17 @@ class HelpersFunctions
         }
         return $mew_arr;
     }
+    
+    public static function getTree($arr = array())
+    {
+        $new_arr = array();
+        foreach($arr as $key => &$value){
+            if(!$value['parent']){
+                $new_arr[$key] = &$value;
+            }else{
+                $arr[$value['parent']]['childs'][$value['id']] = &$value;
+            }
+        }
+        return $new_arr;
+    }
 }
