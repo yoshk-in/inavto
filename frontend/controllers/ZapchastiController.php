@@ -37,37 +37,54 @@ class ZapchastiController extends SiteController
      */
     public function actionCategory($alias)
     {
-        $model = Yii::$app->cache->get('part_category_'.$alias);
-        if(!$model){
-            $model = PartsCategories::find()->where(['alias' => $alias])->andWhere(['is', 'parent', null])->one();
-            Yii::$app->cache->set('part_category_'.$model->alias, $model, $this->cache_time);
-        }
+        $model = $this->addToCache(PartsCategories::find()->where(['alias' => $alias])->andWhere(['is', 'parent', null])->one(), 'part_category_'.$alias);
         
         if(!$model){
              throw new \yii\web\HttpException(404, 'Такой страницы нет');
         }
+        
+        $cat_id = $model->id;
+        $car_id = $model->car->id;
+        $car = $model->car;
         
         $slug = '';
         if(Yii::$app->request->get('s')){
             $slug = Yii::$app->request->get('s');
         }
         
-        $cats = Yii::$app->cache->get('parts_subcats_'.$model->alias);
-        if(!$cats){
-            $cats = PartsCategories::find()->where(['parent' => $model->id])->with(['parts'])->all();
-            Yii::$app->cache->set('parts_subcats_'.$model->alias, $cats, $this->cache_time);
-        }
-        
-        $parents = Yii::$app->cache->get('parents_cats_parts');
-        if(!$parents){
-            $parents = PartsCategories::find()->where(['is', 'parent', null])->all();
-            Yii::$app->cache->set('parents_cats_parts', $parents, $this->cache_time);
-        }
-        
         $f_gen = '';
+        $gen_links = array();
         if ($_COOKIE['fGen'] !== null) {
             $f_gen = $_COOKIE['fGen'];
+            $gen_links = array('id' => \yii\helpers\ArrayHelper::map(\common\models\PartsGenerations::find()
+                ->where([
+                    'generation_id' => $f_gen
+                ])->all(), 'id', 'part_id'));
         }
+        
+        $links = \yii\helpers\ArrayHelper::map(\common\models\PartcatsParts::find()
+                ->where([
+                    'part_category_id' => \yii\helpers\ArrayHelper::map(PartsCategories::find()->where(['parent' => $model->id])->all(), 'id', 'id')
+                ])->all(), 'id', 'part_id');
+        
+        $parts = $this->addToCache(
+            \common\models\Parts::find()->where(['parts.id' => $links])->andWhere($gen_links)->with([
+                'generation' => function($query) use($car_id){
+                    return $query->select('generations.id, generations.alter_title, generations.title')
+                            ->where('car_id = ' . $car_id); 
+                    },
+                'cats' => function($query) use($cat_id){
+                    return $query->select('parts_categories.id, parts_categories.title, parts_categories.alias')
+                            ->where('parent = ' . $cat_id);
+                },
+                 'brand'
+             ])->asArray()->all(),
+             'parts_subcats_'.$model->alias .'_' . $f_gen
+         );
+          $cats = $this->getTree($parts);
+          
+        $parents = $this->addToCache(PartsCategories::find()->where(['is', 'parent', null])->all(), 'parents_cats_parts');
+        
         if($_COOKIE['fModel'] && $_COOKIE['fModel'] != $model->id){
             setcookie('fModel', '', time() - 100, '/');
             setcookie('fGen', '', time() - 100, '/');
@@ -79,7 +96,8 @@ class ZapchastiController extends SiteController
             'cats' => $cats,
             'parents' => $parents,
             'f_gen' => $f_gen,
-            'slug' => $slug
+            'slug' => $slug,
+            'car' => $car
         ]);
     }
     
@@ -149,5 +167,37 @@ class ZapchastiController extends SiteController
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    protected function addToCache($data, $cache_name)
+    {
+        $cache_data = Yii::$app->cache->get($cache_name);
+        if(!$cache_data){
+            $cache_data = $data;
+            Yii::$app->cache->set($cache_name, $cache_data, $this->cache_time);
+        }
+        return $cache_data;
+    }
+    
+    protected function getTree($arr)
+    {
+        $new_arr = array();
+        $cats = array();
+        foreach($arr as $key => $value){
+            $cats[$value['cats'][0]['id']]['title'] = $value['cats'][0]['title'];
+            $cats[$value['cats'][0]['id']]['alias'] = $value['cats'][0]['alias'];
+            $cats[$value['cats'][0]['id']]['parts'] = array();
+        }
+        foreach($cats as $key => $value){
+            foreach($arr as $k => $v){
+              if($v['cats'][0]['id'] == $key){
+                  $new_arr[$key]['title'] = $value['title'];
+                  $new_arr[$key]['alias'] = $value['alias'];
+                  $new_arr[$key]['parts'][$k] = $v;
+                  unset($new_arr[$key]['parts'][$k]['cats']);
+              }
+            }
+        }
+        return $new_arr;
     }
 }

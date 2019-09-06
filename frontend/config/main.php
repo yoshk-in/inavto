@@ -41,6 +41,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'zapchasti/' => 'zapchasti/index',
                 'zapchasti/<alias:[\w_-]+>' => 'zapchasti/category',
                 'zapchasti/<alias:[\w_-]+>?s=<slug:[\w_-]+>' => 'zapchasti/subcategory',
             ],

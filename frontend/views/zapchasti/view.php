@@ -49,26 +49,18 @@
 </div>
 
 
-<?php if ($this->beginCache('parts_cat_'.$model->alias . $f_gen . $slug, ['duration' => 6])):?>
+<?php// if ($this->beginCache('parts_cat_'.$model->alias . $f_gen . $slug, ['duration' => 6])):?>
 <div class="carParts table bordered">
-    <?php
-        $current_gen = array();
-        if(@$model->car->generations){
-            foreach(@$model->car->generations as $key => $value){
-                $current_gen[] = $value->id;
-            }
-        }
-    ?>
     <?php if($cats && !empty($cats)): ?>
         <?php $flag = 1; ?>
         <?php foreach($cats as $key => $value): ?>
-            <?php if(!empty($value->parts)): ?>
-            <a name="<?=$value->alias; ?>"></a>
+            
+            <a name="<?=$value['alias']; ?>"></a>
             <?php
                 $open = '';
                 $active = '';
                 $check = '';
-                if($slug && $slug == $value->alias || !$slug){
+                if($slug && $slug == $value['alias'] || !$slug){
                     $open = 'open';
                     $active = 'active';
                     $check = 'checked="checked"';
@@ -76,16 +68,16 @@
             ?>
             <div class="row subtopic <?=$active; ?>">
                     <div class="name">
-                            <h3><label for="sys_<?=$value->alias; ?>"><?=$value->title; ?></label></h3>
+                            <h3><label for="sys_<?=$value['alias']; ?>"><?=$value['title']; ?></label></h3>
                     </div>
                     <div class="toggle">
                             <label class="btn">
-                                <input type="checkbox" <?=$check; ?> value="slide_<?=$value->alias; ?>" name="sys_<?=$value->alias; ?>" id="sys_<?=$value->alias; ?>">
+                                <input type="checkbox" <?=$check; ?> value="slide_<?=$value['alias']; ?>" name="sys_<?=$value['alias']; ?>" id="sys_<?=$value['alias']; ?>">
                                     <svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#keyboard-down"></use></svg>
                             </label>&nbsp;
                     </div>
             </div>
-            <div class="sys_slide_12 slide <?=$open; ?>" id="slide_<?=$value->alias; ?>">
+            <div class="sys_slide_12 slide <?=$open; ?>" id="slide_<?=$value['alias']; ?>">
                     <div class="row flex header">
                             <div class="num">
                                     №:
@@ -106,44 +98,35 @@
                                     Цена:
                             </div>
                     </div>
-                    <?php foreach($value->parts as $k => $v): ?>
+                    <?php foreach($value['parts'] as $k => $v): ?>
                         <?php
                             $gen_str = array();
-                            $gen_id = array();
-                            if(@$v->generation){
-                                foreach($v->generation as $a_k => $a_v){
-                                    if(in_array($a_v->id, $current_gen)){
-                                         $gen_str[$a_k] = str_replace('Volvo ', '', $a_v->car->title) . ' ' . $a_v->alter_title;
-                                         $gen_id[] = $a_v->id;
-                                    }
-                                 }
-                             }
-                            if($f_gen && !in_array($f_gen, $gen_id)){
-                                continue;
-                            }
+                                foreach($v['generation'] as $a_k => $a_v){
+                                     $gen_str[$a_k] = str_replace('Volvo ', '', $car->title) . ' ' . $a_v['alter_title'];
+                                }
                           ?>
                             <div class="row flex part">
                                     <div class="num">
                                             <?=$flag; ?>.
                                     </div>
                                     <div class="partName">
-                                            <?=$v->title; ?>
+                                            <?=$v['title']; ?>
                                             <div class="compatibleGenerations"><?=implode(', ', $gen_str); ?></div>
 
                                     </div>
                                     <div class="original ">
-                                            <?=$v->brand->title; ?>
-                                            <?=$v->original ? '<div class="isOriginal">оригинальная запчасть</div>' : ''; ?>
+                                            <?=$v['brand']['title']; ?>
+                                            <?=$v['original'] ? '<div class="isOriginal">оригинальная запчасть</div>' : ''; ?>
                                     </div>
                                     <div class="articul">
-                                            <?=$v->code; ?>
+                                            <?=$v['code']; ?>
                                     </div>
                                     <div class="amount">
                                         <?php 
                                             $check = '<span class="medium">отсутствует</span>';
-                                            if($v->check == 1){
+                                            if($v['check'] == 1){
                                                 $check = '<span class="medium">в наличии</span>';
-                                            }elseif($v->check == 2){
+                                            }elseif($v['check'] == 2){
                                                 $check = '<span class="lot">много</span>';
                                             }
 
@@ -151,18 +134,18 @@
                                             <?=$check; ?>
                                     </div>
                                     <div class="price">
-                                            <?=Yii::$app->formatter->asInteger($v->price); ?>  <span class="ruble">p</span>
+                                            <?=Yii::$app->formatter->asInteger($v['price']); ?>  <span class="ruble">p</span>
                                     </div>
                             </div>
                       <?php $flag++; ?>
                     <?php endforeach; ?>
             </div>
-            <?php endif; ?>
+            
         <?php endforeach; ?>
     <?php endif; ?>
 </div>
-<?php $this->endCache(); ?>
-<?php endif; ?>
+<?php// $this->endCache(); ?>
+<?php// endif; ?>
 <script type="text/javascript">
 	$(document).ready(function(){
 
