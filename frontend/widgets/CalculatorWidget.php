@@ -23,6 +23,7 @@ class CalculatorWidget extends Widget{
    public $cache_time;
    public $data;
    public $menuHtml;
+   public $car_id = 2;
     
     public function init(){
         parent::init();
@@ -30,7 +31,10 @@ class CalculatorWidget extends Widget{
         $this->tpl .= '.php';
     }
 
-    public function run(){
+    public function run()
+    {
+        $cars = \common\models\Cars::find()->all();
+        $curent_car = \common\models\Cars::findOne($this->car_id);
        
         /*$this->data = Yii::$app->cache->get('catalog');
         if(!$this->data){
@@ -40,19 +44,19 @@ class CalculatorWidget extends Widget{
         
        $this->menuHtml = $this->getMenuHtml($this->data);
        */
-        $this->menuHtml = $this->getMenuHtml($this->data);
+        $this->menuHtml = $this->getMenuHtml($cars, $curent_car);
         return $this->menuHtml;
     }
 
-    protected function getMenuHtml($data){
+    protected function getMenuHtml($cars, $curent_car){
         $str = '';
        // foreach ($data as $brand) {
-            $str .= $this->catToTemplate($brand);
+            $str .= $this->catToTemplate($cars, $curent_car);
      //   }
         return $str;
     }
 
-    protected function catToTemplate($brand){
+    protected function catToTemplate($cars, $curent_car){
         ob_start();
         include __DIR__ . '/calculator/' . $this->tpl;
         return ob_get_clean();

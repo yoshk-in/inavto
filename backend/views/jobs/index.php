@@ -26,6 +26,20 @@ $this->params['breadcrumbs'][] = ['label' => 'Категории работ', 'u
             'title',
             'price',
             [
+                'attribute' => 'engines',
+                'format' => 'html',
+                'label' => 'Поколение, двигатель',
+                'value' => function($data){
+                    $str = array();
+                    if($data->motors && !empty($data->motors)){
+                        foreach($data->motors as $key => $value){
+                            $str[$key] = $value->generation->alter_title . ' ' . $value->title;
+                        }
+                    }
+                    return implode($str, ',');
+                }
+            ],
+            [
                'attribute' => 'recomended',
                 'format' => 'html',
                 'value' => function($data){

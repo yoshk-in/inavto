@@ -20,13 +20,7 @@ class ZapchastiController extends SiteController
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => PartsCategories::find(),
-        ]);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
+        return $this->render('index');
     }
 
     /**
@@ -37,10 +31,16 @@ class ZapchastiController extends SiteController
      */
     public function actionCategory($alias)
     {
-        $model = $this->addToCache(PartsCategories::find()->where(['alias' => $alias])->andWhere(['is', 'parent', null])->one(), 'part_category_'.$alias);
+        $model = $this->addToCache('part_category_'.$alias, PartsCategories::find()->where(['alias' => $alias])->andWhere(['is', 'parent', null])->orWhere(['parent' => 0])->one());
         
         if(!$model){
              throw new \yii\web\HttpException(404, 'Такой страницы нет');
+        }
+        
+        if($_COOKIE['fModel'] && $_COOKIE['fModel'] != $model->id){
+            setcookie('fModel', $model->id, 0, '/');
+            setcookie('fGen', '', time() - 100, '/');
+            setcookie('fMotor', '', time() - 100, '/');
         }
         
         $cat_id = $model->id;
@@ -68,6 +68,7 @@ class ZapchastiController extends SiteController
                 ])->all(), 'id', 'part_id');
         
         $parts = $this->addToCache(
+            'parts_subcats_'.$model->alias .'_' . $f_gen,
             \common\models\Parts::find()->where(['parts.id' => $links])->andWhere($gen_links)->with([
                 'generation' => function($query) use($car_id){
                     return $query->select('generations.id, generations.alter_title, generations.title')
@@ -78,19 +79,12 @@ class ZapchastiController extends SiteController
                             ->where('parent = ' . $cat_id);
                 },
                  'brand'
-             ])->asArray()->all(),
-             'parts_subcats_'.$model->alias .'_' . $f_gen
+             ])->asArray()->all()
          );
           $cats = $this->getTree($parts);
           
-        $parents = $this->addToCache(PartsCategories::find()->where(['is', 'parent', null])->all(), 'parents_cats_parts');
-        
-        if($_COOKIE['fModel'] && $_COOKIE['fModel'] != $model->id){
-            setcookie('fModel', '', time() - 100, '/');
-            setcookie('fGen', '', time() - 100, '/');
-            $f_gen = '';
-        }
-        
+        $parents = $this->addToCache('parents_cats_parts', PartsCategories::find()->where(['is', 'parent', null])->orWhere(['parent' => 0])->all());
+      
         return $this->render('view', [
             'model' => $model,
             'cats' => $cats,
@@ -169,7 +163,7 @@ class ZapchastiController extends SiteController
         throw new NotFoundHttpException('The requested page does not exist.');
     }
     
-    protected function addToCache($data, $cache_name)
+    protected function addToCache($cache_name, $data = null)
     {
         $cache_data = Yii::$app->cache->get($cache_name);
         if(!$cache_data){

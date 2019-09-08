@@ -60,7 +60,7 @@ avtoservice.prototype = {
 
         // show car generations by selected model
         if(cars[carIndex].generations != undefined) {
-
+            
             // show generations
             for(g in cars[carIndex].generations) {
 
@@ -72,13 +72,13 @@ avtoservice.prototype = {
                     if(genData.year_end) {
                         years += genData.year_end;
                     } else {
-                        years +='РЅ.РІ'
+                        years +='н.в'
                     }
                     years+=' )';
                 }
                 t.n.generationSwitch.append('<option value="'+genData.id_gen+'">'+genData.generation+years+'</option>');
             }
-
+          
             t.genSwitch();
 
         }
@@ -104,7 +104,7 @@ avtoservice.prototype = {
                         var motorData=cars[carIndex].generations[genIndex].motors[m];
                         var pwr='';
                         if(motorData.power > 0) {
-                            pwr+=', '+motorData.power+' Р».c';
+                            pwr+=', '+motorData.power+' л.c';
                         }
                         t.n.motorSwitch.append('<option value="'+motorData.id_motor+'">'+motorData.motorName+pwr+'</option>');
 
@@ -140,15 +140,15 @@ avtoservice.prototype = {
 
         var years = t.d.range+' ';
         if(t.d.range == 1) {
-            years += 'РіРѕРґ';
+            years += 'год';
         } else if (t.d.range >= 2 && t.d.range <= 4) {
-            years += 'РіРѕРґР°';
+            years += 'года';
         } else {
-            years += 'Р»РµС‚';
+            years += 'лет';
         }
 
         if(t.d.range == 12) {
-            years += ' Рё Р±РѕР»СЊС€Рµ';
+            years += ' и больше';
         }
 
         t.n.modelName.text(t.d.modelName);
@@ -156,17 +156,17 @@ avtoservice.prototype = {
         t.n.generationName.text(t.d.generationName);
 
         if(t.d.motorName) {
-            t.n.motorName.text('Р”РІРёРіР°С‚РµР»СЊ '+t.d.motorName);
+            t.n.motorName.text('Двигатель '+t.d.motorName);
         } else {
             t.n.motorName.text('');
         }
 
-        $('#selectedRange').text(rangeKm.formatMoney(false)+' РєРј / '+years);
+        $('#selectedRange').text(rangeKm.formatMoney(false)+' км / '+years);
 
         // check full data
         if(t.d.shortModel == '' || !t.d.genId || !t.d.motorId || !t.d.range) {
 
-            t.n.worksDest.html('<span class="warning">Р’С‹Р±РµСЂРёС‚Рµ РјРѕРґРµР»СЊ, РїРѕРєРѕР»РµРЅРёРµ, РґРІРёРіР°С‚РµР»СЊ Рё РїСЂРѕР±РµРі/РІРѕР·СЂР°СЃС‚ Р°РІС‚РѕРјРѕР±РёР»СЏ.</span>');
+            t.n.worksDest.html('<span class="warning">Выберите модель, поколение, двигатель и пробег/возраст автомобиля.</span>');
 
         } else {
 
@@ -177,7 +177,7 @@ avtoservice.prototype = {
             t.d.requestId=t.requestId;
 
             // get works by car and motor
-            var url=PATH+'srv/json/service';
+            var url=PATH+'site/calculator';
             
             $.ajax({
                 type: "GET",
@@ -217,13 +217,13 @@ avtoservice.prototype = {
         var mandatoryPartsPrice = '&nbsp;';
         if(data.mandatoryPartsMin) {
             totalPrice+=parseInt(data.mandatoryPartsMin);
-            mandatoryPartsPrice = '<span class="type">Р—Р°Рї.С‡Р°СЃС‚Рё </span><span class="val">'+parseInt(data.mandatoryPartsMin).formatMoney(false)+'</span><span class="ruble">p</span>';
+            mandatoryPartsPrice = '<span class="type">Зап.части </span><span class="val">'+parseInt(data.mandatoryPartsMin).formatMoney(false)+'</span><span class="ruble">p</span>';
         }
 
         var mandatoryResultPrice = '&nbsp;';
         if(data.mandatoryPartsMin && data.mandatoryWorksPrice) {
             mandatoryResultPrice=data.mandatoryPartsMin+data.mandatoryWorksPrice;
-            mandatoryResultPrice = '<span class="type">РС‚РѕРіРѕ </span><strong><span class="val">'+parseInt(mandatoryResultPrice).formatMoney(false)+'</span><span class="ruble">p</span></strong>';
+            mandatoryResultPrice = '<span class="type">Итого </span><strong><span class="val">'+parseInt(mandatoryResultPrice).formatMoney(false)+'</span><span class="ruble">p</span></strong>';
         }
 
         var recommendedWorksPrice = '&nbsp;';
@@ -237,13 +237,13 @@ avtoservice.prototype = {
         if(data.recommendedPartsMin) {
             partsMinPrice=parseInt(data.recommendedPartsMin);
             totalPrice+=partsMinPrice;
-            recommendedPartsPrice = '<span class="type">Р—Р°Рї.С‡Р°СЃС‚Рё </span><span class="val">'+partsMinPrice.formatMoney(false)+'</span> <span class="ruble">p</span>';
+            recommendedPartsPrice = '<span class="type">Зап.части </span><span class="val">'+partsMinPrice.formatMoney(false)+'</span> <span class="ruble">p</span>';
         }
 
         var recommendedResultPrice = '&nbsp;';
         if(data.mandatoryPartsMin && data.mandatoryWorksPrice) {
             recommendedResultPrice=data.recommendedPartsMin+data.recommendedWorksPrice;
-            recommendedResultPrice = '<span class="type">РС‚РѕРіРѕ </span><strong><span class="val">'+parseInt(recommendedResultPrice).formatMoney(false)+'</span><span class="ruble">p</span></strong>';
+            recommendedResultPrice = '<span class="type">Итого </span><strong><span class="val">'+parseInt(recommendedResultPrice).formatMoney(false)+'</span><span class="ruble">p</span></strong>';
         }
 
         //console.log("ml="+data.works.mandatory.length+" rl="+data.works.recommended.length);
@@ -251,7 +251,7 @@ avtoservice.prototype = {
 
         if(!data.works.mandatory.length && !data.works.recommended.length) {
 
-            t.n.worksDest.append('<p>Р Р°Р±РѕС‚ РЅРµ РЅР°Р№РґРµРЅРѕ.</p>');
+            t.n.worksDest.append('<p>Работ не найдено.</p>');
             // hide price
             t.n.results.txt.hide();
 
@@ -261,14 +261,14 @@ avtoservice.prototype = {
                 '<div class="row subtopic active" id="subtopic_mandatory_works">'+
                 '<div class="icon"><label for="mandatory_works"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#wrench"></use></svg></label></div>'+
                 '<div class="name shortName"><h3>'+
-                '<label for="mandatory_works">РћР±СЏР·Р°С‚РµР»СЊРЅС‹Рµ СЂР°Р±РѕС‚С‹</label></h3></div>' +
-                '<div class="workPrice"><span class="type">Р Р°Р±РѕС‚Р° </span> <span class="val">'+mandatoryWorksPrice+'</span><span class="ruble">p</span></div>' +
+                '<label for="mandatory_works">Обязательные работы</label></h3></div>' +
+                '<div class="workPrice"><span class="type">Работа </span> <span class="val">'+mandatoryWorksPrice+'</span><span class="ruble">p</span></div>' +
                 '<div class="partsPrice">'+mandatoryPartsPrice+'</div>' +
                 '<div class="resultPrice" data-totalprice="'+partsMinPrice+'">'+mandatoryResultPrice+'</div>' +
                 '<div class="toggle"><label class="btn"><input type="checkbox" checked="checked" value="slide_mandatory_works" id="mandatory_works" /> <svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#keyboard-up"></use></svg></label></div>'+
                 '</div>');
 
-            t.n.signatures = $('<div class="row header signatures"><div class="num">&nbsp;</div><div class="workCheck">&nbsp;</div><div class="workName">РќР°РёРјРµРЅРѕРІР°РЅРёРµ СЂР°Р±РѕС‚:</div><div class="workPrice">РЎС‚РѕРёРјРѕСЃС‚СЊ СЂР°Р±РѕС‚:</div><div class="partsPrice">РЎС‚РѕРёРјРѕСЃС‚СЊ Р·Р°РїС‡Р°СЃС‚РµР№:</div><div class="lastEmpty">&nbsp;</div></div>');
+            t.n.signatures = $('<div class="row header signatures"><div class="num">&nbsp;</div><div class="workCheck">&nbsp;</div><div class="workName">Наименование работ:</div><div class="workPrice">Стоимость работ:</div><div class="partsPrice">Стоимость запчастей:</div><div class="lastEmpty">&nbsp;</div></div>');
 
             t.n.mandatory.slide = $('<div class="slide open" id="slide_mandatory_works"></div>');
 
@@ -276,8 +276,8 @@ avtoservice.prototype = {
                 '<div class="row subtopic active" id="subtopic_recommended_works">' +
                 '<div class="icon"><label for="recommended_works"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#wrench"></use></svg></label></div>'+
                 '<div class="name"><h3>'+
-                '<label for="recommended_works">Р РµРєРѕРјРµРЅРґСѓРµРјС‹Рµ СЂР°Р±РѕС‚С‹</label></h3></div>' +
-                '<div class="workPrice"><span class="type">Р Р°Р±РѕС‚Р° </span> <span class="val">'+recommendedWorksPrice+'</span><span class="ruble">p</span></div>' +
+                '<label for="recommended_works">Рекомендуемые работы</label></h3></div>' +
+                '<div class="workPrice"><span class="type">Работа </span> <span class="val">'+recommendedWorksPrice+'</span><span class="ruble">p</span></div>' +
                 '<div class="partsPrice">'+recommendedPartsPrice+'</div>' +
                 '<div class="resultPrice">'+recommendedResultPrice+'</div>' +
                 '<div class="toggle"><label class="btn"><input type="checkbox" checked="checked" value="slide_recommended_works" id="recommended_works" /> <svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#keyboard-up"></use></svg></label></div>'+
@@ -322,7 +322,7 @@ avtoservice.prototype = {
 
                 var strPeriod='&nbsp;';
                 if(wd['period'] > 0) {
-                    strPeriod = '<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#timer"></use></svg> '+wd['period']+' С‡Р°СЃ.';
+                    strPeriod = '<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#timer"></use></svg> '+wd['period']+' час.';
                 }
 
                 var strPartsPrice = '-';
@@ -346,7 +346,7 @@ avtoservice.prototype = {
                     strName = strName;//'<label for="slide_parts_'+wd.id_work+'">'+strName+'</label>';
                     strSelectParts = '<input class="slide_check" type="checkbox" data-workid="'+wd.id_work+'" value="slide_parts_'+wd.id_work+'" id="slide_parts_'+wd.id_work+'" /><label class="btn small showSets" for="slide_parts_'+wd.id_work+'">' +
                         '<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#keyboard-up"></use></svg>' +
-                        'РІС‹Р±СЂР°С‚СЊ Р·Р°РїС‡Р°СЃС‚Рё</label>';
+                        'выбрать запчасти</label>';
 
                     // create sets of parts
                     var nSetsOfParts=$('<div class="setsOfParts" id="setsOfParts_'+wd.id_work+'"></div>');
@@ -368,7 +368,7 @@ avtoservice.prototype = {
 
                         var strSetPrice = partsPrice.formatMoney(true)+' <span class="ruble">p</span>';
 
-                        var nSet=$('<div class="set"><div class="row"><div class="select"><input data-partsPrice="'+partsPrice+'" data-workid="'+wd.id_work+'" type="radio" name="set['+wd.id_work+']" id="parts_set_'+set.id_set+'" value="'+set.id_set+'" /></div><div class="name"><label for="parts_set_'+wd.sets[s].id_set+'"><div class="info">РќР°Р±РѕСЂ Р·Р°РїС‡Р°СЃС‚РµР№ РґР»СЏ СЂР°Р±РѕС‚С‹</div><strong>'+set.setName+'</strong></label></div><div class="setPrice"><div class="info">РћР±С‰Р°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ Р·Р°РїС‡Р°СЃС‚РµР№</div><strong>'+strSetPrice+'</strong></div><div class="arrow"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-down"></use></svg></div></div></div>');
+                        var nSet=$('<div class="set"><div class="row"><div class="select"><input data-partsPrice="'+partsPrice+'" data-workid="'+wd.id_work+'" type="radio" name="set['+wd.id_work+']" id="parts_set_'+set.id_set+'" value="'+set.id_set+'" /></div><div class="name"><label for="parts_set_'+wd.sets[s].id_set+'"><div class="info">Набор запчастей для работы</div><strong>'+set.setName+'</strong></label></div><div class="setPrice"><div class="info">Общая стоимость запчастей</div><strong>'+strSetPrice+'</strong></div><div class="arrow"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-down"></use></svg></div></div></div>');
 
 
                         if(typeof sets != "undefined") {
@@ -384,7 +384,7 @@ avtoservice.prototype = {
                                 var strPartPrice='';
                                 if(part.price) {
                                     partPrice = parseInt(part.price).formatMoney(false);
-                                    strPartPrice = partPrice+' <span class="ruble">p</span><div class="desc">Р·Р° 1 С€С‚.</div>';
+                                    strPartPrice = partPrice+' <span class="ruble">p</span><div class="desc">за 1 шт.</div>';
                                 }
                                 var strTotalPartPrice='';
                                 if(part.totalPrice) {
@@ -395,7 +395,7 @@ avtoservice.prototype = {
                                 if(part.vendor != null) {
                                     strVendor=', '+part.vendor;
                                 }
-                                var nPart=$('<div class="part row"><div class="num">'+(parseInt(p)+1)+'.</div><div class="partName">'+part.partName+strVendor+'<div class="articul">'+part.articul+'</div></div><div class="partCount">'+part.count+' С€С‚.</div><div class="partPrice">'+strPartPrice+'</div><div class="partTotalPrice">'+strTotalPartPrice+'</div><div class="arrow"></div></div>');
+                                var nPart=$('<div class="part row"><div class="num">'+(parseInt(p)+1)+'.</div><div class="partName">'+part.partName+strVendor+'<div class="articul">'+part.articul+'</div></div><div class="partCount">'+part.count+' шт.</div><div class="partPrice">'+strPartPrice+'</div><div class="partTotalPrice">'+strTotalPartPrice+'</div><div class="arrow"></div></div>');
                                 nSet.append(nPart);
                             }
                         }
@@ -441,7 +441,7 @@ avtoservice.prototype = {
 
                 var strPeriod='&nbsp;';
                 if(wd['period'] > 0) {
-                    strPeriod = '<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#timer"></use></svg> '+wd['period']+' С‡Р°СЃ.';
+                    strPeriod = '<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#timer"></use></svg> '+wd['period']+' час.';
                 }
 
                 var strPartsPrice = '-';
@@ -466,7 +466,7 @@ avtoservice.prototype = {
 
                     strSelectParts = '<input class="slide_check" type="checkbox" data-workid="' + wd.id_work + '" value="slide_parts_' + wd.id_work + '" id="slide_parts_' + wd.id_work + '" /><label class="btn small showSets" for="slide_parts_' + wd.id_work + '">' +
                         '<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#keyboard-up"></use></svg>' +
-                        'РІС‹Р±СЂР°С‚СЊ Р·Р°РїС‡Р°СЃС‚Рё</label>';
+                        'выбрать запчасти</label>';
 
                     // create sets of parts
                     var nSetsOfParts=$('<div class="setsOfParts" id="setsOfParts_'+wd.id_work+'"></div>');
@@ -486,7 +486,7 @@ avtoservice.prototype = {
 
                         var strSetPrice = partsPrice.formatMoney(true)+' <span class="ruble">p</span>';
 
-                        var nSet=$('<div class="set"><div class="row"><div class="select"><input data-partsprice="'+partsPrice+'"  data-workid="'+wd.id_work+'" type="radio" name="set['+wd.id_work+']" id="parts_set_'+set.id_set+'" value="'+set.id_set+'" /></div><div class="name"><label for="parts_set_'+wd.sets[s].id_set+'"><div class="info">РќР°Р±РѕСЂ Р·Р°РїС‡Р°СЃС‚РµР№ РґР»СЏ СЂР°Р±РѕС‚С‹</div><strong>'+set.setName+'</strong></label></div><div class="setPrice"><div class="info">РћР±С‰Р°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ Р·Р°РїС‡Р°СЃС‚РµР№</div><strong>'+strSetPrice+'</strong></div><div class="arrow"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-down"></use></svg></div></div></div>');
+                        var nSet=$('<div class="set"><div class="row"><div class="select"><input data-partsprice="'+partsPrice+'"  data-workid="'+wd.id_work+'" type="radio" name="set['+wd.id_work+']" id="parts_set_'+set.id_set+'" value="'+set.id_set+'" /></div><div class="name"><label for="parts_set_'+wd.sets[s].id_set+'"><div class="info">Набор запчастей для работы</div><strong>'+set.setName+'</strong></label></div><div class="setPrice"><div class="info">Общая стоимость запчастей</div><strong>'+strSetPrice+'</strong></div><div class="arrow"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-down"></use></svg></div></div></div>');
 
                         if(typeof sets != "undefined") {
                             if(sets[wd.id_work] == set.id_set) {
@@ -501,7 +501,7 @@ avtoservice.prototype = {
                                 var strPartPrice='';
                                 if(part.price) {
                                     partPrice = parseInt(part.price).formatMoney(false);
-                                    strPartPrice = partPrice+' <span class="ruble">p</span><div class="desc">Р·Р° 1 С€С‚.</div>';
+                                    strPartPrice = partPrice+' <span class="ruble">p</span><div class="desc">за 1 шт.</div>';
                                 }
                                 var strTotalPartPrice='';
                                 if(part.totalPrice) {
@@ -513,7 +513,7 @@ avtoservice.prototype = {
                                 if(part.vendor != null) {
                                     strVendor=', '+part.vendor;
                                 }
-                                var nPart=$('<div class="part row"><div class="num">'+(parseInt(p)+1)+'.</div><div class="partName">'+part.partName+strVendor+'<div class="articul">'+part.articul+'</div></div><div class="partCount">'+part.count+' С€С‚.</div><div class="partPrice">'+strPartPrice+'</div><div class="partTotalPrice">'+strTotalPartPrice+'</div></div>');
+                                var nPart=$('<div class="part row"><div class="num">'+(parseInt(p)+1)+'.</div><div class="partName">'+part.partName+strVendor+'<div class="articul">'+part.articul+'</div></div><div class="partCount">'+part.count+' шт.</div><div class="partPrice">'+strPartPrice+'</div><div class="partTotalPrice">'+strTotalPartPrice+'</div></div>');
                                 nSet.append(nPart);
                             }
                         }

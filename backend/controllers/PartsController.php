@@ -66,6 +66,18 @@ class PartsController extends Controller
             'part_category' => $part_category
         ]);
     }
+    
+    public function actionOut()
+    {
+        $cats = \yii\helpers\ArrayHelper::map(PartcatsParts::find()->select('id, part_id')->all(), 'id', 'part_id');
+        $dataProvider = new ActiveDataProvider([
+            'query' => Parts::find()->where(['not', ['id' => $cats]])
+        ]);
+        
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
     /**
      * Displays a single Parts model.
      * @param integer $id
@@ -239,12 +251,13 @@ class PartsController extends Controller
                         }
                       ])
                     ->where(['car_id'=>$arr])->asArray()->all();
+             $data = array();
              foreach($job_cats as $key => $value){
                  foreach($value['jobs'] as $k => $v){
-                     $data[$key]['job_id'] = $v['id'];
-                     $data[$key]['job_title'] = $value['car']['title'] . ' - ' . $v['title'];
+                     $data[$v['id']] = $value['car']['title'] . ' - ' . $v['title'];
                  }
              }
+             
         }
         if($current_id){
             $default_arr = explode(',', $current_id);

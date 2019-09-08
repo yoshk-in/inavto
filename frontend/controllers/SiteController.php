@@ -258,4 +258,13 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
+    
+    public function actionCalculator()
+    {
+        $req = Yii::$app->request->get();
+        if($req){
+            print_r($req);
+        }
+        exit();
+    }
 }

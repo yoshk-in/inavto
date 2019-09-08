@@ -104,7 +104,7 @@ class Jobs extends \yii\db\ActiveRecord
     
     public function getParts()
     {
-        return $this->hasMany(Engines::className(), ['id' => 'part_id'])->viaTable('parts_jobs', ['job_id' => 'id']);
+        return $this->hasMany(Parts::className(), ['id' => 'part_id'])->viaTable('parts_jobs', ['job_id' => 'id']);
     }
 
     public function getMotors()

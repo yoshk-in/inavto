@@ -1,20 +1,9 @@
-<?php
-
-use yii\helpers\Html;
-use yii\grid\GridView;
-
-/* @var $this yii\web\View */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-
-$this->title = 'Parts Categories';
-$this->params['breadcrumbs'][] = $this->title;
-?>
 <?= \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'cache_time' => 60]); ?>
 <section class="content">
 		<div class="row">
     <div class="span8 rpadd">
         <div class="dirs">
-	<noindex><a href="/">Главная</a></noindex>
+            <noindex><a href="<?= yii\helpers\Url::home();?>">Главная</a></noindex>
    
     <svg class="i arrow"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#keyboard-down"></use></svg><a href="/zapchasti/">Запчасти Volvo</a>
    

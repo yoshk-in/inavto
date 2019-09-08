@@ -14,14 +14,9 @@
 						</div>
 						<div class="span8 inputField">
 							<select name="model" id="modelSwitch">
-								<option data-carid="12" value="XC90" selected="selected">Volvo XC90</option>
-<option data-carid="27" value="XC70">Volvo XC70</option>
-<option data-carid="1" value="XC60">Volvo XC60</option>
-<option data-carid="24" value="V50">Volvo V50</option>
-<option data-carid="29" value="S80">Volvo S80</option>
-<option data-carid="28" value="S60">Volvo S60</option>
-<option data-carid="30" value="S40/V40">Volvo S40 и V40</option>
-<option data-carid="31" value="C30">Volvo C30</option>
+                                             <?php foreach($cars as $key => $value): ?>               
+                                                 <option data-carid="<?=$value->id?>" value="<?= str_replace('Volvo ', '', $value->title)?>" <?=$curent_car->id == $value->id ? 'selected="selected"' : ''; ?>><?=$value->title?></option>
+                                            <?php endforeach; ?>
 							</select>
 						</div>
 					</div>
@@ -31,8 +26,11 @@
 						</div>
 						<div class="span8 inputField">
 							<select name="generation" id="generationSwitch">
-								<option value="20">II ( 2007 - 2015 )</option>
-<option value="48">I ( 2002 - 2006 )</option>
+                                                            <?php $flag = 0; ?>
+                                                            <?php foreach($curent_car->generations as $key => $value): ?>
+                                                            <option value="<?=$value->id; ?>" <?=$flag == 0 ? 'selected="selected"' : ''; ?>><?=$value->title; ?></option>
+                                                            <?php $flag++; ?>
+                                                            <?php endforeach; ?>
 							</select>
 						</div>
 					</div>
@@ -42,10 +40,11 @@
 						</div>
 						<div class="span8">
 							<select name="motor" id="motorSwitch">
-								<option value="29">Бензин  2.5 L</option>
-<option value="91">Бензин  3.2 L</option>
-<option value="71">Бензин  4.4 L</option>
-<option value="64">Дизель 2.4 D</option>
+                                                            <?php $flag = 0; ?>
+                                                            <?php foreach($curent_car->generations[0]->engines as $key => $value): ?>
+								<option value="<?=$value->id;?>" <?=$flag == 0 ? 'selected="selected"' : ''; ?>><?=$value->title;?></option>
+                                                                <?php $flag++; ?>
+                                                                <?php endforeach; ?>
 							</select>
 							<input maxlength="2" type="hidden" name="range" value="1" id="inputHiddenRange" />
 						</div>
@@ -154,6 +153,7 @@
 		</div>
 	</div>
 </form>
+
 <script type="text/javascript" src="/js/avtoservice/avtoservice5.js"></script>
 <script type="text/javascript">
 
@@ -163,7 +163,40 @@
 	
 
 	var cars = {
-		'c12':{ 'model':'Volvo XC90','id_car':12,'generations': { 'g20': { 'id_gen':20,'generation':'II','motors': [ {'id_motor':29,'motorName':'Бензин  2.5 L','power':'0'}, {'id_motor':91,'motorName':'Бензин  3.2 L','power':'0'}, {'id_motor':71,'motorName':'Бензин  4.4 L','power':'0'}, {'id_motor':64,'motorName':'Дизель 2.4 D','power':'0'} ] ,'year_begin':2007,'year_end':2015 } , 'g48': { 'id_gen':48,'generation':'I','motors': [ {'id_motor':29,'motorName':'Бензин  2.5 L','power':'0'}, {'id_motor':63,'motorName':'Бензин  2.9 L','power':'0'}, {'id_motor':71,'motorName':'Бензин  4.4 L','power':'0'}, {'id_motor':64,'motorName':'Дизель 2.4 D','power':'0'} ] ,'year_begin':2002,'year_end':2006 }  } } , 'c27':{ 'model':'Volvo XC70','id_car':27,'generations': { 'g16': { 'id_gen':16,'generation':'II','motors': [ {'id_motor':32,'motorName':'Бензин  3.0 L','power':'0'}, {'id_motor':91,'motorName':'Бензин  3.2 L','power':'0'}, {'id_motor':23,'motorName':'Бензин 2.0 L','power':'0'}, {'id_motor':77,'motorName':'Дизель 2.0 D (5цил)','power':'0'}, {'id_motor':64,'motorName':'Дизель 2.4 D','power':'0'} ] ,'year_begin':2008,'year_end':2015 } , 'g19': { 'id_gen':19,'generation':'I','motors': [ {'id_motor':20,'motorName':'Бензин  2.3 L','power':'0'}, {'id_motor':25,'motorName':'Бензин  2.4 L','power':'0'}, {'id_motor':29,'motorName':'Бензин  2.5 L','power':'0'}, {'id_motor':64,'motorName':'Дизель 2.4 D','power':'0'} ] ,'year_begin':2001,'year_end':2007 }  } } , 'c1':{ 'model':'Volvo XC60','id_car':1,'generations': { 'g25': { 'id_gen':25,'generation':'I','motors': [ {'id_motor':32,'motorName':'Бензин  3.0 L','power':'0'}, {'id_motor':91,'motorName':'Бензин  3.2 L','power':'0'}, {'id_motor':77,'motorName':'Дизель 2.0 D (5цил)','power':'0'}, {'id_motor':64,'motorName':'Дизель 2.4 D','power':'0'} ] ,'year_begin':2009,'year_end':2015 }  } } , 'c24':{ 'model':'Volvo V50','id_car':24,'generations': { 'g43': { 'id_gen':43,'generation':'II','motors': [ {'id_motor':73,'motorName':'Бензин  1.6 L','power':'0'}, {'id_motor':33,'motorName':'Бензин  1.8 L','power':'0'}, {'id_motor':25,'motorName':'Бензин  2.4 L','power':'0'}, {'id_motor':29,'motorName':'Бензин  2.5 L','power':'0'}, {'id_motor':93,'motorName':'Дизель 1.6 D','power':'0'}, {'id_motor':77,'motorName':'Дизель 2.0 D (5цил)','power':'0'}, {'id_motor':64,'motorName':'Дизель 2.4 D','power':'0'} ] ,'year_begin':2004,'year_end':2012 }  } } , 'c29':{ 'model':'Volvo S80','id_car':29,'generations': { 'g30': { 'id_gen':30,'generation':'II','motors': [ {'id_motor':29,'motorName':'Бензин  2.5 L','power':'0'}, {'id_motor':32,'motorName':'Бензин  3.0 L','power':'0'}, {'id_motor':91,'motorName':'Бензин  3.2 L','power':'0'}, {'id_motor':71,'motorName':'Бензин  4.4 L','power':'0'}, {'id_motor':77,'motorName':'Дизель 2.0 D (5цил)','power':'0'}, {'id_motor':64,'motorName':'Дизель 2.4 D','power':'0'} ] ,'year_begin':2007,'year_end':2016 } , 'g28': { 'id_gen':28,'generation':'I','motors': [ {'id_motor':20,'motorName':'Бензин  2.3 L','power':'0'}, {'id_motor':25,'motorName':'Бензин  2.4 L','power':'0'}, {'id_motor':29,'motorName':'Бензин  2.5 L','power':'0'}, {'id_motor':23,'motorName':'Бензин 2.0 L','power':'0'}, {'id_motor':64,'motorName':'Дизель 2.4 D','power':'0'} ] ,'year_begin':2000,'year_end':2006 }  } } , 'c28':{ 'model':'Volvo S60','id_car':28,'generations': { 'g33': { 'id_gen':33,'generation':'II','motors': [ {'id_motor':73,'motorName':'Бензин  1.6 L','power':'0'}, {'id_motor':29,'motorName':'Бензин  2.5 L','power':'0'}, {'id_motor':32,'motorName':'Бензин  3.0 L','power':'0'}, {'id_motor':23,'motorName':'Бензин 2.0 L','power':'0'}, {'id_motor':93,'motorName':'Дизель 1.6 D','power':'0'}, {'id_motor':77,'motorName':'Дизель 2.0 D (5цил)','power':'0'}, {'id_motor':64,'motorName':'Дизель 2.4 D','power':'0'} ] ,'year_begin':2011,'year_end':2015 } , 'g31': { 'id_gen':31,'generation':'I','motors': [ {'id_motor':20,'motorName':'Бензин  2.3 L','power':'0'}, {'id_motor':25,'motorName':'Бензин  2.4 L','power':'0'}, {'id_motor':29,'motorName':'Бензин  2.5 L','power':'0'}, {'id_motor':23,'motorName':'Бензин 2.0 L','power':'0'}, {'id_motor':64,'motorName':'Дизель 2.4 D','power':'0'} ] ,'year_begin':2001,'year_end':2009 }  } } , 'c30':{ 'model':'Volvo S40 и V40','id_car':30,'generations': { 'g46': { 'id_gen':46,'generation':'II','motors': [ {'id_motor':73,'motorName':'Бензин  1.6 L','power':'0'}, {'id_motor':29,'motorName':'Бензин  2.5 L','power':'0'}, {'id_motor':23,'motorName':'Бензин 2.0 L','power':'0'}, {'id_motor':93,'motorName':'Дизель 1.6 D','power':'0'}, {'id_motor':107,'motorName':'Дизель 2.0 D (4цил)','power':'0'}, {'id_motor':77,'motorName':'Дизель 2.0 D (5цил)','power':'0'} ] ,'year_begin':2013,'year_end':2016 }  } } , 'c31':{ 'model':'Volvo C30','id_car':31,'generations': { 'g47': { 'id_gen':47,'generation':'I','motors': [ {'id_motor':73,'motorName':'Бензин  1.6 L','power':'0'}, {'id_motor':33,'motorName':'Бензин  1.8 L','power':'0'}, {'id_motor':25,'motorName':'Бензин  2.4 L','power':'0'}, {'id_motor':29,'motorName':'Бензин  2.5 L','power':'0'}, {'id_motor':23,'motorName':'Бензин 2.0 L','power':'0'}, {'id_motor':93,'motorName':'Дизель 1.6 D','power':'0'}, {'id_motor':77,'motorName':'Дизель 2.0 D (5цил)','power':'0'}, {'id_motor':64,'motorName':'Дизель 2.4 D','power':'0'} ] ,'year_begin':2007,'year_end':2013 }  } } 
+            <?php $flag = 0; ?>
+            <?php $len_cars = count($cars); ?>
+            <?php foreach($cars as $key => $value): ?>
+		'c<?=$value->id; ?>':{
+                    'model':'<?=$value->title; ?>',
+                    'id_car':'<?=$value->id; ?>',
+                    'generations': {
+                        <?php $i = 0; ?>
+                        <?php $len_gen = count($value->generations); ?>
+                        <?php foreach($value->generations as $k => $v): ?>
+                        'g<?=$v->id; ?>': { 
+                            'id_gen':'<?=$v->id; ?>',
+                            'generation':'<?=$v->alter_title; ?>',
+                            'motors': [
+                                <?php $item = 0; ?>
+                                <?php $len = count($v->engines); ?>
+                                <?php foreach($v->engines as $e_k => $e_v): ?>
+                                {
+                                    'id_motor':'<?=$e_v->id; ?>',
+                                    'motorName':'<?=$e_v->title; ?>',
+                                    'power':'0'
+                                }<?=$item == $len -1 ? '' : ',' ?>
+                                <?php $item++; ?>
+                                <?php endforeach; ?>
+                            ],
+                            'year_begin': '<?=$v->start; ?>',
+                            'year_end': '<?=$v->end; ?>' 
+                        }<?=$i == $len_gen -1 ? '' : ',' ?>
+                                <?php $i++; ?>
+                        <?php endforeach; ?>
+                    }
+                }<?=$flag == $len_cars -1 ? '' : ',' ?>
+                                <?php $flag++; ?>
+             <?php endforeach; ?>
 	};
 
 
