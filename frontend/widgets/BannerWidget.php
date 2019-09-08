@@ -47,12 +47,12 @@ class BannerWidget extends Widget{
     protected function getMenuHtml($data){
         $str = '';
        // foreach ($data as $brand) {
-            $str .= $this->catToTemplate($brand);
+            $str .= $this->catToTemplate($data);
      //   }
         return $str;
     }
 
-    protected function catToTemplate($brand){
+    protected function catToTemplate($data){
         ob_start();
         include __DIR__ . '/banner/' . $this->tpl;
         return ob_get_clean();
