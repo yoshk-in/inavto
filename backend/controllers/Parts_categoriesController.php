@@ -6,6 +6,8 @@ use Yii;
 use common\models\PartsCategories;
 use backend\models\SearchPartsCategories;
 use common\models\Cars;
+use common\models\Parts;
+use common\models\Brands;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -122,5 +124,58 @@ class Parts_categoriesController extends SiteController
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    public function actionSet()
+    {
+      $cats = PartsCategories::find()->where(['>', 'parent', 0])->all();
+      $parts = \common\helpers\HelpersFunctions::jobsArr();
+      
+            foreach($parts as $k => $v){
+                $cats_arr = array();
+                foreach($cats as $key => $value){
+                    foreach($v['id_car'] as $k_car => $v_car){
+                        if($value->car_id == $v_car && $v['alias'] == $value->alias){
+                            $cats_arr[] = $value->id;
+                        }
+                     }
+                }
+                $model = Parts::find()->where(['title' => $v['title'], 'code' => $v['code'],'price' => $v['price']])->one();
+                if(!$model){
+                     $model = new Parts();
+                }
+                $brand = Brands::find()->where(['title' => $v['brand']])->one();
+                if(!$brand){
+                    $brand = new Brands();
+                    $brand->title = $v['brand'];
+                    $brand->save();
+                }
+                $model->title = $v['title'];
+                $model->price = $v['price'];
+                $model->code = $v['code'];
+                $model->original = $v['original'];
+                $model->brand_id = $brand->id;
+                $model->categories = $cats_arr;
+                $model->cars = $v['id_car'];
+                $model->generations = $v['id_gen'];;
+                $model->save();
+              /*  foreach($v['id_car'] as $k_car => $v_car){
+                   if($value->car_id == $v_car){
+                       $car_arr[] = $value->car_id;
+                       $cats_arr[] = $value->id;
+                   }
+                }
+                if($value->car->generations && !empty($value->car->generations)){
+                    foreach($value->car->generations as $c_key => $c_gen){
+                        foreach($v['id_gen'] as $k_gen => $v_gen){
+                            if($c_gen->id == $v_gen){
+                               $gen_arr[] = $c_gen->id;
+                           }
+                        }
+                    }
+                }*/
+                
+             }
+      exit();
     }
 }

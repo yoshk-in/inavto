@@ -20,6 +20,7 @@ use frontend\models\ContactForm;
  */
 class SiteController extends Controller
 {
+    public $cache_time = 60;
     /**
      * {@inheritdoc}
      */
@@ -256,5 +257,14 @@ class SiteController extends Controller
         return $this->render('resendVerificationEmail', [
             'model' => $model
         ]);
+    }
+    
+    public function actionCalculator()
+    {
+        $req = Yii::$app->request->get();
+        if($req){
+            print_r($req);
+        }
+        exit();
     }
 }

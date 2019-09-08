@@ -4,50 +4,34 @@
 
 $this->title = 'My Yii Application';
 ?>
-<div class="site-index">
-
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+<?= \frontend\widgets\CalculatorWidget::widget(['tpl' => 'index', 'cache_time' => 60])?>
+	<section class="content">
+		
+<div class="row">
+    <div class="span9 rpadd">
+        <h1>Ремонт Вольво в Санкт-Петербурге с 1992 года</h1>
+        <p class="imageContainer left">Компания <strong>ИНАВТО+</strong>, созданная в 1992 году как техническая площадка совместного советско-шведского предприятия по обслуживанию автомобилей Вольво, уже много лет оказывает качественные услуги по ремонту и техническому обслуживанию автомобилей частных и корпоративных клиентов. В настоящее время это многопрофильный мультибрендовый сервис на двух площадках нашего города: на севере — <a href="/contacts#ekat">Екатерининском проспекте д. 5</a> и на юге — <a href="/contacts#salova">ул. Салова д. 68</a>.
+</p>
+<p class="imageContainer left"><a href="/data/img/materials/16.jpg" class="zoomImage"><img src="/data/img/materials/17.jpg" alt="Сервис-центр ИНАВТО+, общий вид ремонтного бокса на Екатериненском д.5" "="" style="width: 220px; height: 147px;" width="220" height="147"></a>
+</p>
+<p><span style="background-color: initial;">К Вашим услугам опытные мастера автосервиса и квалифицированные менеджеры отдела запчастей. Обращаясь на наши станции, Вы можете подобрать необходимые запасные части и расходные материалы, провести техническое обслуживание автомобиля, диагностировать, выполнить необходимые ремонтные операции, воспользоваться услугами автомобильной мойки.</span>
+</p>
+<p class="imageContainer right"><a href="/data/img/service/7.jpg?v.3" class="zoomImage"><img src="/data/img/service/7m.jpg?v.3" alt="автосервис ИНАВТО+, общий вид ремонтного бокса на Салова д.68" "=""></a>
+</p>
+<p>Сервис располагает всем необходимым оборудованием, профессиональным инструментом для проведения комплексного технического обслуживание, кузовных и малярных работ, ремонта и обслуживания подвески, ремонта тормозной системы, замены ремня газораспределения, замены колодок, тормозных дисков, сцепления, глушителя, проточки тормозных дисков, шлифовки головки блока, регулировки развала сходимости, регулировки фар, и многих других видов работ.
+</p>
+<p>Обращаясь в <strong>ИНАВТО+</strong> вы экономите время и деньги, получаете качественный сервис, гарантии на все виды работ, квалифицированное и вежливое обслуживание и удобное ожидание в клиентской зоне с бесплатным <strong>Wi-Fi</strong>.
+</p>
     </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
-        </div>
-
+    <div class="span3">
+        <?= \frontend\widgets\NewsWidget::widget(['tpl' => 'index', 'cache_time' => 60])?>
     </div>
 </div>
+	</section>
+	<style>
+	.map {
+		height: 400px;
+		width: 100%;
+	}
+</style>
+<?= \frontend\widgets\MapWidget::widget(['tpl' => 'index', 'cache_time' => 60])?>

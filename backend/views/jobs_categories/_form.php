@@ -22,7 +22,6 @@ mihaildev\elfinder\Assets::noConflict($this);
     
     <?=$form->field($model, 'parent')->widget(Select2::classname(), [
         'data' => $parents,
-        'hideSearch' => true,
         'options' => ['placeholder' => 'Выбрать родительскую категорию', 'value' => $model->parent],
         'pluginOptions' => [
             'allowClear' => true,
@@ -39,7 +38,7 @@ mihaildev\elfinder\Assets::noConflict($this);
         ]);
     ?>
 
-    <?= $form->field($model, 'service')->checkbox(['0', '1', 'checked' => true]) ?>
+    <?= $form->field($model, 'service')->checkbox(['0', '1']) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
@@ -53,6 +52,8 @@ mihaildev\elfinder\Assets::noConflict($this);
             'allowClear' => true,
         ],
     ]);?>
+    
+   <?= $form->field($model, 'in_menu')->checkbox(['0', '1']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
@@ -69,7 +70,7 @@ mihaildev\elfinder\Assets::noConflict($this);
              });
              function showItems(item){
                  var val_item = item.val();
-                 var class_arr = ('.field-jobscategories-alias, .field-jobscategories-meta_title, .field-jobscategories-body, .field-jobscategories-description, .field-jobscategories-keywords');
+                 var class_arr = ('.field-jobscategories-meta_title, .field-jobscategories-body, .field-jobscategories-description, .field-jobscategories-keywords');
                  if(val_item){
                      $(class_arr).hide();
                  }else{

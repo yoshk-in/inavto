@@ -15,13 +15,29 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'jc_id', ['template' => "{input}"])->hiddenInput(['value' => $job_category->id]) ?>
-
-    <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
+    <?//= $form->field($model, 'jc_id', ['template' => "{input}"])->hiddenInput(['value' => $job_category->id]) ?>
+    
+    <?=$form->field($model, 'works')->widget(Select2::classname(), [
+        'data' => $job_categories,
+        'options' => ['placeholder' => 'Выбрать категории', 'multiple' => 'multiple', 'value' => $vaule_cats ? $vaule_cats  : ''],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]);?>
+    
+    <?= $form->field($model, 'car_id', ['template' => "{input}"])->hiddenInput(['value' => $current_category->car->id]) ?>
+    
+    <?=$form->field($model, 'generations')->widget(Select2::classname(), [
+    //    'data' => yii\helpers\ArrayHelper::map(common\models\Generations::find()->select(['id', 'title'])->all(), 'id', 'title'),
+        'options' => ['placeholder' => 'Выбрать поколения авто', 'multiple' => 'multiple', 'value' => $model->generation && !empty($model->generation) ? \yii\helpers\ArrayHelper::map($model->generation, 'id', 'id') : ''],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]);?>
     
     <?=$form->field($model, 'engines')->widget(Select2::classname(), [
-        'data' => \common\helpers\HelpersFunctions::arrForEnginesList($engines, $job_category->car->title),
-        'options' => ['placeholder' => 'Выбрать двигатели', 'multiple' => 'multiple', 'value' => $model->motors && !empty($model->motors) ? \common\helpers\HelpersFunctions::arrForObjectList($model->motors) : ''],
+    //    'data' => yii\helpers\ArrayHelper::map(common\models\Generations::find()->select(['id', 'title'])->all(), 'id', 'title'),
+        'options' => ['placeholder' => 'Выбрать двигатель', 'multiple' => 'multiple', 'value' => $model->motors && !empty($model->motors) ? \yii\helpers\ArrayHelper::map($model->motors, 'id', 'id') : ''],
         'pluginOptions' => [
             'allowClear' => true
         ],
@@ -34,6 +50,8 @@ use kartik\select2\Select2;
             'allowClear' => true
         ],
     ]);?>
+    
+    <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
 
    <?= $form->field($model, 'recomended')->checkbox(['0', '1']) ?>
 
@@ -42,5 +60,73 @@ use kartik\select2\Select2;
     </div>
 
     <?php ActiveForm::end(); ?>
+    
+    <script type="text/javascript">
+        if(readyjs) readyjs[readyjs.length] = function(){ 
+           $(document).ready(function(){
+            var car_id = $('#jobs-car_id');
+            var generation_wrap = $('.field-jobs-generations');
+            var generations = $('#jobs-generations');
+          //var generations = $("input[name='Parts[generations]']");
+            var engine_wrap = $('.field-jobs-engines');
+            var engine_id = $('#jobs-engines');
+            
+            showItems(car_id, generation_wrap);
+            getGenerations(car_id.val(), generations);
+            showItems(generations, engine_wrap);
+            getEngines(String(generations.val()), engine_id);
+            
+            car_id.change(function(){
+                showItems(car_id, generation_wrap);
+                getGenerations(car_id.val(), generations);
+             });
+             
+             generations.change(function(){
+                var generations = $('#jobs-generations');
+                showItems(generations, engine_wrap);
+                getEngines(String(generations.val()), engine_id);
+             });
+             
+             function showItems(item, selector){
+                 var val_item = String(item.val());
+              //   console.log(String($("#parts-generations").select2("val")));
+                 if(!val_item){
+                     selector.hide();
+                 }else{
+                     selector.show();
+                 }
+             }
+             
+             function getGenerations(val_item, selector){
+             //    alert(selector.val)
+                     $.ajax({
+                        type: "GET",
+                        url: '<?= yii\helpers\Url::to(['jobs/generations']); ?>', 
+                        data: "id="+val_item+"&current_id="+selector.val(),
+                        success: function(res){
+                            selector.empty().append(res);
+                        }, 
+                        error: function(){
+                          alert('error');
+                        }
+                    });
+                 }
+                 
+                 function getEngines(val_item, selector){
+                     $.ajax({
+                        type: "GET",
+                        url: '<?= yii\helpers\Url::to(['jobs/engines']); ?>', 
+                        data: "id="+val_item+"&current_id="+selector.val(),
+                        success: function(res){
+                            selector.empty().append(res);
+                        }, 
+                        error: function(){
+                          alert('error');
+                        }
+                    });
+                 }
+           });
+        }
+    </script>
 
 </div>

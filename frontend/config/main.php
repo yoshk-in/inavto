@@ -14,6 +14,7 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'baseUrl' => ''
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -36,14 +37,22 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'zapchasti/' => 'zapchasti/index',
+                'zapchasti/<alias:[\w_-]+>' => 'zapchasti/category',
+                'zapchasti/<alias:[\w_-]+>?s=<slug:[\w_-]+>' => 'zapchasti/subcategory',
+                'remont/' => 'remont/index',
+                'remont/<alias:[\w_-]+>' => 'remont/category',
+                'remont/<alias:[\w_-]+>?s=<slug:[\w_-]+>' => 'remont/subcategory',
+                'obsluzhivanie/' => 'obsluzhivanie/index',
+                'obsluzhivanie/<alias:[\w_-]+>' => 'obsluzhivanie/category',
+                'obsluzhivanie/<alias:[\w_-]+>?s=<slug:[\w_-]+>' => 'obsluzhivanie/subcategory',
+                'site/calculator' => 'site/calculator'
             ],
         ],
-        */
     ],
     'params' => $params,
 ];

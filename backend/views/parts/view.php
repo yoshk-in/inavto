@@ -7,23 +7,21 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Parts */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Parts', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => 'Запчасти', 'url' => ['index', 'id' => $cat_id]];
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="parts-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Изменить', ['update','cat_id' => $cat_id, 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete','cat_id' => $cat_id, 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('Добавить', ['create', 'id' => $cat_id], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -31,15 +29,93 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'title',
-            'pc_id',
-            'car_id',
-            'engine_id',
-            'generation_id',
-            'brand_id',
-            'job_id',
+            [
+               'attribute' => 'categories',
+                'format' => 'html',
+                'value' => function($data){
+                    $html = '';
+                    foreach($data->cats as $key => $value){
+                        $html .= '<p>' . Html::a($value->title, yii\helpers\Url::to(['index', 'id' => $value->id])) . '</p>';
+                    }
+                    return $html;
+                }
+            ],
+             [
+                'attribute' => 'cars',
+                'format' => 'html',
+                'value' => function($data){
+                    $html = '';
+                    if($data->avtos && !empty($data->avtos))
+                    foreach($data->avtos as $key => $value){
+                        $html .= Html::a($value->title, yii\helpers\Url::to(['/cars/view', 'id' => $value->id])) . ' ';
+                    }
+                    return $html;
+                }
+            ],
+            [
+                'attribute' => 'generations',
+                'format' => 'html',
+                'value' => function($data){
+                    $html = '';
+                    if($data->generation && !empty($data->generation))
+                    foreach($data->generation as $key => $value){
+                        $html .= Html::a($value->title, yii\helpers\Url::to(['/generations/view', 'id' => $value->id])) . ' ';
+                    }
+                    return $html;
+                }
+            ],
+            [
+                'attribute' => 'engines',
+                'format' => 'html',
+                'value' => function($data){
+                    $html = '';
+                    if($data->engine && !empty($data->engine))
+                    foreach($data->engine as $key => $value){
+                        $html .= Html::a($value->title, yii\helpers\Url::to(['/engines/view', 'id' => $value->id])) . ' ';
+                    }
+                    return $html;
+                }
+            ],
+            [
+                'attribute' => 'brand_id',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->brand_id ? yii\helpers\Html::a($data->brand->title, yii\helpers\Url::to(['/brands/view', 'id' => $data->brand_id])) : '';
+                }
+            ],
+            [
+                'attribute' => 'works',
+                'format' => 'html',
+                'value' => function($data){
+                    $html = '';
+                    if($data->jobs && !empty($data->jobs))
+                    foreach($data->jobs as $key => $value){
+                        $html .= Html::a($value->title, yii\helpers\Url::to(['/jobs/view', 'id' => $value->id])) . ' ';
+                    }
+                    return $html;
+                }
+            ],
             'price',
-            'check',
-            'original',
+            [
+                'attribute' => 'check',
+                'format' => 'html',
+                'value' => function($data){
+                    $check = '<span>Нет</span>';
+                    if($data->check == 1){
+                        $check = '<span>Да</span>';
+                    }elseif($data->check == 2){
+                        $check = '<span>Много</span>';
+                    }
+                    return $check;
+                }
+            ],
+            [
+                'attribute' => 'original',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->original ? '<span>Да</span>' : '<span>Нет</span>';
+                }
+            ],
             'code',
             'created',
             'modified',

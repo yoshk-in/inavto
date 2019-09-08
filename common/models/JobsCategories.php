@@ -65,7 +65,7 @@ class JobsCategories extends \yii\db\ActiveRecord
         return [
             [['title', 'car_id'], 'required'],
             [['body', 'description', 'keywords'], 'string'],
-            [['parent', 'service', 'car_id'], 'integer'],
+            [['parent', 'service', 'car_id', 'in_menu'], 'integer'],
             [['created', 'modified'], 'safe'],
             [['title', 'alias', 'meta_title', 'menu_title'], 'string', 'max' => 255],
             [['car_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cars::className(), 'targetAttribute' => ['car_id' => 'id']],
@@ -91,6 +91,7 @@ class JobsCategories extends \yii\db\ActiveRecord
             'created' => 'Дата создания',
             'modified' => 'Дата изменения',
             'car_id' => 'Автомобиль',
+            'in_menu' => 'Отображать в меню'
         ];
     }
 
@@ -99,7 +100,7 @@ class JobsCategories extends \yii\db\ActiveRecord
      */
     public function getJobs()
     {
-        return $this->hasMany(Jobs::className(), ['jc_id' => 'id']);
+        return $this->hasMany(Jobs::className(), ['id' => 'job_id'])->viaTable('jobcats_jobs', ['job_category_id' => 'id']);
     }
 
     /**

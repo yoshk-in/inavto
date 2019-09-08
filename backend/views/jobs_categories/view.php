@@ -67,6 +67,13 @@ $this->params['breadcrumbs'][] = ['label' => 'Категории работ', 'u
                     );
                 } 
             ],
+            [
+                'attribute' => 'in_menu',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->in_menu == 1 ? '<span>Да</span>' : '<span>Нет</span>';
+                } 
+            ],
         ],
     ]) ?>
 

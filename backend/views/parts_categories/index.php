@@ -14,6 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Добавить', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Запчасти без категории', ['outparts/index'], ['class' => 'btn btn-warning']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -33,6 +34,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'parent',
+            [
+                'attribute' => 'in_menu',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->in_menu == 1 ? '<span>Да</span>' : '<span>Нет</span>';
+                } 
+            ],
             //'description:ntext',
             //'keywords:ntext',
             //'created',

@@ -7,15 +7,14 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\SearchParts */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Parts';
-$this->params['breadcrumbs'][] = $this->title;
+$cat = $part_category->id;
+$this->title = 'Запчасти - ' . $part_category->title;;
+$this->params['breadcrumbs'][] = ['label' => 'Категории запчастей', 'url' => ['/parts_categories']];
 ?>
 <div class="parts-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create Parts', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить', ['create', 'id' => $part_category->id], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -28,9 +27,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'title',
-            'pc_id',
-            'car_id',
-            'engine_id',
+           // 'car_id',
+           [
+                'attribute' => 'check',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->check ? '<span>Да</span>' : '<span>Нет</span>';
+                }
+            ],
+            [
+                'attribute' => 'original',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->original ? '<span>Да</span>' : '<span>Нет</span>';
+                }
+            ],
             //'generation_id',
             //'brand_id',
             //'job_id',
@@ -41,7 +52,17 @@ $this->params['breadcrumbs'][] = $this->title;
             //'created',
             //'modified',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'urlCreator' => function ($action, $model, $key, $index) use ($cat) {
+                    if ($action === 'update') {
+                        return yii\helpers\Url::to(['update', 'cat_id' => $cat, 'id' => $model->id]);
+                    }elseif($action === 'view'){
+                        return yii\helpers\Url::to(['view', 'cat_id' => $cat, 'id' => $model->id]);
+                    }
+                    return yii\helpers\Url::to(['delete', 'cat_id' => $cat, 'id' => $model->id]);
+                }
+            ]
         ],
     ]); ?>
 

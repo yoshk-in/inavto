@@ -5,6 +5,8 @@ namespace backend\controllers;
 use Yii;
 use common\models\JobsCategories;
 use common\models\Cars;
+use common\models\Jobs;
+use common\models\JobcatsJobs;
 use backend\models\SearchJobsCategories;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -122,6 +124,55 @@ class Jobs_categoriesController extends SiteController
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    public function actionSetcats()
+    {
+        /*
+        $parents = JobsCategories::find()->where(['parent' => null, 'service' => 1])->all();
+       // $cats_titles = \yii\helpers\ArrayHelper::map(JobsCategories::find()->select('id', 'title')->all(), 'id', 'title');
+    //    $cats_cars = \yii\helpers\ArrayHelper::map(JobsCategories::find()->select('id', 'car_id')->all(), 'id', 'car_id');
+        foreach($parents as $key => $value){
+            $childs = JobsCategories::find()->where(['parent' => $value->parent]);
+            foreach($childs as $k => $v){
+                $model = new Jobs();
+                $model->title = $v['name'];
+                $model->service = null;
+                $model->car_id = $value->car->id;
+                $model->parent = $value->id;
+                $model->save();
+            }
+        }
+        Yii::$app->session->setFlash('success', "Категории занесены");
+        return $this->redirect(['index']);
+         * /
+         */
+    //  print_r(\common\helpers\HelpersFunctions::jobsArr());
+      $cats = JobsCategories::find()->where(['>', 'parent', 0])->all();
+      $jobs = \common\helpers\HelpersFunctions::jobsArr();
+      $arr_types = [0 => 'repair',1 => 'service'];
+      
+      foreach($arr_types as $t_key => $t_value){
+        foreach($cats as $key => $value){
+            foreach($jobs as $k => $v){
+                $job_cat = \yii\helpers\ArrayHelper::map(JobcatsJobs::find()->where(['job_category_id' => $value->id])->all(), 'id', 'job_id');
+                if(!$job_cat){
+                    $job_cat = 1;
+                }
+                $model = Jobs::find()->where(['title' => $v['name'], 'id' => $job_cat])->one();
+
+                if(!$model && $value->alias == $v['system']){
+                    if(($value->service == $t_key && $v['type'] == $t_value) || ($value->service == 1 && $v['type'] == 'mixed')){
+                        $model = new Jobs();
+                        $model->title = $v['name'];
+                        $model->works = array($value->id);
+                        $model->save();
+                    }      
+                }
+             }
+          }
+      }
+      exit();
     }
     
    /* public function setAlias($model)
