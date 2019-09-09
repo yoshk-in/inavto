@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Категории запчаст�
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+      //  'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 

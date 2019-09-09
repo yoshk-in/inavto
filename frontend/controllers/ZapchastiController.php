@@ -37,7 +37,7 @@ class ZapchastiController extends SiteController
              throw new \yii\web\HttpException(404, 'Такой страницы нет');
         }
         
-        if($_COOKIE['fModel'] && $_COOKIE['fModel'] != $model->id){
+        if(@$_COOKIE['fModel'] && $_COOKIE['fModel'] != $model->id){
             setcookie('fModel', $model->id, 0, '/');
             setcookie('fGen', '', time() - 100, '/');
             setcookie('fMotor', '', time() - 100, '/');
@@ -54,7 +54,7 @@ class ZapchastiController extends SiteController
         
         $f_gen = '';
         $gen_links = array();
-        if ($_COOKIE['fGen'] !== null) {
+        if (@$_COOKIE['fGen']) {
             $f_gen = $_COOKIE['fGen'];
             $gen_links = array('id' => \yii\helpers\ArrayHelper::map(\common\models\PartsGenerations::find()
                 ->where([

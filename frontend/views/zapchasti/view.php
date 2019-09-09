@@ -49,7 +49,6 @@
 </div>
 
 
-<?php// if ($this->beginCache('parts_cat_'.$model->alias . $f_gen . $slug, ['duration' => 6])):?>
 <div class="carParts table bordered">
     <?php if($cats && !empty($cats)): ?>
         <?php $flag = 1; ?>
@@ -144,8 +143,6 @@
         <?php endforeach; ?>
     <?php endif; ?>
 </div>
-<?php// $this->endCache(); ?>
-<?php// endif; ?>
 <script type="text/javascript">
 	$(document).ready(function(){
 
