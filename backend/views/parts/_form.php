@@ -13,7 +13,7 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?//= $form->field($model, 'pc_id', ['template' => "{input}"])->hiddenInput(['value' => $part_category->id]) ?>
+    <?php // $form->field($model, 'pc_id', ['template' => "{input}"])->hiddenInput(['value' => $part_category->id]) ?>
     
     <?=$form->field($model, 'categories')->widget(Select2::classname(), [
         'data' => $part_categories,

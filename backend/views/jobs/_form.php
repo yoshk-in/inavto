@@ -15,7 +15,7 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?//= $form->field($model, 'jc_id', ['template' => "{input}"])->hiddenInput(['value' => $job_category->id]) ?>
+    <?php // $form->field($model, 'jc_id', ['template' => "{input}"])->hiddenInput(['value' => $job_category->id]) ?>
     
     <?=$form->field($model, 'works')->widget(Select2::classname(), [
         'data' => $job_categories,

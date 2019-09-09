@@ -55,7 +55,7 @@ class RemontController extends SiteController
              throw new \yii\web\HttpException(404, 'Такой страницы нет');
         }
         
-         if($_COOKIE['fModel'] && $_COOKIE['fModel'] != $model->id){
+         if(@$_COOKIE['fModel'] && $_COOKIE['fModel'] != $model->id){
             setcookie('fModel', $model->id, 0, '/');
             setcookie('fGen', '', time() - 100, '/');
             setcookie('fMotor', '', time() - 100, '/');
@@ -71,7 +71,7 @@ class RemontController extends SiteController
         $f_gen = '';
         $gen_links = array();
         $current_engines = array();
-        if ($_COOKIE['fModel'] && $_COOKIE['fGen']) {
+        if (@$_COOKIE['fModel'] && @$_COOKIE['fGen']) {
             $f_gen = $_COOKIE['fGen'];
             $current_engines = \common\models\Engines::find()->where(['generation_id' => $f_gen])->all();
             $gen_links = array('id' => \yii\helpers\ArrayHelper::map(\common\models\JobsGenerations::find()
@@ -82,7 +82,7 @@ class RemontController extends SiteController
         
         $f_motor = '';
         $gen_motors = array();
-        if ($_COOKIE['fModel'] && $_COOKIE['fGen'] && $_COOKIE['fMotor']) {
+        if (@$_COOKIE['fModel'] && @$_COOKIE['fGen'] && @$_COOKIE['fMotor']) {
             $f_motor = $_COOKIE['fMotor'];
             $gen_motors = array('id' => \yii\helpers\ArrayHelper::map(\common\models\EnginesJobs::find()
                 ->where([

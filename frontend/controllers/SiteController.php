@@ -14,6 +14,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use common\models\Orders;
 
 /**
  * Site controller
@@ -75,7 +76,32 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = new Orders();
+        $show = 'show';
+        
+        if($model->load(Yii::$app->request->post())){
+            $show = 'show';
+            $model->model = Yii::$app->request->post('model');
+            $model->generation_id = Yii::$app->request->post('generation');
+            $model->engine_id = Yii::$app->request->post('motor');
+            $model->year = Yii::$app->request->post('range');
+            $model->year = Yii::$app->request->post('range');
+            $model->works = Yii::$app->request->post('rec');
+            if($model->save()){
+                Yii::$app->session->setFlash('success', "Данные отправлены");
+                Yii::$app->session->setFlash('show', "show");
+                print_r($_SESSION);
+                exit();
+                $this->redirect(Yii::$app->request->referrer);
+            }else{
+                Yii::$app->session->setFlash('error', "Ошибка отправки");
+                Yii::$app->session->setFlash('show', "show");
+                $this->redirect([Yii::$app->request->referrer, 'model' => $model]);
+            }
+        }
+        return $this->render('index', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -263,8 +289,143 @@ class SiteController extends Controller
     {
         $req = Yii::$app->request->get();
         if($req){
-            print_r($req);
+            
+            $engine_id = $req['motorId'];
+            $generation_id = $req['genId'];
+            $year_id = $req['range'];
+           
+            $categories_links = $this->addToCache('categories_links_calc', \yii\helpers\ArrayHelper::map($this->addToCache('serviece_id_arr', \common\models\JobcatsJobs::find()->where(['job_category_id' => \yii\helpers\ArrayHelper::map(\common\models\JobsCategories::find()->where(['service' => 1])->all(), 'id', 'id')])->all()), 'id', 'job_id'));
+            $engine_links = $this->addToCache('engine_links' . $engine_id, \yii\helpers\ArrayHelper::map(\common\models\EnginesJobs::find()->where(['engine_id' => $engine_id])->all(), 'id', 'job_id'));
+            $generations_links = $this->addToCache('generations_links' . $generation_id, \yii\helpers\ArrayHelper::map(\common\models\JobsGenerations::find()->where(['generation_id' => $generation_id])->all(), 'id', 'job_id'));
+            $years_links = $this->addToCache('years_links' . $year_id, \yii\helpers\ArrayHelper::map(\common\models\YearsJobs::find()->where(['year_id' => $year_id])->all(), 'id', 'job_id'));
+            $jobs_arr = array_intersect($engine_links, $generations_links, $years_links, $categories_links);
+            $jobs = $this->addToCache(str_replace(' ', '', $req['modelName']) . 'jobs' . $engine_id . $generation_id . $year_id, \common\models\Jobs::find()->where(['id' => $jobs_arr, ])
+                    ->with([
+                        'parts' => function($query){
+                            return $query->with('brand');
+                        }
+                     ])
+                    ->asArray()
+                    ->all());
+        
+            $responce = $this->addToCache(str_replace(' ', '', $req['modelName']) . 'calculation' . $engine_id . $generation_id . $year_id, $this->getJobs($jobs, $req['requestId']));
+            
+            return json_encode($responce);
         }
-        exit();
+    }
+    
+    public function getJobs($arr = array(), $req)
+    {
+        $responce = array();
+        $responce['requestId'] = $req;
+        $responce['mandatoryWorksPrice'] = 0;
+        $responce['mandatoryPartsMin'] = 0;
+        $responce['recommendedWorksPrice'] = 0;
+        $responce['recommendedPartsMin'] = 0;
+        $k1 = 0;
+        $k2 = 0;
+        foreach($arr as $key => $value){
+            if(@$value['recomended']){
+                $responce['works']['recommended'][$k1] = $this->getJob($value);
+                if(@$responce['works']['recommended'][$k1]['price']){
+                    $responce['recommendedWorksPrice'] += $responce['works']['recommended'][$k1]['price'];
+                }
+                if(@$responce['works']['recommended'][$k1]['minPartsPrice']){
+                    $responce['recommendedPartsMin'] += $responce['works']['recommended'][$k1]['minPartsPrice'];
+                }
+                $k1++;
+            }else{
+                $responce['works']['mandatory'][$k2] = $this->getJob($value);
+                if(@$responce['works']['mandatory'][$k2]['price']){
+                    $responce['mandatoryWorksPrice'] += $responce['works']['mandatory'][$k2]['price'];
+                }
+                if(@$responce['works']['mandatory'][$k2]['minPartsPrice']){
+                    $responce['mandatoryPartsMin'] += $responce['works']['mandatory'][$k2]['minPartsPrice'];
+                }
+                $k2++;
+            }
+        }
+        $responce['totalPrice'] = $responce['mandatoryWorksPrice'] + $responce['mandatoryPartsMin'] + $responce['recommendedWorksPrice'] + $responce['recommendedPartsMin'];
+        return $responce;
+    }
+    
+    public function getJob($job = null)
+    {
+       $new_job = array();
+       $new_job['id_work'] = $job['id'];
+       $new_job['name'] = $job['title'];
+       $new_job['type'] = 'service';
+       $new_job['price'] = $job['price'];
+       $new_job['minPartsPrice'] = 0;
+       $new_job['maxPartsPrice'] = 0;
+       $new_job['sets'] = array();
+       if(@$job['parts']){
+           $original_count_price = 0;
+           $analog_count_price = 0;
+           $flag = 0;
+           $key1 = 0;
+           $key2 = 0;
+           $prices = array();
+           $original_prices = array();
+           $analog_prices = array();
+           $len = count($job['parts']);
+            foreach($job['parts'] as $key => $value){
+                if(@$value['original']){
+                    $original_count_price += $value['price'];
+                    $new_job['sets'][0]['id_set'] = $job['id'];
+                    $new_job['sets'][0]['setName'] = 'Оригинал';
+                    $new_job['sets'][0]['price'] = $original_count_price;
+                    $prices[0] = $original_count_price;
+                    $new_job['sets'][0]['parts'][$key1]['count'] = 1;
+                    $new_job['sets'][0]['parts'][$key1]['price'] = $value['price'];
+                    $original_prices[] = $value['price'];
+                    $new_job['sets'][0]['parts'][$key1]['id_part'] = $value['id'];
+                    $new_job['sets'][0]['parts'][$key1]['partName'] = $value['title'];
+                    $new_job['sets'][0]['parts'][$key1]['articul'] = $value['code'];
+                    $new_job['sets'][0]['parts'][$key1]['original'] = $value['original'];
+                    $new_job['sets'][0]['parts'][$key1]['vendor'] = $value['brand']['title'];
+                    if($flag == $len - 1){
+                        foreach($new_job['sets'][0]['parts'] as $k => $v){
+                            $new_job['sets'][0]['parts'][$key1]['totalPrice'] = $original_count_price;
+                        }
+                    }
+                    $key1++;
+                }else{
+                    $analog_count_price += $value['price'];
+                    $new_job['sets'][1]['id_set'] = $job['id'];
+                    $new_job['sets'][1]['setName'] = 'Аналог';
+                    $new_job['sets'][1]['price'] = $original_count_price;
+                    $prices[1] = $original_count_price;
+                    $new_job['sets'][1]['parts'][$key2]['count'] = 1;
+                    $new_job['sets'][1]['parts'][$key2]['price'] = $value['price'];
+                    $analog_prices[] = $value['price'];
+                    $new_job['sets'][1]['parts'][$key2]['id_part'] = $value['id'];
+                    $new_job['sets'][1]['parts'][$key2]['partName'] = $value['title'];
+                    $new_job['sets'][1]['parts'][$key2]['articul'] = $value['code'];
+                    $new_job['sets'][1]['parts'][$key2]['original'] = $value['original'];
+                    $new_job['sets'][1]['parts'][$key2]['vendor'] = $value['brand']['title'];
+                    if($flag == $len - 1){
+                        foreach($new_job['sets'][1]['parts'] as $k => $v){
+                            $new_job['sets'][1]['parts'][$key2]['totalPrice'] = $analog_count_price;
+                        }
+                    }
+                    $key2++;
+                }
+                $flag++;
+            }
+            $new_job['minPartsPrice'] = min($prices);
+            $new_job['maxPartsPrice'] = max($prices);
+       }
+       return $new_job;
+    }
+    
+    protected function addToCache($cache_name, $data = null)
+    {
+        $cache_data = Yii::$app->cache->get($cache_name);
+        if(!$cache_data){
+            $cache_data = $data;
+            Yii::$app->cache->set($cache_name, $cache_data, $this->cache_time);
+        }
+        return $cache_data;
     }
 }

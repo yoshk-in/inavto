@@ -10,7 +10,7 @@ namespace frontend\widgets;
 
 use yii\base\Widget;
 use common\models\PartsCategories;
-use common\models\JobsCategories;
+use common\models\Orders;
 use Yii;
 /**
  * Description of MenuWidget
