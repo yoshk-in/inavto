@@ -1,4 +1,13 @@
-<form method="POST">
+<?php
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use common\models\Orders;
+
+?>
+<?php 
+    if(!isset($model)) $model = new Orders;
+    $form = ActiveForm::begin(); 
+?>
 	<!--<div class="calc_banner">
 		<div class="in">
 			<strong class="tmp">Калькулятор технического обслуживания</strong>
@@ -133,26 +142,47 @@
 			<span class="txt">Общая сумма ТО -</span> <strong><span class="totalPrice"></span> <span class="ruble">p</span></strong>
 		</div>
 	</div>
-	<div class="modal serviceModal">
+	<div class="modal serviceModal <?=Yii::$app->session->hasFlash('show') ? Yii::$app->session->getFlash('show') : ''; ?>">
 		<span class="close close-btn"></span>
 		<div class="modal-header">
 			<h3>Заявка на техническое обслуживание</h3>
 		</div>
 		<div class="modal-body text-center">
 			<div class="btnGroup">
-				<input type="text" name="email" value="" placeholder="Ваш e-mail" />
-				<input type="text" name="phone" value="" placeholder="+7 ( ___ ) ___ - __ - __" />
+				<!--<input type="text" name="email" value="" placeholder="Ваш e-mail" />-->
+                                <?= $form->field($model, 'email', [
+                                   'inputOptions'=>['placeholder' => 'Ваш e-mail'],
+                                   'template'=>"{input}",
+                                    'options' => [
+                                        'tag' => null
+                                    ],
+                                ])->textInput() ?>
+                                <?= $form->field($model, 'phone', [
+                                   'inputOptions'=>['placeholder' => '+7 ( ___ ) ___ - __ - __'],
+                                   'template'=>"{input}",
+                                    'options' => [
+                                        'tag' => null
+                                    ],
+                                ]); ?>
 				<input type="hidden" name="type" value="" />
 				<button type="submit" name="sendServiceOrder" value="1" class="btn success">Отправить данные</button>
 			</div>
 			<div class="alert alert-info">
 				Данные по работам и запчастям будут моментально отправлены Вам на указанный e-mail.
 			</div>
-			
-			
+                        <?php if( Yii::$app->session->hasFlash('success') ): ?>
+                            <div class="alert alert-success">
+                                <div><?php echo Yii::$app->session->getFlash('success'); ?></div>
+                            </div>
+                        <?php endif;?>
+                        <?php if( Yii::$app->session->hasFlash('error') ): ?>
+                            <div class="alert alert-error">
+                                <div><?php echo Yii::$app->session->getFlash('error'); ?></div>
+                            </div>
+                        <?php endif;?>
 		</div>
 	</div>
-</form>
+<?php ActiveForm::end(); ?>
 
 <script type="text/javascript" src="/js/avtoservice/avtoservice5.js"></script>
 <script type="text/javascript">

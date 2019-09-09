@@ -716,7 +716,7 @@ AppAsset::register($this);
 	</div>
 </footer>
 
-<div class="backdrop"></div>
+<div class="backdrop <?=Yii::$app->session->hasFlash('show') ? Yii::$app->session->getFlash('show') : ''; ?>"></div>
 </body>
 </html>
 

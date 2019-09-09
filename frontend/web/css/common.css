@@ -2589,11 +2589,11 @@ button.sendData .info {
     to { width:0; }
 }
 
-.modal.serviceModal .btnGroup input[name="email"] {
+.modal.serviceModal .btnGroup input[name="email"], .modal.serviceModal .btnGroup input[name="Orders[email]"] {
     width:34%;
 }
 
-.modal.serviceModal .btnGroup input[name="phone"] {
+.modal.serviceModal .btnGroup input[name="phone"], .modal.serviceModal .btnGroup input[name="Orders[phone]"] {
     width:33%;
 }
 

@@ -14,6 +14,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use common\models\Orders;
 
 /**
  * Site controller
@@ -75,7 +76,32 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = new Orders();
+        $show = 'show';
+        
+        if($model->load(Yii::$app->request->post())){
+            $show = 'show';
+            $model->model = Yii::$app->request->post('model');
+            $model->generation_id = Yii::$app->request->post('generation');
+            $model->engine_id = Yii::$app->request->post('motor');
+            $model->year = Yii::$app->request->post('range');
+            $model->year = Yii::$app->request->post('range');
+            $model->works = Yii::$app->request->post('rec');
+            if($model->save()){
+                Yii::$app->session->setFlash('success', "Данные отправлены");
+                Yii::$app->session->setFlash('show', "show");
+                print_r($_SESSION);
+                exit();
+                $this->redirect(Yii::$app->request->referrer);
+            }else{
+                Yii::$app->session->setFlash('error', "Ошибка отправки");
+                Yii::$app->session->setFlash('show', "show");
+                $this->redirect([Yii::$app->request->referrer, 'model' => $model]);
+            }
+        }
+        return $this->render('index', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -283,8 +309,7 @@ class SiteController extends Controller
                     ->all());
         
             $responce = $this->addToCache(str_replace(' ', '', $req['modelName']) . 'calculation' . $engine_id . $generation_id . $year_id, $this->getJobs($jobs, $req['requestId']));
-            print_r(Yii::$app->cache->get(str_replace(' ', '', $req['modelName']) . 'calculation' . $engine_id . $generation_id . $year_id));
-            exit();
+            
             return json_encode($responce);
         }
     }
@@ -394,7 +419,7 @@ class SiteController extends Controller
        return $new_job;
     }
     
-    public function addToCache($cache_name, $data = null)
+    protected function addToCache($cache_name, $data = null)
     {
         $cache_data = Yii::$app->cache->get($cache_name);
         if(!$cache_data){

@@ -4,7 +4,7 @@
 
 $this->title = 'My Yii Application';
 ?>
-<?= \frontend\widgets\CalculatorWidget::widget(['tpl' => 'index', 'cache_time' => 60])?>
+<?= \frontend\widgets\CalculatorWidget::widget(['tpl' => 'index', 'car_id' => 2, 'cache_time' => 60])?>
 	<section class="content">
 		
 <div class="row">
