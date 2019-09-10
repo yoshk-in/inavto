@@ -78,7 +78,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $model = new Orders();
-     //   $main_page = $this->addToCache('main_page', Pages::find()->where(['main' => 1])->one());
+     
         $main_page = Yii::$app->cache->get('main_page');
         if(!$main_page){
             $main_page = Pages::find()->where(['main' => 1])->one();
@@ -86,7 +86,6 @@ class SiteController extends Controller
         }
         
         if($model->load(Yii::$app->request->post())){
-            $show = 'show';
             $model->model = Yii::$app->request->post('model');
             $model->generation_id = Yii::$app->request->post('generation');
             $model->engine_id = Yii::$app->request->post('motor');
@@ -96,8 +95,6 @@ class SiteController extends Controller
             if($model->save()){
                 Yii::$app->session->setFlash('success', "Данные отправлены");
                 Yii::$app->session->setFlash('show', "show");
-                print_r($_SESSION);
-                exit();
                 $this->redirect(Yii::$app->request->referrer);
             }else{
                 Yii::$app->session->setFlash('error', "Ошибка отправки");
@@ -105,17 +102,20 @@ class SiteController extends Controller
                 $this->redirect([Yii::$app->request->referrer, 'model' => $model]);
             }
         }
+        
         return $this->render('index', [
             'model' => $model,
-            'main_page' => $main_page
+            'main_page' => $main_page,
         ]);
     }
+    
+    
 
     /**
      * Logs in a user.
      *
      * @return mixed
-     */
+     *
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
@@ -138,7 +138,7 @@ class SiteController extends Controller
      * Logs out the current user.
      *
      * @return mixed
-     */
+     *
     public function actionLogout()
     {
         Yii::$app->user->logout();
@@ -168,12 +168,27 @@ class SiteController extends Controller
             ]);
         }
     }
+    
+    public function actionPage($alias)
+    {
+        $model = Yii::$app->cache->get('page_'.$alias);
+        if(!$model){
+            $model = Pages::find()->where(['alias' => $alias])->one();
+            Yii::$app->cache->set('page_'.$alias, $model, $this->cache_time);
+        }
+        
+        if(!$model){
+             throw new \yii\web\HttpException(404, 'Такой страницы нет');
+        }
+        
+        return $this->render('page', ['model' => $model]);
+    }
 
     /**
      * Displays about page.
      *
      * @return mixed
-     */
+     *
     public function actionAbout()
     {
         return $this->render('about');
@@ -183,7 +198,7 @@ class SiteController extends Controller
      * Signs user up.
      *
      * @return mixed
-     */
+     *
     public function actionSignup()
     {
         $model = new SignupForm();
@@ -201,7 +216,7 @@ class SiteController extends Controller
      * Requests password reset.
      *
      * @return mixed
-     */
+     *
     public function actionRequestPasswordReset()
     {
         $model = new PasswordResetRequestForm();
@@ -226,7 +241,7 @@ class SiteController extends Controller
      * @param string $token
      * @return mixed
      * @throws BadRequestHttpException
-     */
+     *
     public function actionResetPassword($token)
     {
         try {
@@ -252,7 +267,7 @@ class SiteController extends Controller
      * @param string $token
      * @throws BadRequestHttpException
      * @return yii\web\Response
-     */
+     *
     public function actionVerifyEmail($token)
     {
         try {
@@ -275,7 +290,7 @@ class SiteController extends Controller
      * Resend verification email
      *
      * @return mixed
-     */
+     *
     public function actionResendVerificationEmail()
     {
         $model = new ResendVerificationEmailForm();
@@ -290,7 +305,7 @@ class SiteController extends Controller
         return $this->render('resendVerificationEmail', [
             'model' => $model
         ]);
-    }
+    }*/
     
     public function actionCalculator()
     {

@@ -1,14 +1,16 @@
 <?php
 
-namespace common\models;
+namespace backend\models;
 
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use yii\behaviors\SluggableBehavior;
 use yii\db\Expression;
+use yii\helpers\Inflector;
 
 /**
- * This is the model class for table "pages".
+ * This is the model class for table "news".
  *
  * @property int $id
  * @property string $title
@@ -19,11 +21,10 @@ use yii\db\Expression;
  * @property string $image
  * @property string $description
  * @property string $keywords
- * @property int $main
  * @property string $created
  * @property string $modified
  */
-class Pages extends \yii\db\ActiveRecord
+class News extends \yii\db\ActiveRecord
 {
     public function behaviors()
     {
@@ -36,7 +37,17 @@ class Pages extends \yii\db\ActiveRecord
                 ],
                 // если вместо метки времени UNIX используется datetime:
                 'value' => new Expression('NOW()'),
-            ]
+            ],
+            [
+                'class' => SluggableBehavior::className(),
+              //  'attribute' => 'title',
+                'slugAttribute' => 'alias',
+                'value' => function($event){
+                    if(!empty($event->sender->alias))
+                        return $event->sender->alias;
+                    return Inflector::slug($event->sender->title);
+                }
+            ],
         ];
     }
     /**
@@ -44,7 +55,7 @@ class Pages extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'pages';
+        return 'news';
     }
 
     /**
@@ -55,7 +66,7 @@ class Pages extends \yii\db\ActiveRecord
         return [
             [['title'], 'required'],
             [['body', 'description', 'keywords'], 'string'],
-            [['main', 'menu'], 'integer'],
+            [['publish'], 'integer'],
             [['created', 'modified'], 'safe'],
             [['title', 'meta_title', 'alias', 'introtext', 'image'], 'string', 'max' => 255],
         ];
@@ -71,15 +82,14 @@ class Pages extends \yii\db\ActiveRecord
             'title' => 'Название',
             'meta_title' => 'Мета-заголовок',
             'alias' => 'Alias',
-            'introtext' => 'Превью',
+            'introtext' => 'превью',
             'body' => 'Текст',
-            'image' => 'Изображение',
+            'image' => 'Image',
             'description' => 'Мета-описание',
             'keywords' => 'Ключевые слова',
-            'main' => 'Главная',
-            'menu' => 'Показывать в меню',
             'created' => 'Дата создания',
             'modified' => 'Дата изменения',
+            'publish' => 'Опубликовано'
         ];
     }
 }

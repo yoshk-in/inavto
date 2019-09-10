@@ -1,10 +1,8 @@
-<?php
-
-/* @var $this yii\web\View */
-
-$this->title = 'My Yii Application';
+<?php 
+    if ($this->beginCache('CalculatorWidget', ['duration' => 60])) { 
+    echo \frontend\widgets\CalculatorWidget::widget(['tpl' => 'index', 'car_id' => 2, 'cache_time' => 60]);     
+    $this->endCache(); } 
 ?>
-<?= \frontend\widgets\CalculatorWidget::widget(['tpl' => 'index', 'car_id' => 2, 'cache_time' => 60])?>
 	<section class="content">
 		
 <div class="row">
@@ -15,7 +13,9 @@ $this->title = 'My Yii Application';
         <?php endif; ?>
     </div>
     <div class="span3">
-        <?= \frontend\widgets\NewsWidget::widget(['tpl' => 'index', 'cache_time' => 60])?>
+        <?php
+              echo  \frontend\widgets\NewsWidget::widget(['tpl' => 'index', 'cache_time' => 60]);
+        ?>
     </div>
 </div>
 	</section>

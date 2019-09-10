@@ -50,7 +50,9 @@ return [
                 'obsluzhivanie/' => 'obsluzhivanie/index',
                 'obsluzhivanie/<alias:[\w_-]+>' => 'obsluzhivanie/category',
                 'obsluzhivanie/<alias:[\w_-]+>?s=<slug:[\w_-]+>' => 'obsluzhivanie/subcategory',
-                'site/calculator' => 'site/calculator'
+                'site/calculator' => 'site/calculator',
+                'news/' => 'news/index',
+                '<alias:[\w_-]+>' => 'site/page',
             ],
         ],
     ],

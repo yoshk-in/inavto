@@ -30,7 +30,20 @@ $this->params['breadcrumbs'][] = $this->title;
             //'image',
             //'description:ntext',
             //'keywords:ntext',
-            'main',
+            [
+                'attribute' => 'main',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->main ? '<span>Да</span>' : '<span>Нет</span>';
+                }
+            ],
+            [
+                'attribute' => 'menu',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->menu ? '<span>Да</span>' : '<span>Нет</span>';
+                }
+            ],
             'created',
             //'modified',
 

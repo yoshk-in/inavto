@@ -3,7 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\News;
+use backend\models\News;
 use backend\models\SearchNews;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -51,6 +51,7 @@ class NewsController extends SiteController
         $model = new News();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Новость добавлена");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -71,6 +72,7 @@ class NewsController extends SiteController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Новость изменена");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -89,7 +91,7 @@ class NewsController extends SiteController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('success', "Новость удалена");
         return $this->redirect(['index']);
     }
 

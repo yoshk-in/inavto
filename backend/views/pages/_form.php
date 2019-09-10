@@ -49,6 +49,8 @@ mihaildev\elfinder\Assets::noConflict($this);
     <?= $form->field($model, 'keywords')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'main')->checkbox(['0', '1']) ?>
+    
+    <?= $form->field($model, 'menu')->checkbox(['0', '1']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>

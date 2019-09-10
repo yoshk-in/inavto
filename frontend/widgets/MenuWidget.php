@@ -11,6 +11,7 @@ namespace frontend\widgets;
 use yii\base\Widget;
 use common\models\PartsCategories;
 use common\models\JobsCategories;
+use common\models\Pages;
 use Yii;
 /**
  * Description of MenuWidget
@@ -21,9 +22,6 @@ class MenuWidget extends Widget{
     
    public $tpl;
    public $cache_time;
-   public $services_cats;
-   public $repairs_cats;
-   public $parts_cats;
    public $menuHtml;
     
     public function init(){
@@ -34,37 +32,43 @@ class MenuWidget extends Widget{
 
     public function run()
     {
-        $this->services_cats = Yii::$app->cache->get('services_cats');
-        if(!$this->services_cats){
-            $this->services_cats = JobsCategories::find()->where(['in_menu' => '1', 'service' => 1])->indexBy('id')->orderBy(['id' => 'DESC'])->asArray()->all();
-            Yii::$app->cache->set('services_cats', $this->services_cats, $this->cache_time);
+        $services_cats = Yii::$app->cache->get('services_cats');
+        if(!$services_cats){
+            $services_cats = JobsCategories::find()->where(['in_menu' => '1', 'service' => 1])->indexBy('id')->orderBy(['id' => 'DESC'])->asArray()->all();
+            Yii::$app->cache->set('services_cats', $services_cats, $this->cache_time);
         }
         
-        $this->repairs_cats = Yii::$app->cache->get('repairs_cats');
-        if(!$this->repairs_cats){
-            $this->repairs_cats = JobsCategories::find()->where(['in_menu' => '1'])->andWhere(['service' => 0])->orWhere(['is', 'service', null])->indexBy('id')->orderBy(['id' => 'DESC'])->asArray()->all();
-            Yii::$app->cache->set('repairs_cats', $this->repairs_cats, $this->cache_time);
+        $repairs_cats = Yii::$app->cache->get('repairs_cats');
+        if(!$repairs_cats){
+            $repairs_cats = JobsCategories::find()->where(['in_menu' => '1'])->andWhere(['service' => 0])->orWhere(['is', 'service', null])->indexBy('id')->orderBy(['id' => 'DESC'])->asArray()->all();
+            Yii::$app->cache->set('repairs_cats', $repairs_cats, $this->cache_time);
         }
         
-        $this->parts_cats = Yii::$app->cache->get('parts_cats');
-        if(!$this->parts_cats){
-            $this->parts_cats = PartsCategories::find()->where(['in_menu' => '1'])->indexBy('id')->orderBy(['id' => 'DESC'])->asArray()->all();
-            Yii::$app->cache->set('parts_cats', $this->parts_cats, $this->cache_time);
+        $parts_cats = Yii::$app->cache->get('parts_cats');
+        if(!$parts_cats){
+            $parts_cats = PartsCategories::find()->where(['in_menu' => '1'])->indexBy('id')->orderBy(['id' => 'DESC'])->asArray()->all();
+            Yii::$app->cache->set('parts_cats', $parts_cats, $this->cache_time);
         }
         
-        $this->menuHtml = $this->getMenuHtml($this->getTree($this->services_cats), $this->getTree($this->repairs_cats), $this->getTree($this->parts_cats));
+        $pages = Yii::$app->cache->get('pages_list');
+        if(!$pages){
+            $pages = Pages::find()->select(['id', 'title', 'alias', 'introtext', 'image'])->where(['menu' => 1])->all();
+            Yii::$app->cache->set('pages_list', $pages, $this->cache_time);
+        }
+        
+        $this->menuHtml = $this->getMenuHtml($this->getTree($services_cats), $this->getTree($repairs_cats), $this->getTree($parts_cats), $pages);
         
         return $this->menuHtml;
     }
 
-    protected function getMenuHtml($service_cats = array(), $repair_cats = array(), $parts_cats = array())
+    protected function getMenuHtml($service_cats = array(), $repair_cats = array(), $parts_cats = array(), $pages = array())
     {
         $str = '';
-        $str .= $this->catToTemplate($service_cats, $repair_cats, $parts_cats);
+        $str .= $this->catToTemplate($service_cats, $repair_cats, $parts_cats, $pages);
         return $str;
     }
 
-    protected function catToTemplate($service_cats, $repair_cats, $parts_cats)
+    protected function catToTemplate($service_cats, $repair_cats, $parts_cats, $pages)
     {
         ob_start();
         include __DIR__ . '/menu/' . $this->tpl;

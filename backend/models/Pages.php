@@ -67,7 +67,7 @@ class Pages extends \yii\db\ActiveRecord
         return [
             [['title'], 'required'],
             [['body', 'description', 'keywords'], 'string'],
-            [['main'], 'integer'],
+            [['main', 'menu'], 'integer'],
             [['created', 'modified'], 'safe'],
             [['title', 'meta_title', 'alias', 'introtext', 'image'], 'string', 'max' => 255],
         ];
@@ -89,6 +89,7 @@ class Pages extends \yii\db\ActiveRecord
             'description' => 'Мета-описание',
             'keywords' => 'Ключевые слова',
             'main' => 'Главная',
+            'menu' => 'Показывать в меню',
             'created' => 'Дата создания',
             'modified' => 'Дата изменения',
         ];
