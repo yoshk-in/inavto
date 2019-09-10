@@ -19,23 +19,25 @@ class ObsluzhivanieController extends SiteController
                 ->where([
                     'job_category_id' => \yii\helpers\ArrayHelper::map(JobsCategories::find()->where(['service' => 1])->all(), 'id', 'id')
                 ])->all(), 'id', 'job_id');
-        $jobs = $this->addToCache('obsluzhivanie_jobs', Jobs::find()->where(['id' => $links])->with([
-            'cats' => function($query){
-                return $query->where('service = 1');
-            },
-            'motors' => function($query){
-                return $query->select('id, title, generation_id')->orderBy('title')->with('generation');
-            },
-            'parts' => function($query){
-                return $query->select('id, price');
-            }
-        ])->asArray()->all());
         
-        $remont_parents = JobsCategories::find()->where(['is', 'parent', null])->andWhere(['service' => 1])->with(['car'])->asArray()->all();
-        
-        $final_arr = $this->finalArr($remont_parents, $this->getTree($jobs));
-    //    print_r($final_arr);
-    //    exit();
+        $final_arr = Yii::$app->cache->get('obsluzhivanie_jobs');
+        if(!$final_arr){
+            $jobs = Jobs::find()->where(['id' => $links])->with([
+                'cats' => function($query){
+                    return $query->where('service = 1');
+                },
+                'motors' => function($query){
+                    return $query->select('id, title, generation_id')->orderBy('title')->with('generation');
+                },
+                'parts' => function($query){
+                    return $query->select('id, price');
+                }
+            ])->asArray()->all();
+            $remont_parents = JobsCategories::find()->where(['is', 'parent', null])->andWhere(['service' => 1])->with(['car'])->asArray()->all();
+            $final_arr = $this->finalArr($remont_parents, $this->getTree($jobs));
+            Yii::$app->cache->set('obsluzhivanie_jobs', $final_arr, $this->cache_time);
+        }
+   
        return $this->render('index',[
            'jobs' => $final_arr
        ]);
@@ -90,31 +92,35 @@ class ObsluzhivanieController extends SiteController
                 ])->all(), 'id', 'job_id'));
         }
         
-        $links = \yii\helpers\ArrayHelper::map(\common\models\JobcatsJobs::find()
+        $final_arr = Yii::$app->cache->get('obsluzhivanie_jobs_'.$alias.'_'.$f_gen.$f_motor);
+        if(!$final_arr){
+            $links = \yii\helpers\ArrayHelper::map(\common\models\JobcatsJobs::find()
                 ->where([
                     'job_category_id' => \yii\helpers\ArrayHelper::map(JobsCategories::find()->where(['parent' => $model->id])->andWhere(['service' => 1])->all(), 'id', 'id')
                 ])->all(), 'id', 'job_id');
-        
-        $jobs = $this->addToCache('obsluzhivanie_jobs_'.$alias.'_'.$f_gen.$f_motor, Jobs::find()->where(['id' => $links])->andWhere($gen_links)->andWhere($gen_motors)->with([
-            'cats' => function($query){
-                return $query->where('service = 1');
-            },
-            'motors' => function($query) use($f_gen){
-                if($f_gen){
-                    $query->where('generation_id = '.$f_gen);
+            $jobs = Jobs::find()->where(['id' => $links])->andWhere($gen_links)->andWhere($gen_motors)->with([
+                'cats' => function($query){
+                    return $query->where('service = 1');
+                },
+                'motors' => function($query) use($f_gen){
+                    if($f_gen){
+                        $query->where('generation_id = '.$f_gen);
+                    }
+                    return $query->select('id, title, generation_id')->with('generation');
+                },
+                'parts' => function($query){
+                    return $query->select('id, price');
                 }
-                return $query->select('id, title, generation_id')->with('generation');
-            },
-            'parts' => function($query){
-                return $query->select('id, price');
-            }
-        ])->asArray()->all());
+            ])->asArray()->all();
+            $final_arr = $this->getTree($jobs);
+            Yii::$app->cache->set('obsluzhivanie_jobs_'.$alias.'_'.$f_gen.$f_motor, $final_arr, $this->cache_time);
+        }
         
-        $final_arr = $this->getTree($jobs);
-        
-        $parents = $this->addToCache('parents_cats_jobs2', JobsCategories::find()->where(['is', 'parent', null])->andWhere(['service' => 1])->all());
-     //   print_r($this->getTree($jobs));
-     //   exit();
+        $parents = Yii::$app->cache->get('parents_cats_jobs2');
+        if(!$parents){
+            $parents = JobsCategories::find()->where(['is', 'parent', null])->andWhere(['service' => 1])->all();
+            Yii::$app->cache->set('parents_cats_jobs2', $parents, $this->cache_time);
+        }
         
         return $this->render('view', [
             'jobs' => $final_arr,
@@ -135,16 +141,6 @@ class ObsluzhivanieController extends SiteController
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-    
-    protected function addToCache($cache_name, $data = null)
-    {
-        $cache_data = Yii::$app->cache->get($cache_name);
-        if(!$cache_data){
-            $cache_data = $data;
-            Yii::$app->cache->set($cache_name, $cache_data, $this->cache_time);
-        }
-        return $cache_data;
     }
     
     protected function getTree($arr )

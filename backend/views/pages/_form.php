@@ -2,6 +2,10 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use mihaildev\ckeditor\CKEditor;
+use mihaildev\elfinder\InputFile;
+use mihaildev\elfinder\ElFinder;
+mihaildev\elfinder\Assets::noConflict($this);
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Pages */
@@ -10,7 +14,9 @@ use yii\widgets\ActiveForm;
 
 <div class="pages-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype' => 'multipart/form-data']
+    ]); ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
@@ -18,24 +24,34 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'alias')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'introtext')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'introtext')->textarea(['rows' => 3]) ?>
 
-    <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
+    <?php
+        echo $form->field($model, 'body')->widget(CKEditor::className(), [
+            'editorOptions' => ElFinder::ckeditorOptions('elfinder', ['height' => '200'])
+        ]);
+    ?>
 
-    <?= $form->field($model, 'image')->textInput(['maxlength' => true]) ?>
+    <?php
+        echo $form->field($model, 'image')->widget(InputFile::className(), [
+            'language'      => 'ru',
+            'controller'    => 'elfinder', // вставляем название контроллера, по умолчанию равен elfinder
+            'filter'        => 'image',    // фильтр файлов, можно задать массив фильтров https://github.com/Studio-42/elFinder/wiki/Client-configuration-options#wiki-onlyMimes
+            'template'      => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
+            'options'       => ['class' => 'form-control'],
+            'buttonOptions' => ['class' => 'btn btn-default'],
+            'multiple'      => false       // возможность выбора нескольких файлов
+        ]);
+    ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'keywords')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'main')->textInput() ?>
-
-    <?= $form->field($model, 'created')->textInput() ?>
-
-    <?= $form->field($model, 'modified')->textInput() ?>
+    <?= $form->field($model, 'main')->checkbox(['0', '1']) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

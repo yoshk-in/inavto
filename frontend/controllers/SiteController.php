@@ -15,6 +15,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use common\models\Orders;
+use common\models\Pages;
 
 /**
  * Site controller
@@ -77,7 +78,12 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $model = new Orders();
-        $show = 'show';
+     //   $main_page = $this->addToCache('main_page', Pages::find()->where(['main' => 1])->one());
+        $main_page = Yii::$app->cache->get('main_page');
+        if(!$main_page){
+            $main_page = Pages::find()->where(['main' => 1])->one();
+            Yii::$app->cache->set('main_page', $main_page, $this->cache_time);
+        }
         
         if($model->load(Yii::$app->request->post())){
             $show = 'show';
@@ -101,6 +107,7 @@ class SiteController extends Controller
         }
         return $this->render('index', [
             'model' => $model,
+            'main_page' => $main_page
         ]);
     }
 
@@ -293,22 +300,26 @@ class SiteController extends Controller
             $engine_id = $req['motorId'];
             $generation_id = $req['genId'];
             $year_id = $req['range'];
-           
-            $categories_links = $this->addToCache('categories_links_calc', \yii\helpers\ArrayHelper::map($this->addToCache('serviece_id_arr', \common\models\JobcatsJobs::find()->where(['job_category_id' => \yii\helpers\ArrayHelper::map(\common\models\JobsCategories::find()->where(['service' => 1])->all(), 'id', 'id')])->all()), 'id', 'job_id'));
-            $engine_links = $this->addToCache('engine_links' . $engine_id, \yii\helpers\ArrayHelper::map(\common\models\EnginesJobs::find()->where(['engine_id' => $engine_id])->all(), 'id', 'job_id'));
-            $generations_links = $this->addToCache('generations_links' . $generation_id, \yii\helpers\ArrayHelper::map(\common\models\JobsGenerations::find()->where(['generation_id' => $generation_id])->all(), 'id', 'job_id'));
-            $years_links = $this->addToCache('years_links' . $year_id, \yii\helpers\ArrayHelper::map(\common\models\YearsJobs::find()->where(['year_id' => $year_id])->all(), 'id', 'job_id'));
-            $jobs_arr = array_intersect($engine_links, $generations_links, $years_links, $categories_links);
-            $jobs = $this->addToCache(str_replace(' ', '', $req['modelName']) . 'jobs' . $engine_id . $generation_id . $year_id, \common\models\Jobs::find()->where(['id' => $jobs_arr, ])
-                    ->with([
-                        'parts' => function($query){
-                            return $query->with('brand');
-                        }
-                     ])
-                    ->asArray()
-                    ->all());
-        
-            $responce = $this->addToCache(str_replace(' ', '', $req['modelName']) . 'calculation' . $engine_id . $generation_id . $year_id, $this->getJobs($jobs, $req['requestId']));
+            
+            $responce = Yii::$app->cache->get(str_replace(' ', '', $req['modelName']) . 'calculation' . $engine_id . $generation_id . $year_id);
+            if(!$responce){
+                $categories_links = \yii\helpers\ArrayHelper::map(\common\models\JobcatsJobs::find()->where(['job_category_id' => \yii\helpers\ArrayHelper::map(\common\models\JobsCategories::find()->where(['service' => 1])->all(), 'id', 'id')])->all(), 'id', 'job_id');
+                $engine_links = \yii\helpers\ArrayHelper::map(\common\models\EnginesJobs::find()->where(['engine_id' => $engine_id])->all(), 'id', 'job_id');
+                $generations_links = \yii\helpers\ArrayHelper::map(\common\models\JobsGenerations::find()->where(['generation_id' => $generation_id])->all(), 'id', 'job_id');
+                $years_links = \yii\helpers\ArrayHelper::map(\common\models\YearsJobs::find()->where(['year_id' => $year_id])->all(), 'id', 'job_id');
+                $jobs_arr = array_intersect($engine_links, $generations_links, $years_links, $categories_links);
+                $jobs = \common\models\Jobs::find()->where(['id' => $jobs_arr, ])
+                        ->with([
+                            'parts' => function($query){
+                                return $query->with('brand');
+                            }
+                         ])
+                        ->asArray()
+                        ->all();
+
+                $responce = $this->getJobs($jobs, $req['requestId']);
+                Yii::$app->cache->set(str_replace(' ', '', $req['modelName']) . 'calculation' . $engine_id . $generation_id . $year_id, $responce, $this->cache_time);
+            }
             
             return json_encode($responce);
         }
@@ -417,15 +428,5 @@ class SiteController extends Controller
             $new_job['maxPartsPrice'] = max($prices);
        }
        return $new_job;
-    }
-    
-    protected function addToCache($cache_name, $data = null)
-    {
-        $cache_data = Yii::$app->cache->get($cache_name);
-        if(!$cache_data){
-            $cache_data = $data;
-            Yii::$app->cache->set($cache_name, $cache_data, $this->cache_time);
-        }
-        return $cache_data;
     }
 }

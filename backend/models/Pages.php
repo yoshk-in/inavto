@@ -1,11 +1,13 @@
 <?php
 
-namespace common\models;
+namespace backend\models;
 
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use yii\behaviors\SluggableBehavior;
 use yii\db\Expression;
+use yii\helpers\Inflector;
 
 /**
  * This is the model class for table "pages".
@@ -36,7 +38,17 @@ class Pages extends \yii\db\ActiveRecord
                 ],
                 // если вместо метки времени UNIX используется datetime:
                 'value' => new Expression('NOW()'),
-            ]
+            ],
+            [
+                'class' => SluggableBehavior::className(),
+              //  'attribute' => 'title',
+                'slugAttribute' => 'alias',
+                'value' => function($event){
+                    if(!empty($event->sender->alias))
+                        return $event->sender->alias;
+                    return Inflector::slug($event->sender->title);
+                }
+            ],
         ];
     }
     /**
