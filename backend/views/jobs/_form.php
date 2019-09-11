@@ -51,6 +51,14 @@ use kartik\select2\Select2;
         ],
     ]);?>
     
+     <?=$form->field($model, 'items')->widget(Select2::classname(), [
+     //   'data' => yii\helpers\ArrayHelper::map(common\models\Jobs::find()->select(['id', 'title'])->all(), 'id', 'title'),
+        'options' => ['placeholder' => 'Выбрать запчасти', 'multiple' => 'multiple', 'value' => $model->parts && !empty($model->parts) ? \yii\helpers\ArrayHelper::map($model->parts, 'id', 'id') : ''],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]);?>
+    
     <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
 
    <?= $form->field($model, 'recomended')->checkbox(['0', '1']) ?>
@@ -70,15 +78,18 @@ use kartik\select2\Select2;
           //var generations = $("input[name='Parts[generations]']");
             var engine_wrap = $('.field-jobs-engines');
             var engine_id = $('#jobs-engines');
+            var parts = $('#jobs-items');
             
             showItems(car_id, generation_wrap);
             getGenerations(car_id.val(), generations);
             showItems(generations, engine_wrap);
             getEngines(String(generations.val()), engine_id);
+            getParts(String(car_id.val()), parts);
             
             car_id.change(function(){
                 showItems(car_id, generation_wrap);
                 getGenerations(car_id.val(), generations);
+                getParts(String(car_id.val()), parts);
              });
              
              generations.change(function(){
@@ -116,6 +127,20 @@ use kartik\select2\Select2;
                      $.ajax({
                         type: "GET",
                         url: '<?= yii\helpers\Url::to(['jobs/engines']); ?>', 
+                        data: "id="+val_item+"&current_id="+selector.val(),
+                        success: function(res){
+                            selector.empty().append(res);
+                        }, 
+                        error: function(){
+                          alert('error');
+                        }
+                    });
+                 }
+                 
+                 function getParts(val_item, selector){
+                     $.ajax({
+                        type: "GET",
+                        url: '<?= yii\helpers\Url::to(['jobs/parts']); ?>', 
                         data: "id="+val_item+"&current_id="+selector.val(),
                         success: function(res){
                             selector.empty().append(res);

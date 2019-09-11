@@ -15,27 +15,28 @@ class RemontController extends SiteController
 {
     public function actionIndex()
     {
-        $links = \yii\helpers\ArrayHelper::map(\common\models\JobcatsJobs::find()
+        $final_arr = Yii::$app->cache->get('all_remont_jobs');
+        if(!$final_arr){
+            $links = \yii\helpers\ArrayHelper::map(\common\models\JobcatsJobs::find()
                 ->where([
                     'job_category_id' => \yii\helpers\ArrayHelper::map(JobsCategories::find()->where(['is', 'service', null])->orWhere(['service' => 0])->all(), 'id', 'id')
                 ])->all(), 'id', 'job_id');
-        $jobs = $this->addToCache('service_jobs', Jobs::find()->where(['id' => $links])->with([
-            'cats' => function($query){
-                return $query->where('service is null')->orWhere('service = 0');
-            },
-            'motors' => function($query){
-                return $query->select('id, title, generation_id')->orderBy('title')->with('generation');
-            },
-            'parts' => function($query){
-                return $query->select('id, price');
-            }
-        ])->asArray()->all());
-        
-        $remont_parents = JobsCategories::find()->where(['is', 'parent', null])->andWhere(['service' => 0])->orWhere(['is', 'service', null])->andWhere(['is', 'parent', null])->with(['car'])->asArray()->all();
-        
-        $final_arr = $this->finalArr($remont_parents, $this->getTree($jobs));
-    //    print_r($final_arr);
-    //    exit();
+            $jobs = Jobs::find()->where(['id' => $links])->with([
+                'cats' => function($query){
+                    return $query->where('service is null')->orWhere('service = 0');
+                },
+                'motors' => function($query){
+                    return $query->select('id, title, generation_id')->orderBy('title')->with('generation');
+                },
+                'parts' => function($query){
+                    return $query->select('id, price');
+                }
+            ])->asArray()->all();
+            $remont_parents = JobsCategories::find()->where(['is', 'parent', null])->andWhere(['service' => 0])->orWhere(['is', 'service', null])->andWhere(['is', 'parent', null])->with(['car'])->asArray()->all();
+            $final_arr = $this->finalArr($remont_parents, $this->getTree($jobs));
+            Yii::$app->cache->set('all_remont_jobs', $final_arr, $this->cache_time);
+        }
+    
        return $this->render('index',[
            'jobs' => $final_arr
        ]);
@@ -69,8 +70,10 @@ class RemontController extends SiteController
         $car = $model->car;
         
         $f_gen = '';
+        $f_motor = '';
         $gen_links = array();
         $current_engines = array();
+        
         if (@$_COOKIE['fModel'] && @$_COOKIE['fGen']) {
             $f_gen = $_COOKIE['fGen'];
             $current_engines = \common\models\Engines::find()->where(['generation_id' => $f_gen])->all();
@@ -80,7 +83,7 @@ class RemontController extends SiteController
                 ])->all(), 'id', 'job_id'));
         }
         
-        $f_motor = '';
+        
         $gen_motors = array();
         if (@$_COOKIE['fModel'] && @$_COOKIE['fGen'] && @$_COOKIE['fMotor']) {
             $f_motor = $_COOKIE['fMotor'];
@@ -90,31 +93,35 @@ class RemontController extends SiteController
                 ])->all(), 'id', 'job_id'));
         }
         
-        $links = \yii\helpers\ArrayHelper::map(\common\models\JobcatsJobs::find()
+        $final_arr = Yii::$app->cache->get('service_jobs_'.$alias.'_'.$f_gen.$f_motor);
+        if(!$final_arr){
+            $links = \yii\helpers\ArrayHelper::map(\common\models\JobcatsJobs::find()
                 ->where([
                     'job_category_id' => \yii\helpers\ArrayHelper::map(JobsCategories::find()->where(['parent' => $model->id])->andWhere(['is', 'service', null])->orWhere(['service' => 0])->andWhere(['parent' => $model->id])->all(), 'id', 'id')
                 ])->all(), 'id', 'job_id');
-        
-        $jobs = $this->addToCache('service_jobs_'.$alias.'_'.$f_gen.$f_motor, Jobs::find()->where(['id' => $links])->andWhere($gen_links)->andWhere($gen_motors)->with([
-            'cats' => function($query){
-                return $query->where('service is null')->orWhere('service = 0');
-            },
-            'motors' => function($query) use($f_gen){
-                if($f_gen){
-                    $query->where('generation_id = '.$f_gen);
+            $jobs = Jobs::find()->where(['id' => $links])->andWhere($gen_links)->andWhere($gen_motors)->with([
+                'cats' => function($query){
+                    return $query->where('service is null')->orWhere('service = 0');
+                },
+                'motors' => function($query) use($f_gen){
+                    if($f_gen){
+                        $query->where('generation_id = '.$f_gen);
+                    }
+                    return $query->select('id, title, generation_id')->with('generation');
+                },
+                'parts' => function($query){
+                    return $query->select('id, price');
                 }
-                return $query->select('id, title, generation_id')->with('generation');
-            },
-            'parts' => function($query){
-                return $query->select('id, price');
-            }
-        ])->asArray()->all());
+            ])->asArray()->all();
+            $final_arr = $this->getTree($jobs);
+            Yii::$app->cache->set('service_jobs_'.$alias.'_'.$f_gen.$f_motor, $final_arr, $this->cache_time);
+        }
         
-        $final_arr = $this->getTree($jobs);
-        
-        $parents = $this->addToCache('parents_cats_jobs', JobsCategories::find()->where(['is', 'parent', null])->andWhere(['is', 'service', null])->orWhere(['service' => 0])->all());
-     //   print_r($this->getTree($jobs));
-     //   exit();
+        $parents = Yii::$app->cache->get('parents_cats_jobs');
+        if(!$parents){
+            $parents = JobsCategories::find()->where(['is', 'parent', null])->andWhere(['is', 'service', null])->orWhere(['service' => 0])->all();
+            Yii::$app->cache->set('parents_cats_jobs', $parents, $this->cache_time);
+        }
         
         return $this->render('view', [
             'jobs' => $final_arr,
@@ -135,16 +142,6 @@ class RemontController extends SiteController
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-    
-    protected function addToCache($cache_name, $data = null)
-    {
-        $cache_data = Yii::$app->cache->get($cache_name);
-        if(!$cache_data){
-            $cache_data = $data;
-            Yii::$app->cache->set($cache_name, $cache_data, $this->cache_time);
-        }
-        return $cache_data;
     }
     
     protected function getTree($arr )

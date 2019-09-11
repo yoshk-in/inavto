@@ -35,8 +35,9 @@ class News extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'alias', 'introtext', 'body', 'created', 'modified'], 'required'],
+            [['title'], 'required'],
             [['body', 'description', 'keywords'], 'string'],
+            [['publish'], 'integer'],
             [['created', 'modified'], 'safe'],
             [['title', 'meta_title', 'alias', 'introtext', 'image'], 'string', 'max' => 255],
         ];
@@ -59,6 +60,7 @@ class News extends \yii\db\ActiveRecord
             'keywords' => 'Keywords',
             'created' => 'Created',
             'modified' => 'Modified',
+            'publish' => 'Опубликовано'
         ];
     }
 }

@@ -33,6 +33,7 @@ class Jobs extends \yii\db\ActiveRecord
     public $works;
     public $car_id;
     public $generations;
+    public $items;
     
     public function behaviors()
     {
@@ -65,7 +66,7 @@ class Jobs extends \yii\db\ActiveRecord
             [['title'], 'required'],
             [['jc_id', 'recomended'], 'integer'],
             [['price'], 'number'],
-            [['created', 'modified', 'engines', 'generations', 'years', 'works'], 'safe'],
+            [['created', 'modified', 'engines', 'generations', 'years', 'works', 'items'], 'safe'],
             [['title'], 'string', 'max' => 255],
             [['jc_id'], 'exist', 'skipOnError' => true, 'targetClass' => JobsCategories::className(), 'targetAttribute' => ['jc_id' => 'id']],
         ];
@@ -86,7 +87,8 @@ class Jobs extends \yii\db\ActiveRecord
             'modified' => 'Дата изменения',
             'generations' => 'Поколения авто',
             'engines' => 'Выбрать двигатели',
-            'years' => 'Срок эксплуотации авто'
+            'years' => 'Срок эксплуотации авто',
+            'items' => 'Набор запчастей'
         ];
     }
 
@@ -155,6 +157,13 @@ class Jobs extends \yii\db\ActiveRecord
         foreach($this->works as $value){
             $item = JobsCategories::findOne($value);
             $this->link('cats', $item);
+        }
+        
+        $this->unlinkAll('parts', true);
+        if($this->items && !empty($this->works))
+        foreach($this->items as $value){
+            $item = Parts::findOne($value);
+            $this->link('parts', $item);
         }
         
         parent::afterSave($insert, $changedAttributes);

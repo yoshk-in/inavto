@@ -178,6 +178,15 @@ class Parts extends \yii\db\ActiveRecord
         return $this->hasMany(Engines::className(), ['id' => 'engine_id'])->viaTable('parts_engines', ['part_id' => 'id']);
     }
     
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $this->original = !empty($this->original)  ? $this->original : null;
+            return true;
+        }
+        return false;
+    }
+    
     public function afterSave($insert, $changedAttributes)
     {
        $this->unlinkAll('generation', true);

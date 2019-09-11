@@ -3,6 +3,9 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "pages".
@@ -22,6 +25,20 @@ use Yii;
  */
 class Pages extends \yii\db\ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'modified'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['modified'],
+                ],
+                // если вместо метки времени UNIX используется datetime:
+                'value' => new Expression('NOW()'),
+            ]
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -36,9 +53,9 @@ class Pages extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'meta_title', 'alias', 'introtext', 'body', 'image', 'description', 'keywords', 'created', 'modified'], 'required'],
+            [['title'], 'required'],
             [['body', 'description', 'keywords'], 'string'],
-            [['main'], 'integer'],
+            [['main', 'menu'], 'integer'],
             [['created', 'modified'], 'safe'],
             [['title', 'meta_title', 'alias', 'introtext', 'image'], 'string', 'max' => 255],
         ];
@@ -51,17 +68,18 @@ class Pages extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'meta_title' => 'Meta Title',
+            'title' => 'Название',
+            'meta_title' => 'Мета-заголовок',
             'alias' => 'Alias',
-            'introtext' => 'Introtext',
-            'body' => 'Body',
-            'image' => 'Image',
-            'description' => 'Description',
-            'keywords' => 'Keywords',
-            'main' => 'Main',
-            'created' => 'Created',
-            'modified' => 'Modified',
+            'introtext' => 'Превью',
+            'body' => 'Текст',
+            'image' => 'Изображение',
+            'description' => 'Мета-описание',
+            'keywords' => 'Ключевые слова',
+            'main' => 'Главная',
+            'menu' => 'Показывать в меню',
+            'created' => 'Дата создания',
+            'modified' => 'Дата изменения',
         ];
     }
 }

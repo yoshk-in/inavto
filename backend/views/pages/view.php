@@ -7,23 +7,21 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Pages */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Pages', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => 'Информационные страницы', 'url' => ['index']];
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="pages-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('Добавить', ['create', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -34,11 +32,31 @@ $this->params['breadcrumbs'][] = $this->title;
             'meta_title',
             'alias',
             'introtext',
-            'body:ntext',
+            'body:html',
             'image',
+            [
+              'attribute' => 'image',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->image ? '<img src="' . Yii::getAlias('@front_path') . $data->image . '" alt="" />' : '';
+                }
+            ],
             'description:ntext',
             'keywords:ntext',
-            'main',
+            [
+                'attribute' => 'main',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->main ? '<span>Да</span>' : '<span>Нет</span>';
+                }
+            ],
+            [
+                'attribute' => 'menu',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->menu ? '<span>Да</span>' : '<span>Нет</span>';
+                }
+            ],
             'created',
             'modified',
         ],

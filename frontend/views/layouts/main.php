@@ -429,48 +429,11 @@ AppAsset::register($this);
 				</div>
 			</a>
 		</div>
-		<div class="service s1 span3" itemscope itemtype="http://schema.org/AutoRepair">
-			<meta itemprop="name" content="ИНАВТО - сервис VOLVO на Салова 68">
-
-			<a href="/contacts#salova" class="showContacts" itemprop="address" itemscope="" itemtype="http://schema.org/PostalAddress">
-				<meta itemprop="addressLocality" content="Санкт-Петербург, Россия" />
-				<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#placeholder"></use></svg>
-				Ремонт Volvo на <span itemprop="streetAddress">Салова 68</span> - <em>ЮГ</em>
-			</a>
-			<div itemprop="geo" itemscope="" itemtype="http://schema.org/GeoCoordinates">
-				<meta itemprop="longitude" content="30.376824">
-				<meta itemprop="latitude" content="59.886120">
-			</div>
-			<time itemprop="openingHours" datetime="Mo-Su 09:00−21:00" class="openinghours">
-				<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#timer"></use></svg>
-				09:00 - 21:00, без выходных
-			</time>
-
-			<div class="phone">мастер: <a href="tel:+79013723074" class="number"><span itemprop="telephone">(812) 972-30-74</span></a></div>
-			<div class="phone">запчасти: <a href="tel:+78124068197" class="number"><span itemprop="telephone">(812) 406-81-97</span></a></div>
-			<div class="phone">факс: <span itemprop="faxNumber" class="number">(812) 406-81-98</span></div>
-		</div>
-		<div class="service s2 span4" itemscope itemtype="http://schema.org/AutoRepair">
-			<meta itemprop="name" content="ИНАВТО - сервис VOLVO на Екатерининском 5А">
-
-			<a href="/contacts#ekat" class="showContacts" itemprop="address" itemscope="" itemtype="http://schema.org/PostalAddress">
-				<meta itemprop="addressLocality" content="Санкт-Петербург, Россия" />
-				<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#placeholder"></use></svg>
-				Ремонт Volvo на <span itemprop="streetAddress">Екатерининском 5А</span> - <em>СЕВЕР</em>
-			</a>
-			<div itemprop="geo" itemscope="" itemtype="http://schema.org/GeoCoordinates">
-				<meta itemprop="longitude" content="30.441819">
-				<meta itemprop="latitude" content="59.978891">
-			</div>
-			<time itemprop="openingHours" datetime="Mo-Su 09:00−21:00" class="openinghours">
-				<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#timer"></use></svg>
-				09:00 - 21:00, без выходных
-			</time>
-
-			<div class="phone">мастер: <a href="tel:+79013745306" class="number"><span itemprop="telephone">(812) 974-53-06</span></a></div>
-			<div class="phone">мастер: <a href="tel:+79043345005" class="number"><span itemprop="telephone">(904) 334-50-05</span></a></div>
-			<div class="phone">запчасти: <a href="tel:+79013055056" class="number"><span itemprop="telephone">(901) 305-50-56</span></a></div>
-		</div>
+		<?php 
+                    if ($this->beginCache('ContactsWidget', ['duration' => 60])) { 
+                    echo \frontend\widgets\ContactsWidget::widget(['tpl' => 'index']);     
+                    $this->endCache(); } 
+                ?>
 
 		<div class="buttons span2">
 			<button class="btn parts"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#settings"></use></svg>Заказ запчастей</button>

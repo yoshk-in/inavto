@@ -15,6 +15,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use common\models\Orders;
+use common\models\Pages;
 
 /**
  * Site controller
@@ -77,10 +78,14 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $model = new Orders();
-        $show = 'show';
+     
+        $main_page = Yii::$app->cache->get('main_page');
+        if(!$main_page){
+            $main_page = Pages::find()->where(['main' => 1])->one();
+            Yii::$app->cache->set('main_page', $main_page, $this->cache_time);
+        }
         
         if($model->load(Yii::$app->request->post())){
-            $show = 'show';
             $model->model = Yii::$app->request->post('model');
             $model->generation_id = Yii::$app->request->post('generation');
             $model->engine_id = Yii::$app->request->post('motor');
@@ -90,8 +95,6 @@ class SiteController extends Controller
             if($model->save()){
                 Yii::$app->session->setFlash('success', "Данные отправлены");
                 Yii::$app->session->setFlash('show', "show");
-                print_r($_SESSION);
-                exit();
                 $this->redirect(Yii::$app->request->referrer);
             }else{
                 Yii::$app->session->setFlash('error', "Ошибка отправки");
@@ -99,16 +102,20 @@ class SiteController extends Controller
                 $this->redirect([Yii::$app->request->referrer, 'model' => $model]);
             }
         }
+        
         return $this->render('index', [
             'model' => $model,
+            'main_page' => $main_page,
         ]);
     }
+    
+    
 
     /**
      * Logs in a user.
      *
      * @return mixed
-     */
+     *
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
@@ -131,7 +138,7 @@ class SiteController extends Controller
      * Logs out the current user.
      *
      * @return mixed
-     */
+     *
     public function actionLogout()
     {
         Yii::$app->user->logout();
@@ -161,12 +168,27 @@ class SiteController extends Controller
             ]);
         }
     }
+    
+    public function actionPage($alias)
+    {
+        $model = Yii::$app->cache->get('page_'.$alias);
+        if(!$model){
+            $model = Pages::find()->where(['alias' => $alias])->one();
+            Yii::$app->cache->set('page_'.$alias, $model, $this->cache_time);
+        }
+        
+        if(!$model){
+             throw new \yii\web\HttpException(404, 'Такой страницы нет');
+        }
+        
+        return $this->render('page', ['model' => $model]);
+    }
 
     /**
      * Displays about page.
      *
      * @return mixed
-     */
+     *
     public function actionAbout()
     {
         return $this->render('about');
@@ -176,7 +198,7 @@ class SiteController extends Controller
      * Signs user up.
      *
      * @return mixed
-     */
+     *
     public function actionSignup()
     {
         $model = new SignupForm();
@@ -194,7 +216,7 @@ class SiteController extends Controller
      * Requests password reset.
      *
      * @return mixed
-     */
+     *
     public function actionRequestPasswordReset()
     {
         $model = new PasswordResetRequestForm();
@@ -219,7 +241,7 @@ class SiteController extends Controller
      * @param string $token
      * @return mixed
      * @throws BadRequestHttpException
-     */
+     *
     public function actionResetPassword($token)
     {
         try {
@@ -245,7 +267,7 @@ class SiteController extends Controller
      * @param string $token
      * @throws BadRequestHttpException
      * @return yii\web\Response
-     */
+     *
     public function actionVerifyEmail($token)
     {
         try {
@@ -268,7 +290,7 @@ class SiteController extends Controller
      * Resend verification email
      *
      * @return mixed
-     */
+     *
     public function actionResendVerificationEmail()
     {
         $model = new ResendVerificationEmailForm();
@@ -283,7 +305,7 @@ class SiteController extends Controller
         return $this->render('resendVerificationEmail', [
             'model' => $model
         ]);
-    }
+    }*/
     
     public function actionCalculator()
     {
@@ -293,22 +315,26 @@ class SiteController extends Controller
             $engine_id = $req['motorId'];
             $generation_id = $req['genId'];
             $year_id = $req['range'];
-           
-            $categories_links = $this->addToCache('categories_links_calc', \yii\helpers\ArrayHelper::map($this->addToCache('serviece_id_arr', \common\models\JobcatsJobs::find()->where(['job_category_id' => \yii\helpers\ArrayHelper::map(\common\models\JobsCategories::find()->where(['service' => 1])->all(), 'id', 'id')])->all()), 'id', 'job_id'));
-            $engine_links = $this->addToCache('engine_links' . $engine_id, \yii\helpers\ArrayHelper::map(\common\models\EnginesJobs::find()->where(['engine_id' => $engine_id])->all(), 'id', 'job_id'));
-            $generations_links = $this->addToCache('generations_links' . $generation_id, \yii\helpers\ArrayHelper::map(\common\models\JobsGenerations::find()->where(['generation_id' => $generation_id])->all(), 'id', 'job_id'));
-            $years_links = $this->addToCache('years_links' . $year_id, \yii\helpers\ArrayHelper::map(\common\models\YearsJobs::find()->where(['year_id' => $year_id])->all(), 'id', 'job_id'));
-            $jobs_arr = array_intersect($engine_links, $generations_links, $years_links, $categories_links);
-            $jobs = $this->addToCache(str_replace(' ', '', $req['modelName']) . 'jobs' . $engine_id . $generation_id . $year_id, \common\models\Jobs::find()->where(['id' => $jobs_arr, ])
-                    ->with([
-                        'parts' => function($query){
-                            return $query->with('brand');
-                        }
-                     ])
-                    ->asArray()
-                    ->all());
-        
-            $responce = $this->addToCache(str_replace(' ', '', $req['modelName']) . 'calculation' . $engine_id . $generation_id . $year_id, $this->getJobs($jobs, $req['requestId']));
+            
+            $responce = Yii::$app->cache->get(str_replace(' ', '', $req['modelName']) . 'calculation' . $engine_id . $generation_id . $year_id);
+            if(!$responce){
+                $categories_links = \yii\helpers\ArrayHelper::map(\common\models\JobcatsJobs::find()->where(['job_category_id' => \yii\helpers\ArrayHelper::map(\common\models\JobsCategories::find()->where(['service' => 1])->all(), 'id', 'id')])->all(), 'id', 'job_id');
+                $engine_links = \yii\helpers\ArrayHelper::map(\common\models\EnginesJobs::find()->where(['engine_id' => $engine_id])->all(), 'id', 'job_id');
+                $generations_links = \yii\helpers\ArrayHelper::map(\common\models\JobsGenerations::find()->where(['generation_id' => $generation_id])->all(), 'id', 'job_id');
+                $years_links = \yii\helpers\ArrayHelper::map(\common\models\YearsJobs::find()->where(['year_id' => $year_id])->all(), 'id', 'job_id');
+                $jobs_arr = array_intersect($engine_links, $generations_links, $years_links, $categories_links);
+                $jobs = \common\models\Jobs::find()->where(['id' => $jobs_arr, ])
+                        ->with([
+                            'parts' => function($query){
+                                return $query->with('brand');
+                            }
+                         ])
+                        ->asArray()
+                        ->all();
+
+                $responce = $this->getJobs($jobs, $req['requestId']);
+                Yii::$app->cache->set(str_replace(' ', '', $req['modelName']) . 'calculation' . $engine_id . $generation_id . $year_id, $responce, $this->cache_time);
+            }
             
             return json_encode($responce);
         }
@@ -359,7 +385,7 @@ class SiteController extends Controller
        $new_job['minPartsPrice'] = 0;
        $new_job['maxPartsPrice'] = 0;
        $new_job['sets'] = array();
-       if(@$job['parts']){
+       if($job['parts'] && !empty($job['parts'])){
            $original_count_price = 0;
            $analog_count_price = 0;
            $flag = 0;
@@ -368,11 +394,10 @@ class SiteController extends Controller
            $prices = array();
            $original_prices = array();
            $analog_prices = array();
-           $len = count($job['parts']);
             foreach($job['parts'] as $key => $value){
-                if(@$value['original']){
+                if($value['original']){
                     $original_count_price += $value['price'];
-                    $new_job['sets'][0]['id_set'] = $job['id'];
+                    $new_job['sets'][0]['id_set'] = 'original_' . $flag;
                     $new_job['sets'][0]['setName'] = 'Оригинал';
                     $new_job['sets'][0]['price'] = $original_count_price;
                     $prices[0] = $original_count_price;
@@ -384,18 +409,14 @@ class SiteController extends Controller
                     $new_job['sets'][0]['parts'][$key1]['articul'] = $value['code'];
                     $new_job['sets'][0]['parts'][$key1]['original'] = $value['original'];
                     $new_job['sets'][0]['parts'][$key1]['vendor'] = $value['brand']['title'];
-                    if($flag == $len - 1){
-                        foreach($new_job['sets'][0]['parts'] as $k => $v){
-                            $new_job['sets'][0]['parts'][$key1]['totalPrice'] = $original_count_price;
-                        }
-                    }
+                    $new_job['sets'][0]['parts'][$key1]['totalPrice'] = $value['price'];
                     $key1++;
                 }else{
                     $analog_count_price += $value['price'];
-                    $new_job['sets'][1]['id_set'] = $job['id'];
+                    $new_job['sets'][1]['id_set'] = 'analog_' . $flag;
                     $new_job['sets'][1]['setName'] = 'Аналог';
-                    $new_job['sets'][1]['price'] = $original_count_price;
-                    $prices[1] = $original_count_price;
+                    $new_job['sets'][1]['price'] = $analog_count_price;
+                    $prices[1] = $analog_count_price;
                     $new_job['sets'][1]['parts'][$key2]['count'] = 1;
                     $new_job['sets'][1]['parts'][$key2]['price'] = $value['price'];
                     $analog_prices[] = $value['price'];
@@ -404,28 +425,34 @@ class SiteController extends Controller
                     $new_job['sets'][1]['parts'][$key2]['articul'] = $value['code'];
                     $new_job['sets'][1]['parts'][$key2]['original'] = $value['original'];
                     $new_job['sets'][1]['parts'][$key2]['vendor'] = $value['brand']['title'];
-                    if($flag == $len - 1){
-                        foreach($new_job['sets'][1]['parts'] as $k => $v){
-                            $new_job['sets'][1]['parts'][$key2]['totalPrice'] = $analog_count_price;
-                        }
-                    }
+                    $new_job['sets'][1]['parts'][$key2]['totalPrice'] = $value['price'];
                     $key2++;
                 }
                 $flag++;
             }
+            $new_job['sets'] = array_values($new_job['sets']);
             $new_job['minPartsPrice'] = min($prices);
             $new_job['maxPartsPrice'] = max($prices);
        }
        return $new_job;
     }
     
-    protected function addToCache($cache_name, $data = null)
+    public function getSet()
     {
-        $cache_data = Yii::$app->cache->get($cache_name);
-        if(!$cache_data){
-            $cache_data = $data;
-            Yii::$app->cache->set($cache_name, $cache_data, $this->cache_time);
-        }
-        return $cache_data;
+        $original_count_price += $value['price'];
+        $new_job['sets'][1]['id_set'] = $flag+1;
+        $new_job['sets'][1]['setName'] = 'Оригинал';
+        $new_job['sets'][1]['price'] = $original_count_price;
+        $prices[1] = $original_count_price;
+        $new_job['sets'][1]['parts'][$key1]['count'] = 1;
+        $new_job['sets'][1]['parts'][$key1]['price'] = $value['price'];
+        $original_prices[] = $value['price'];
+        $new_job['sets'][1]['parts'][$key1]['id_part'] = $value['id'];
+        $new_job['sets'][1]['parts'][$key1]['partName'] = $value['title'];
+        $new_job['sets'][1]['parts'][$key1]['articul'] = $value['code'];
+        $new_job['sets'][1]['parts'][$key1]['original'] = $value['original'];
+        $new_job['sets'][1]['parts'][$key1]['vendor'] = $value['brand']['title'];
+        $new_job['sets'][1]['parts'][$key1]['totalPrice'] = $value['price'];
+        $key1++;
     }
 }

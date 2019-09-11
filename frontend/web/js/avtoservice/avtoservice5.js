@@ -340,7 +340,7 @@ avtoservice.prototype = {
                 var strSelectParts='';
                 var nSetsOfParts=false;
                 var strName=wd['name'];
-
+console.log(wd)
                 if('sets' in wd && wd.sets.length) {
 
                     strName = strName;//'<label for="slide_parts_'+wd.id_work+'">'+strName+'</label>';

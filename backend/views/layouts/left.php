@@ -34,6 +34,7 @@
                     ['label' => 'Автомобили', 'icon' => 'circle-o', 'url' => ['/cars'],],
                     ['label' => 'Работы', 'icon' => 'circle-o', 'url' => ['/jobs_categories'],],
                     ['label' => 'Запчасти', 'icon' => 'circle-o', 'url' => ['/parts_categories'],],
+                    ['label' => 'Заказы', 'icon' => 'circle-o', 'url' => ['/orders'],],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     [
                         'label' => 'Справочник',
@@ -42,8 +43,12 @@
                         'items' => [
                             ['label' => 'Года эксплуотации', 'icon' => 'circle-o', 'url' => ['/years'],],
                             ['label' => 'Бренды', 'icon' => 'circle-o', 'url' => ['/brands'],],
+                            ['label' => 'Сервисные центры', 'icon' => 'circle-o', 'url' => ['/services'],],
+                            ['label' => 'Контакты', 'icon' => 'circle-o', 'url' => ['/contacts'],],
                         ],
                     ],
+                    ['label' => 'Страницы', 'icon' => 'circle-o', 'url' => ['/pages'],],
+                    ['label' => 'Новости', 'icon' => 'circle-o', 'url' => ['/news'],],
                 ],
             ]
         ) ?>

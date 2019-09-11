@@ -5,52 +5,25 @@
 			<div class="popup standart">
 				<div class="in">
 					<div class="close"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#clear"></use></svg></div>
-					<div class="row">
+                                        <?php if(@$pages): ?>
+                                        <?php $flag = 0; ?>
+                                            <?php foreach($pages as $key => $value): ?>
+                                            <?php if($flag%3 == 0): ?>
+                                                <div class="row">
+                                             <?php endif; ?>
 						<div class="span4">
-							<a class="img" href="/inavto"><img src="/data/img/inavto-salova.jpg" alt="общая информация о сервисе" /></a>
+                                                    <a class="img" href="<?= \yii\helpers\Url::to(['site/page', 'alias' => $value->alias]); ?>"><img src="/data/img/inavto-salova.jpg" alt="общая информация о сервисе" /></a>
 							<span class="txt">
-								<a class="topic" href="/inavto">Информация о сервисе</a>
-								<p>Общая информация о наших площадках по обслуживанию и ремонту автомобилей Volvo. Фотографии сервисов и наши преимущества.</p>
+								<a class="topic" href="<?= \yii\helpers\Url::to(['site/page', 'alias' => $value->alias]); ?>"><?=$value->title?></a>
+								<p><?=$value->introtext?></p>
 							</span>
 						</div>
-						<div class="span4">
-							<a class="img" href="/protochka-tormoznih-diskov"><img src="/data/img/protochka-tormoznih-diskov.jpg?v=2" alt="проточка тормозных дисков" /></a>
-							<span class="txt">
-								<a href="/protochka-tormoznih-diskov">Проточка тормозных дисков</a>
-								<p>Услуги по восстановлению, обслуживанию и ремонту блоков цилиндров и головок, работы по проточке тормозных дисков.</p>
-							</span>
-						</div>
-						<div class="span4">
-							<a class="img" href="/vtoraya-pedal"><img src="/data/img/dubliruyushie-pedali.jpg?v.2.1" alt="дублирующие педали инструктора" /></a>
-							<span class="txt">
-								<a href="/vtoraya-pedal">Дублирующие педали</a>
-								<p>Установка дублирующих педалей с тросовой передачей с выдачей комплекта документов для последующего оформления в ГАИ.</p>
-							</span>
-						</div>
-					</div>
-					<div class="row">
-						<div class="span4">
-							<a class="img" href="/diesel-bosch"><img src="/data/img/diesel-bosch.jpg?v.2.1" alt="дизельная аппаратура Bosch - диагностика и ремонт" /></a>
-							<span class="txt">
-								<a href="/diesel-bosch">Дизельная аппаратура Bosch</a>
-								<p>Профессиональная диагностика и ремонт дизельной топливной аппаратуры Bosch в Санкт-Петербурге.</p>
-							</span>
-						</div>
-						<div class="span4">
-							<a class="img" href="/diesel-delphi"><img src="/data/img/diesel-delphi.jpg?v.2" alt="обслуживание дизельной аппаратуры Delphi" /></a>
-							<span class="txt">
-								<a href="/diesel-delphi">Дизельная аппаратура Delphi</a>
-								<p>Мы первыми в России получили сертификат DIESEL SERVICE компании Delphi по ремонту и обслуживанию аппаратуры Common Rail.</p>
-							</span>
-						</div>
-						<div class="span4">
-							<a class="img" href="/diagnostika-volvo"><img src="/data/img/volvo-diagnostic-2.jpg?v.2.1" alt="диагностика вольво спб" /></a>
-							<span class="txt">
-								<a class="topic" href="/diagnostika-volvo">Диагностика Volvo</a>
-								<p>Специализированные диагностические аппараты для проведения диагностики и оперативного обнаружения неисправностей.</p>
-							</span>
-						</div>
-					</div>
+                                            <?php if(($flag+1)%3 == 0): ?>
+                                                    </div>
+                                                <?php endif; ?> 
+                                                <?php $flag++ ?>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
 				</div>
 			</div>
 		</li>

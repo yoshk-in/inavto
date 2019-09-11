@@ -207,6 +207,38 @@ class JobsController extends Controller
         $data = \common\models\Engines::find()->select(['id', 'title'])->where(['generation_id' => $arr])->all();
         return $this->renderAjax('_option_engines', compact('data', 'default_arr'));
     }
+    
+    public function actionParts($id = null, $current_id = null)
+    {
+        $arr = array();
+        $default_arr = array();
+        $part_cats = array();
+        $data = array();
+        if($id){
+            $arr = explode(',',$id);
+            $part_cats = \common\models\PartsCategories::find()
+                    ->select(['id', 'car_id'])
+                    ->with([
+                        'car' => function($query){
+                            $query->select('id, title');
+                        },
+                        'parts' => function($query){
+                            $query->select('id, title, brand_id, price')->with('brand');
+                        }
+                      ])
+                    ->where(['car_id'=>$arr])->asArray()->all();
+             foreach($part_cats as $key => $value){
+                 foreach($value['parts'] as $k => $v){
+                     $data[$v['id']] = $value['car']['title'] . ' - ' . $v['title'] . ' (' . $v['brand']['title'] . ')' . ' - ' . $v['price'];
+                 }
+             }
+             
+        }
+        if($current_id){
+            $default_arr = explode(',', $current_id);
+        }
+        return $this->renderAjax('_option_parts', compact('data', 'default_arr'));
+    }
 
     /**
      * Finds the Jobs model based on its primary key value.

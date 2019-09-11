@@ -9,8 +9,7 @@
 namespace frontend\widgets;
 
 use yii\base\Widget;
-use common\models\PartsCategories;
-use common\models\JobsCategories;
+use common\models\News;
 use Yii;
 /**
  * Description of MenuWidget
@@ -30,25 +29,21 @@ class NewsWidget extends Widget{
         $this->tpl .= '.php';
     }
 
-    public function run(){
-       
-        /*$this->data = Yii::$app->cache->get('catalog');
-        if(!$this->data){
-            $this->data = Categories::find()->where(['parent_code' => ''])->indexBy('id')->orderBy(['sort' => 'DESC'])->asArray()->all();
-            Yii::$app->cache->set('catalog', $this->data, $this->cache_time);
+    public function run()
+    {
+        $last_news = Yii::$app->cache->get('last_news');
+        if(!$last_news){
+            $last_news = News::find()->where(['publish' => '1'])->asArray()->orderBy(['created' => SORT_DESC])->limit(4)->all();
+            Yii::$app->cache->set('last_news', $last_news, $this->cache_time);
         }
         
-       $this->menuHtml = $this->getMenuHtml($this->data);
-       */
-        $this->menuHtml = $this->getMenuHtml($this->data);
+        $this->menuHtml = $this->getMenuHtml($last_news);
+       
         return $this->menuHtml;
     }
 
     protected function getMenuHtml($data){
-        $str = '';
-       // foreach ($data as $brand) {
-            $str .= $this->catToTemplate($data);
-     //   }
+        $str = $this->catToTemplate($data);
         return $str;
     }
 

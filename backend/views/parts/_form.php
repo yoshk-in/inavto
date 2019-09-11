@@ -67,7 +67,7 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'check')->dropDownList(['0' => 'Нет', '1' => 'Да', '2' => 'Много']) ?>
 
-    <?= $form->field($model, 'original')->dropDownList(['0' => 'Нет', '1' => 'Да']) ?>
+    <?= $form->field($model, 'original')->dropDownList([null => 'Нет', '1' => 'Да']) ?>
 
     <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
