@@ -385,7 +385,7 @@ class SiteController extends Controller
        $new_job['minPartsPrice'] = 0;
        $new_job['maxPartsPrice'] = 0;
        $new_job['sets'] = array();
-       if(@$job['parts']){
+       if($job['parts'] && !empty($job['parts'])){
            $original_count_price = 0;
            $analog_count_price = 0;
            $flag = 0;
@@ -394,11 +394,10 @@ class SiteController extends Controller
            $prices = array();
            $original_prices = array();
            $analog_prices = array();
-           $len = count($job['parts']);
             foreach($job['parts'] as $key => $value){
-                if(@$value['original']){
+                if($value['original']){
                     $original_count_price += $value['price'];
-                    $new_job['sets'][0]['id_set'] = $job['id']+$key;
+                    $new_job['sets'][0]['id_set'] = 'original_' . $flag;
                     $new_job['sets'][0]['setName'] = 'Оригинал';
                     $new_job['sets'][0]['price'] = $original_count_price;
                     $prices[0] = $original_count_price;
@@ -410,18 +409,14 @@ class SiteController extends Controller
                     $new_job['sets'][0]['parts'][$key1]['articul'] = $value['code'];
                     $new_job['sets'][0]['parts'][$key1]['original'] = $value['original'];
                     $new_job['sets'][0]['parts'][$key1]['vendor'] = $value['brand']['title'];
-                    if($flag == $len - 1){
-                        foreach($new_job['sets'][0]['parts'] as $k => $v){
-                            $new_job['sets'][0]['parts'][$key1]['totalPrice'] = $original_count_price;
-                        }
-                    }
+                    $new_job['sets'][0]['parts'][$key1]['totalPrice'] = $value['price'];
                     $key1++;
                 }else{
                     $analog_count_price += $value['price'];
-                    $new_job['sets'][1]['id_set'] = $job['id']+$key;
+                    $new_job['sets'][1]['id_set'] = 'analog_' . $flag;
                     $new_job['sets'][1]['setName'] = 'Аналог';
-                    $new_job['sets'][1]['price'] = $original_count_price;
-                    $prices[1] = $original_count_price;
+                    $new_job['sets'][1]['price'] = $analog_count_price;
+                    $prices[1] = $analog_count_price;
                     $new_job['sets'][1]['parts'][$key2]['count'] = 1;
                     $new_job['sets'][1]['parts'][$key2]['price'] = $value['price'];
                     $analog_prices[] = $value['price'];
@@ -430,19 +425,34 @@ class SiteController extends Controller
                     $new_job['sets'][1]['parts'][$key2]['articul'] = $value['code'];
                     $new_job['sets'][1]['parts'][$key2]['original'] = $value['original'];
                     $new_job['sets'][1]['parts'][$key2]['vendor'] = $value['brand']['title'];
-                    if($flag == $len - 1){
-                        foreach($new_job['sets'][1]['parts'] as $k => $v){
-                            $new_job['sets'][1]['parts'][$key2]['totalPrice'] = $analog_count_price;
-                        }
-                    }
+                    $new_job['sets'][1]['parts'][$key2]['totalPrice'] = $value['price'];
                     $key2++;
                 }
                 $flag++;
             }
-        //    $new_job['sets'] = array_values($new_job['sets']);
+            $new_job['sets'] = array_values($new_job['sets']);
             $new_job['minPartsPrice'] = min($prices);
             $new_job['maxPartsPrice'] = max($prices);
        }
        return $new_job;
+    }
+    
+    public function getSet()
+    {
+        $original_count_price += $value['price'];
+        $new_job['sets'][1]['id_set'] = $flag+1;
+        $new_job['sets'][1]['setName'] = 'Оригинал';
+        $new_job['sets'][1]['price'] = $original_count_price;
+        $prices[1] = $original_count_price;
+        $new_job['sets'][1]['parts'][$key1]['count'] = 1;
+        $new_job['sets'][1]['parts'][$key1]['price'] = $value['price'];
+        $original_prices[] = $value['price'];
+        $new_job['sets'][1]['parts'][$key1]['id_part'] = $value['id'];
+        $new_job['sets'][1]['parts'][$key1]['partName'] = $value['title'];
+        $new_job['sets'][1]['parts'][$key1]['articul'] = $value['code'];
+        $new_job['sets'][1]['parts'][$key1]['original'] = $value['original'];
+        $new_job['sets'][1]['parts'][$key1]['vendor'] = $value['brand']['title'];
+        $new_job['sets'][1]['parts'][$key1]['totalPrice'] = $value['price'];
+        $key1++;
     }
 }

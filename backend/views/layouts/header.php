@@ -278,5 +278,21 @@ use yii\helpers\Html;
             </ul>
         </div>
         */?>
+        <?= yii\helpers\Html::a(
+                                    'Выйти',
+                                    ['/site/logout'],
+                                    ['data-method' => 'post', 'class' => 'btn btn-warning logout']
+                                ) ?>
+        <style>
+            .logout{
+                position: absolute;
+                right: 30px;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                display: block;
+                height: 34px;
+            }
+        </style>
     </nav>
 </header>

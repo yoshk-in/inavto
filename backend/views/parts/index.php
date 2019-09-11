@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Категории запчаст�
                 }
             ],
             //'job_id',
-            //'price',
+            'price',
             //'check',
             //'original',
             //'code',
