@@ -6,7 +6,7 @@
         <?php foreach($data as $key => $value): ?>
         <article>
             <time pubdate datetime="<?= Yii::$app->formatter->asDate($value['created'], 'yyyy-MM-dd'); ?>"><?= Yii::$app->formatter->asDate($value['created'], 'dd.MM.yyyy'); ?></time>
-            <h3><a href="/news/besplatnyy-osmotr"><?=$value['title']; ?>!</a></h3>
+            <h3><a href="<?=yii\helpers\Url::to(['news/page', 'alias' => $value['alias']]); ?>"><?=$value['title']; ?>!</a></h3>
             <p><?=$value['introtext']; ?></p>
         </article>
         <?php endforeach; ?>

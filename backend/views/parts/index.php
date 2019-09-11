@@ -43,7 +43,13 @@ $this->params['breadcrumbs'][] = ['label' => 'Категории запчаст�
                 }
             ],
             //'generation_id',
-            //'brand_id',
+             [
+                'attribute' => 'brand_id',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->brand_id ? $data->brand->title : '';
+                }
+            ],
             //'job_id',
             //'price',
             //'check',

@@ -398,7 +398,7 @@ class SiteController extends Controller
             foreach($job['parts'] as $key => $value){
                 if(@$value['original']){
                     $original_count_price += $value['price'];
-                    $new_job['sets'][0]['id_set'] = $job['id'];
+                    $new_job['sets'][0]['id_set'] = $job['id']+$key;
                     $new_job['sets'][0]['setName'] = 'Оригинал';
                     $new_job['sets'][0]['price'] = $original_count_price;
                     $prices[0] = $original_count_price;
@@ -418,7 +418,7 @@ class SiteController extends Controller
                     $key1++;
                 }else{
                     $analog_count_price += $value['price'];
-                    $new_job['sets'][1]['id_set'] = $job['id'];
+                    $new_job['sets'][1]['id_set'] = $job['id']+$key;
                     $new_job['sets'][1]['setName'] = 'Аналог';
                     $new_job['sets'][1]['price'] = $original_count_price;
                     $prices[1] = $original_count_price;
@@ -439,6 +439,7 @@ class SiteController extends Controller
                 }
                 $flag++;
             }
+        //    $new_job['sets'] = array_values($new_job['sets']);
             $new_job['minPartsPrice'] = min($prices);
             $new_job['maxPartsPrice'] = max($prices);
        }

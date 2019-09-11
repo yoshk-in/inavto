@@ -238,6 +238,7 @@ class PartsController extends Controller
         $arr = array();
         $default_arr = array();
         $job_cats = array();
+        $data = array();
         if($id){
             $arr = explode(',',$id);
             $job_cats = \common\models\JobsCategories::find()
@@ -251,7 +252,6 @@ class PartsController extends Controller
                         }
                       ])
                     ->where(['car_id'=>$arr])->asArray()->all();
-             $data = array();
              foreach($job_cats as $key => $value){
                  foreach($value['jobs'] as $k => $v){
                      $data[$v['id']] = $value['car']['title'] . ' - ' . $v['title'];

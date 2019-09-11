@@ -14,7 +14,9 @@
     </div>
     <div class="span3">
         <?php
-              echo  \frontend\widgets\NewsWidget::widget(['tpl' => 'index', 'cache_time' => 60]);
+            if ($this->beginCache('NewsWidget', ['duration' => 60])) { 
+                  echo  \frontend\widgets\NewsWidget::widget(['tpl' => 'index', 'cache_time' => 60]);
+            $this->endCache(); } 
         ?>
     </div>
 </div>

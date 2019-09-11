@@ -1,9 +1,12 @@
+<?= \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'cache_time' => 60]); ?>
 <section class="content">
 		<h1>Архив новостей и акций</h1>
 <nav class="pagination nav">
-    <ul>
-        <li class="current"><a href="?page=1">1</a></li><li><a href="?page=2">2</a></li>
-    </ul>
+    <?php
+        echo \yii\widgets\LinkPager::widget([
+           'pagination' => $pages,
+        ]);
+    ?>
 </nav>
 
 <ul class="listNews">
@@ -18,9 +21,11 @@
     <?php endif; ?>
 </ul>
 <nav class="pagination nav">
-    <ul>
-        <li class="current"><a href="?page=1">1</a></li><li><a href="?page=2">2</a></li>
-    </ul>
+    <?php
+        echo \yii\widgets\LinkPager::widget([
+           'pagination' => $pages,
+        ]);
+    ?>
 </nav>
 			
 	</section>

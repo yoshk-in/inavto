@@ -43,6 +43,8 @@
                         'items' => [
                             ['label' => 'Года эксплуотации', 'icon' => 'circle-o', 'url' => ['/years'],],
                             ['label' => 'Бренды', 'icon' => 'circle-o', 'url' => ['/brands'],],
+                            ['label' => 'Сервисные центры', 'icon' => 'circle-o', 'url' => ['/services'],],
+                            ['label' => 'Контакты', 'icon' => 'circle-o', 'url' => ['/contacts'],],
                         ],
                     ],
                     ['label' => 'Страницы', 'icon' => 'circle-o', 'url' => ['/pages'],],

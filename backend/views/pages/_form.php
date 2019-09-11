@@ -48,7 +48,7 @@ mihaildev\elfinder\Assets::noConflict($this);
 
     <?= $form->field($model, 'keywords')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'main')->checkbox(['0', '1']) ?>
+    <?= $form->field($model, 'main')->dropDownList(['0' => 'Нет', '1' => 'Да', '2' => 'Страница контактов']) ?>
     
     <?= $form->field($model, 'menu')->checkbox(['0', '1']) ?>
 
