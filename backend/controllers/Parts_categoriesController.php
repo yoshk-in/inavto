@@ -40,8 +40,7 @@ class Parts_categoriesController extends SiteController
                     'setFirstRecordAsKeys' => false,  
                     'setIndexSheetByName' => false
                 ]); 
-              //  print_r($data);
-              //  exit();
+             
                 foreach($data as $key => $value){
                     
                     if($value['B'] == 'ID'){
@@ -78,7 +77,7 @@ class Parts_categoriesController extends SiteController
                     $item->original = $value['G'];
                     $item->brand_id = $brand->id;
                     $item->categories = $categories;
-                    $item->save();
+                    print_r($item->categories);
                 }
                 Yii::$app->session->setFlash('success', "Импорт выполнен");
                 return $this->redirect(Yii::$app->request->referrer);
