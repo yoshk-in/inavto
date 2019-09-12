@@ -22,7 +22,9 @@
         "kartik-v/yii2-widget-select2": "@dev",
         "mihaildev/yii2-elfinder": "*",
         "mihaildev/yii2-ckeditor": "*",
-        "kartik-v/yii2-widget-typeahead": "*"
+        "kartik-v/yii2-widget-typeahead": "*",
+        "kartik-v/yii2-export": "@dev",
+        "moonlandsoft/yii2-phpexcel": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

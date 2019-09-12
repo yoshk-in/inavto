@@ -13,6 +13,12 @@ return [
     'bootstrap' => ['log'],
     'language' => 'ru-RU',
     'modules' => [],
+    'modules' => [
+        'gridview' => [
+            'class' => 'kartik\grid\Module',
+            // other module settings
+        ]
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',

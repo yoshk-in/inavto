@@ -8,6 +8,8 @@ use backend\models\SearchPartsCategories;
 use common\models\Cars;
 use common\models\Parts;
 use common\models\Brands;
+use common\models\UploadFile;
+use yii\web\UploadedFile;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -24,10 +26,70 @@ class Parts_categoriesController extends SiteController
     {
         $searchModel = new SearchPartsCategories();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        $dataPParts = new yii\data\ActiveDataProvider([
+            'query' => Parts::find()
+        ]);
+        
+        $model = new UploadFile();
+        
+        if (Yii::$app->request->isPost) {
+            $model->file = UploadedFile::getInstance($model, 'file');
+            if ($model->upload()) {
+                $data = \moonland\phpexcel\Excel::import('uploads/' . $model->file->name, [
+                    'setFirstRecordAsKeys' => false,  
+                    'setIndexSheetByName' => false
+                ]); 
+              //  print_r($data);
+              //  exit();
+                foreach($data as $key => $value){
+                    
+                    if($value['B'] == 'ID'){
+                        continue;
+                    }
+                    
+                    if($value['F'] == 'Да'){
+                        $value['F'] = 1;
+                    }
+                    
+                    if($value['G'] == 'Да'){
+                        $value['G'] = 1;
+                    }
+                    
+                    $id = $value['B'];
+                    $item = Parts::findOne($id);
+                    if(!$item){
+                        $item = new Parts();
+                    }
+                    
+                    $brand = Brands::find()->where(['title' => $value['H']])->one();
+                    if(!$brand){
+                        $brand = new Brands();
+                        $brand->title = $value['H'];
+                        $brand->save();
+                    }
+                    
+                    $categories = explode(', ', $value['I']);
+                    
+                    $item->title = $value['C'];
+                    $item->price = $value['D'];
+                    $item->code = $value['E'];
+                    $item->check = $value['F'];
+                    $item->original = $value['G'];
+                    $item->brand_id = $brand->id;
+                    $item->categories = $categories;
+                    $item->save();
+                }
+                Yii::$app->session->setFlash('success', "Импорт выполнен");
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'dataPParts' => $dataPParts,
+            'model' => $model
         ]);
     }
 
