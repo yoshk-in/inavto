@@ -210,7 +210,7 @@ class Parts extends \yii\db\ActiveRecord
         if($this->categories && !empty($this->categories)){
             $cats = $this->categories;
             $this->unlinkAll('cats', true);
-            foreach($cats as $value){
+            foreach($cats as $key => $value){
                 $item = PartsCategories::findOne($value);
                 $this->link('cats', $item);
             }
@@ -233,7 +233,6 @@ class Parts extends \yii\db\ActiveRecord
                 $this->link('jobs', $item);
             }
         }
-        
         
         parent::afterSave($insert, $changedAttributes);
     }

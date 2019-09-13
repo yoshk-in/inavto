@@ -38,46 +38,56 @@ class Parts_categoriesController extends SiteController
             if ($model->upload()) {
                 $data = \moonland\phpexcel\Excel::import('uploads/' . $model->file->name, [
                     'setFirstRecordAsKeys' => false,  
-                    'setIndexSheetByName' => false
+                    'setIndexSheetByName' => true
                 ]); 
-             
+             unset($data[1]);
+            
                 foreach($data as $key => $value){
                     
-                    if($value['B'] == 'ID'){
-                        continue;
+                    $new_val = array_values($value);
+                    
+                    if($new_val[5] == 'Да'){
+                        $new_val[5] = 1;
+                    }else{
+                        $new_val[5] = null;
                     }
                     
-                    if($value['F'] == 'Да'){
-                        $value['F'] = 1;
+                    if($new_val[6] == 'Да'){
+                        $new_val[6] = 1;
+                    }else{
+                        $new_val[6] = null;
                     }
                     
-                    if($value['G'] == 'Да'){
-                        $value['G'] = 1;
-                    }
-                    
-                    $id = $value['B'];
+                    $id = $new_val[1];
                     $item = Parts::findOne($id);
                     if(!$item){
                         $item = new Parts();
                     }
                     
-                    $brand = Brands::find()->where(['title' => $value['H']])->one();
+                    $brand = Brands::find()->where(['title' => $new_val[7]])->one();
                     if(!$brand){
                         $brand = new Brands();
-                        $brand->title = $value['H'];
+                        $brand->title = $new_val[7];
                         $brand->save();
                     }
                     
-                    $categories = explode(', ', $value['I']);
+                    $categories = explode(', ', $new_val[8]);
+                    $new_arr = array();
+                    foreach($categories as $k => $v){
+                        if(!$v){
+                            continue;
+                        }
+                        $new_arr[] = (int) $v;
+                    }
                     
-                    $item->title = $value['C'];
-                    $item->price = $value['D'];
-                    $item->code = $value['E'];
-                    $item->check = $value['F'];
-                    $item->original = $value['G'];
+                    $item->title = (string) $new_val[2];
+                    $item->price = (int) $new_val[3];
+                    $item->code = (string) $new_val[4];
+                    $item->check = $new_val[5];
+                    $item->original = $new_val[6];
                     $item->brand_id = $brand->id;
-                    $item->categories = $categories;
-                    print_r($item->categories);
+                    $item->categories = $new_arr;
+                    $item->save();
                 }
                 Yii::$app->session->setFlash('success', "Импорт выполнен");
                 return $this->redirect(Yii::$app->request->referrer);
