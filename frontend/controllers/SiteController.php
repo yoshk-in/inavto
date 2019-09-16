@@ -1,20 +1,13 @@
 <?php
 namespace frontend\controllers;
 
-use frontend\models\ResendVerificationEmailForm;
-use frontend\models\VerifyEmailForm;
 use Yii;
-use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
 use frontend\models\ContactForm;
-use common\models\Orders;
+use frontend\models\Orders;
 use common\models\Pages;
 
 /**
@@ -91,8 +84,8 @@ class SiteController extends Controller
             $model->generation_id = Yii::$app->request->post('generation');
             $model->engine_id = Yii::$app->request->post('motor');
             $model->year = Yii::$app->request->post('range');
-            $model->year = Yii::$app->request->post('range');
             $model->works = Yii::$app->request->post('rec');
+            $model->sets = Yii::$app->request->post('set');
             if($model->save()){
                 Yii::$app->session->setFlash('success', "Данные отправлены");
                 Yii::$app->session->setFlash('show', "show");

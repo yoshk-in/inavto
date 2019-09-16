@@ -23,6 +23,7 @@ use yii\db\Expression;
 class Orders extends \yii\db\ActiveRecord
 {
     public $works;
+    public $sets;
     
     public function behaviors()
     {
@@ -54,7 +55,7 @@ class Orders extends \yii\db\ActiveRecord
         return [
             [['model', 'email', 'phone'], 'required'],
             [['generation_id', 'engine_id', 'year'], 'integer'],
-            [['created', 'modified', 'works'], 'safe'],
+            [['created', 'modified', 'works', 'sets'], 'safe'],
             [['model', 'email', 'phone'], 'string', 'max' => 100],
         ];
     }
@@ -74,7 +75,8 @@ class Orders extends \yii\db\ActiveRecord
             'phone' => 'Телефон',
             'created' => 'Дата создания',
             'modified' => 'Дата изменения',
-            'works' => 'Рекомендованные работы'
+            'works' => 'Работы',
+            'sets' => 'Запчасти'
         ];
     }
     
@@ -93,15 +95,9 @@ class Orders extends \yii\db\ActiveRecord
         return $this->hasMany(Jobs::className(), ['id' => 'job_id'])->viaTable('orders_jobs', ['order_id' => 'id']);
     }
     
-    public function afterSave($insert, $changedAttributes)
+    public function getParts()
     {
-        $this->unlinkAll('jobs', true);
-        if($this->works && !empty($this->works))
-        foreach($this->works as $value){
-            $item = Jobs::findOne($value);
-            $this->link('jobs', $item);
-        }
-        
-        parent::afterSave($insert, $changedAttributes);
+        return $this->hasMany(Parts::className(), ['id' => 'part_id'])->viaTable('orders_parts', ['order_id' => 'id']);
     }
+    
 }
