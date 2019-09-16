@@ -71,13 +71,13 @@ class Parts_categoriesController extends SiteController
                         $brand->save();
                     }
                     
-                    $categories = explode(', ', $new_val[8]);
+                    $categories = explode(',', $new_val[8]);
                     $new_arr = array();
                     foreach($categories as $k => $v){
                         if(!$v){
                             continue;
                         }
-                        $new_arr[] = (int) $v;
+                        $new_arr[] = (int) trim($v);
                     }
                     
                     $item->title = (string) $new_val[2];

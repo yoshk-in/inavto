@@ -78,6 +78,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $model = new Orders();
+        $cars = \common\models\Cars::find()->all();
      
         $main_page = Yii::$app->cache->get('main_page');
         if(!$main_page){
@@ -95,17 +96,18 @@ class SiteController extends Controller
             if($model->save()){
                 Yii::$app->session->setFlash('success', "Данные отправлены");
                 Yii::$app->session->setFlash('show', "show");
-                $this->redirect(Yii::$app->request->referrer);
+                return $this->redirect(Yii::$app->request->referrer);
             }else{
                 Yii::$app->session->setFlash('error', "Ошибка отправки");
                 Yii::$app->session->setFlash('show', "show");
-                $this->redirect([Yii::$app->request->referrer, 'model' => $model]);
+                return $this->redirect([Yii::$app->request->referrer, 'model' => $model]);
             }
         }
         
         return $this->render('index', [
             'model' => $model,
             'main_page' => $main_page,
+            'cars' => $cars,
         ]);
     }
     
