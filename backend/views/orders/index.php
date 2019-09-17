@@ -7,16 +7,10 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\SearchOrders */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Orders';
+$this->title = 'Заказы';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="orders-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Orders', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -28,15 +22,25 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'model',
-            'generation_id',
-            'engine_id',
-            'year',
+          //  'generation_id',
+           // 'engine_id',
+           // 'year',
             //'email:email',
             //'phone',
-            //'created',
-            //'modified',
+            'created',
+            'modified',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'urlCreator' => function ($action, $model, $key, $index) {
+                    if ($action === 'view') {
+                        return yii\helpers\Url::to(['view', 'id' => $model->id]);
+                    }elseif($action === 'delete'){
+                        return yii\helpers\Url::to(['delete', 'id' => $model->id]);
+                    }
+                    return false;
+                }
+            ]
         ],
     ]); ?>
 

@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="span4 cars">
-         <?= \frontend\widgets\ListWidget::widget(['tpl' => 'index', 'flag' => 'zapchasti', 'cache_time' => 60]); ?>
+         <?= \frontend\widgets\ListWidget::widget(['tpl' => 'index', 'flag' => 'remont', 'cache_time' => 60]); ?>
     </div>
 </div>
 

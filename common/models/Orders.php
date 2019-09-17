@@ -23,7 +23,7 @@ use yii\db\Expression;
 class Orders extends \yii\db\ActiveRecord
 {
     public $works;
-    public $sets;
+    public $detales;
     
     public function behaviors()
     {
@@ -76,7 +76,7 @@ class Orders extends \yii\db\ActiveRecord
             'created' => 'Дата создания',
             'modified' => 'Дата изменения',
             'works' => 'Работы',
-            'sets' => 'Запчасти'
+            'detales' => 'Запчасти'
         ];
     }
     

@@ -3,34 +3,34 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Orders;
-use backend\models\SearchOrders;
+use common\models\Messages;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * OrdersController implements the CRUD actions for Orders model.
+ * MessagesController implements the CRUD actions for Messages model.
  */
-class OrdersController extends SiteController
+class MessagesController extends SiteController
 {
     /**
-     * Lists all Orders models.
+     * Lists all Messages models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new SearchOrders();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Messages::find(),
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Orders model.
+     * Displays a single Messages model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -43,28 +43,47 @@ class OrdersController extends SiteController
     }
 
     /**
-     * Updates an existing Orders model.
+     * Creates a new Messages model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new Messages();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Сообщение добавлено");
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Updates an existing Messages model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-  /*  public function actionUpdate($id)
+    public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', "Заказ изменен");
+            Yii::$app->session->setFlash('success', "Сообщение изменено");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
         ]);
-    }*/
+    }
 
     /**
-     * Deletes an existing Orders model.
+     * Deletes an existing Messages model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -73,20 +92,20 @@ class OrdersController extends SiteController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        Yii::$app->session->setFlash('success', "Заказ удален");
+        Yii::$app->session->setFlash('success', "Сообщение удалено");
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Orders model based on its primary key value.
+     * Finds the Messages model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Orders the loaded model
+     * @return Messages the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Orders::findOne($id)) !== null) {
+        if (($model = Messages::findOne($id)) !== null) {
             return $model;
         }
 
