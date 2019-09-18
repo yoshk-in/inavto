@@ -3,12 +3,8 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
-use common\widgets\Alert;
+use yii\widgets\ActiveForm;
 
 AppAsset::register($this);
 ?>
@@ -437,63 +433,7 @@ AppAsset::register($this);
 
 		<div class="buttons span2">
 			<button class="btn parts"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#settings"></use></svg>Заказ запчастей</button>
-<div class="modal partsModal">
-	<span class="close close-btn"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#clear"></use></svg></span>
-	<div class="modal-header">
-		<h3>Заказ запчастей</h3>
-	</div>
-	<div class="modal-body text-center">
-		<form method="POST" action="">
-			<div>
-				<input class="" type="text" name="phone" value="" placeholder="+7 ( ___ ) ___ - __ - __" />
-			</div>
-			<div>
-				<input type="hidden" name="city" value="" />
-				<select name="service">
-					<option>Выберите сервисную станцию</option>
-					<option value="ЮГ - Салова 68">ЮГ - Салова 68</option>
-					<option value="СЕВЕР - Екатериненский 5А">СЕВЕР - Екатериненский 5А</option>
-				</select>
-			</div>
-			<div>
-				<input class="" type="text" name="email" value="" placeholder="e-mail" />
-			</div>
-			<div>
-				<input type="text" name="auto" value="" placeholder="Ваш автомобиль" />
-			</div>
-			<div>
-				<textarea rows="5" placeholder="номера запчастей и дополнительная информация" name="info"></textarea>
-			</div>
-
-			<button type="submit" name="sendPartsOrder" value="1" class="btn success">Отправить заявку</button>
-		</form>
-			</div>
-</div>
-
-<script type="text/javascript">
-
-	function closeAllModals() {
-		$('.backdrop').toggleClass('show',false);
-		$('.modal').toggleClass('show',false);
-	}
-
-	function showPartsOrder() {
-		$('.modal.partsModal').toggleClass('show',true);
-		$('.modal.partsModal').find('input[name="city"]').val('m'+'a'+'rocco');
-		$('.backdrop').toggleClass('show',true);
-		setTimeout(function(){ $('.modal.partsModal input[name="phone"]').focus() }, 100);
-	}
-
-	$(document).ready(function(){
-		
-		$('.parts').click(showPartsOrder);
-
-		$('.backdrop').click(closeAllModals);
-		$('.modal .close-btn').click(closeAllModals);
-
-	});
-</script>
-
+                        <?= frontend\widgets\FormWidget::widget(['tpl' => 'index', 'flag' => 1]);?>
 			<a href="/#calc" class="btn calc"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#car"></use></svg>Калькулятор ТО</a>
 			<button class="btn green repairButton"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#wrench"></use></svg>Запись на сервис</button>
 <div class="modal repairModal">
@@ -679,7 +619,7 @@ AppAsset::register($this);
 	</div>
 </footer>
 
-<div class="backdrop <?=Yii::$app->session->hasFlash('show') ? Yii::$app->session->getFlash('show') : ''; ?>"></div>
+<div class="backdrop <?=Yii::$app->session->hasFlash('show') ? Yii::$app->session->getFlash('show') : ''; ?><?=Yii::$app->session->hasFlash('show1') ? Yii::$app->session->getFlash('show1') : ''; ?>"></div>
 </body>
 </html>
 

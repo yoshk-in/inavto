@@ -1,8 +1,11 @@
 <?php
 use yii\widgets\ActiveForm;
 ?>
-<?php 
-    $form = ActiveForm::begin(); 
+<?php
+    if(!isset($model)) $model = new \frontend\models\Orders;
+    $form = ActiveForm::begin([
+        'action'=>\yii\helpers\Url::toRoute(['site/order']),
+    ]); 
 ?>
 <?php 
     if ($this->beginCache('CalculatorWidget', ['duration' => 60])) { 

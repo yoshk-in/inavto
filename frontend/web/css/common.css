@@ -2608,7 +2608,7 @@ button.sendData .info {
 
 
 
-.btnGroup input.error, input.error {
+.btnGroup input.error, input.error, .has-error input{
     background: #ffece9;
     color: #c31900;
     border-color: #e96127;

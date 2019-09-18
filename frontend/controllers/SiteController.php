@@ -9,6 +9,7 @@ use yii\filters\AccessControl;
 use frontend\models\ContactForm;
 use frontend\models\Orders;
 use common\models\Pages;
+use common\models\Messages;
 
 /**
  * Site controller
@@ -70,7 +71,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $model = new Orders();
         $cars = \common\models\Cars::find()->all();
      
         $main_page = Yii::$app->cache->get('main_page');
@@ -79,7 +79,34 @@ class SiteController extends Controller
             Yii::$app->cache->set('main_page', $main_page, $this->cache_time);
         }
         
-        if($model->load(Yii::$app->request->post())){
+        return $this->render('index', [
+            'main_page' => $main_page,
+            'cars' => $cars,
+        ]);
+    }
+    
+    public function actionMessage()
+    {
+        $message = new Messages();
+        
+        if($message->load(Yii::$app->request->post())){
+            
+            if($message->save()){
+                Yii::$app->session->setFlash('success'.Yii::$app->request->post('flag'), "Данные отправлены");
+                Yii::$app->session->setFlash('show'.Yii::$app->request->post('flag'), "show");
+                return $this->redirect(Yii::$app->request->referrer);
+            }else{
+                Yii::$app->session->setFlash('error'.Yii::$app->request->post('flag'), "Ошибка отправки");
+                Yii::$app->session->setFlash('show'.Yii::$app->request->post('flag'), "show");
+                return $this->redirect([Yii::$app->request->referrer, 'message' => $message]);
+            }
+        }
+    }
+    
+    public function actionOrder()
+    {
+        $model = new Orders();
+         if($model->load(Yii::$app->request->post())){
             $model->model = Yii::$app->request->post('model');
             $model->generation_id = Yii::$app->request->post('generation');
             $model->engine_id = Yii::$app->request->post('motor');
@@ -96,14 +123,7 @@ class SiteController extends Controller
                 return $this->redirect([Yii::$app->request->referrer, 'model' => $model]);
             }
         }
-        
-        return $this->render('index', [
-            'model' => $model,
-            'main_page' => $main_page,
-            'cars' => $cars,
-        ]);
     }
-    
     
 
     /**
