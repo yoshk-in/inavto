@@ -37,6 +37,7 @@ class ContactsController extends SiteController
                 $arr['parts'][] = $value;
             }
         }*/
+        $this->setMeta($model->meta_title, $model->keywords, $model->description);
         return $this->render('index', ['model' => $model]);
     }
 }

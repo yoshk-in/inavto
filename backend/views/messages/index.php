@@ -25,6 +25,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'phone',
             'service_id',
             'email:email',
+            [
+              'attribute' => 'flag',
+               'format' => 'html',
+                'value' => function($data){
+                    return $data->flag == 1 ? 'Заказ запчастей' : 'Запись на ТО';
+                }
+            ],
            // 'avto',
             //'message',
             'created',

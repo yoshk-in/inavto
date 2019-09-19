@@ -37,9 +37,13 @@ class ObsluzhivanieController extends SiteController
             $final_arr = $this->finalArr($remont_parents, $this->getTree($jobs));
             Yii::$app->cache->set('obsluzhivanie_jobs', $final_arr, $this->cache_time);
         }
+        
+       $page = \backend\models\Pages::find()->where(['alias' => 'obsluzhivanie'])->one();
+       $this->setMeta($page->meta_title, $page->keywords, $page->description);
    
        return $this->render('index',[
-           'jobs' => $final_arr
+           'jobs' => $final_arr,
+           'page' => $page
        ]);
     }
 
@@ -121,6 +125,9 @@ class ObsluzhivanieController extends SiteController
             $parents = JobsCategories::find()->where(['is', 'parent', null])->andWhere(['service' => 1])->all();
             Yii::$app->cache->set('parents_cats_jobs2', $parents, $this->cache_time);
         }
+        
+        $this->setMeta($model->title, $model->keywords, $model->description);
+        Yii::$app->view->registerLinkTag(['rel' => 'canonical', 'href' => \yii\helpers\Url::to(['obsluzhivanie/category', 'alias' => $alias], true)]);
         
         return $this->render('view', [
             'jobs' => $final_arr,

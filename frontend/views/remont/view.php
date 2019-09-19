@@ -44,10 +44,10 @@
 		<?=$model->body; ?>
 	</div>
 	<div class="orderParts">
-		<a class="btn parts">
-			<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#settings"></use></svg><?=$model->title; ?>
+		<a class="btn red" href="<?= yii\helpers\Url::to(['/zapchasti/category', 'alias' => $model->alias]); ?>">
+			<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#settings"></use></svg>Запчасти <?=$model->car->title; ?>
 		</a><br>
-		<a href="<?= yii\helpers\Url::to(['/remont/category', 'alias' => $model->alias]); ?>" class="btn green">
+		<a class="btn green">
 			<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#wrench"></use></svg>Ремонт <?=$model->car->title; ?>
 		</a><br>
                 <a href="<?= yii\helpers\Url::to(['/obsluzhivanie/category', 'alias' => $model->alias]); ?>" class="btn calc">

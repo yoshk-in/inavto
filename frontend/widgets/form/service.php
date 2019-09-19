@@ -1,14 +1,14 @@
 <?php
 use yii\widgets\ActiveForm;
 ?>
-<div class="modal partsModal <?=Yii::$app->session->hasFlash('show'.$flag) ? Yii::$app->session->getFlash('show'.$flag) : ''; ?>">
+<div class="modal repairModal <?=Yii::$app->session->hasFlash('show'.$flag) ? Yii::$app->session->getFlash('show'.$flag) : ''; ?>">
 	<span class="close close-btn"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#clear"></use></svg></span>
 	<div class="modal-header">
-		<h3>Заказ запчастей</h3>
+		<h3>Запись на сервис</h3>
 	</div>
 	<div class="modal-body text-center">
-            <?php if(!Yii::$app->session->hasFlash('success1') ): ?>
-<?php
+            <?php if(!Yii::$app->session->hasFlash('success2') ): ?>
+            <?php
                 if(!isset($message)) $message = new \common\models\Messages;
                 $form = ActiveForm::begin([
                     'action'=>\yii\helpers\Url::to(['site/message']),
@@ -36,23 +36,24 @@ use yii\widgets\ActiveForm;
                                    'template'=>"{input}",
                                 ]); ?>
 			<?= $form->field($message, 'message', [
-                                   'inputOptions'=>['placeholder' => 'номера запчастей и дополнительная информация'],
+                                   'inputOptions'=>['placeholder' => 'дополнительная информация'],
                                    'template'=>"{input}",
                                 ])->textarea(['rows' => 3]); ?>
 
-			<button type="submit" name="sendPartsOrder" value="1" class="btn success">Отправить заявку</button>
+			<button type="submit" name="sendPartsOrder" value="1" class="btn success">Записаться на сервис</button>
                   <?php ActiveForm::end(); ?>
                         <?php endif;?>
-                        <?php if( Yii::$app->session->hasFlash('success1') ): ?>
+                        <?php if( Yii::$app->session->hasFlash('success2') ): ?>
                             <div class="alert alert-success">
-                                <div><?php echo Yii::$app->session->getFlash('success1'); ?></div>
+                                <div><?php echo Yii::$app->session->getFlash('success2'); ?></div>
                             </div>
                         <?php endif;?>
-                        <?php if( Yii::$app->session->hasFlash('error1') ): ?>
+                        <?php if( Yii::$app->session->hasFlash('error2') ): ?>
                             <div class="alert alert-error">
-                                <div><?php echo Yii::$app->session->getFlash('error1'); ?></div>
+                                <div><?php echo Yii::$app->session->getFlash('error2'); ?></div>
                             </div>
                         <?php endif;?>
+                        
 </div>
 </div>
 <script type="text/javascript">
@@ -62,16 +63,16 @@ use yii\widgets\ActiveForm;
 		$('.modal').toggleClass('show',false);
 	}
 
-	function showPartsOrder() {
-		$('.modal.partsModal').toggleClass('show',true);
-		$('.modal.partsModal').find('input[name="city"]').val('m'+'a'+'rocco');
+	function showRepairOrder() {
+		$('.modal.repairModal').toggleClass('show',true);
 		$('.backdrop').toggleClass('show',true);
-		setTimeout(function(){ $('.modal.partsModal input[name="phone"]').focus() }, 100);
+		$('.modal.repairModal').find('input[name="city"]').val('m'+'a'+'rocco');
+		setTimeout(function(){ $('.modal.repairModal input[name="phone"]').focus() }, 100);
 	}
 
 	$(document).ready(function(){
 		
-		$('.parts').click(showPartsOrder);
+		$('.repairButton').click(showRepairOrder);
 
 		$('.backdrop').click(closeAllModals);
 		$('.modal .close-btn').click(closeAllModals);

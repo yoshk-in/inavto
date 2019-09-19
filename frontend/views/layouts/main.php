@@ -4,7 +4,7 @@
 /* @var $content string */
 
 use frontend\assets\AppAsset;
-use yii\widgets\ActiveForm;
+use yii\helpers\Html;
 
 AppAsset::register($this);
 ?>
@@ -12,15 +12,14 @@ AppAsset::register($this);
 <!DOCTYPE html>
 <html lang='ru' xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta name="keywords" content="автосервис,ИНАВТО+,ремонт volvo,ремонт volvo спб,сервис Volvo,сервисное обслуживание volvo"/>
-    <meta name="description" content="Ремонт Вольво в Санкт-Петербурге с 1992 года"/>
     <meta http-equiv="Last-Modified" content="Thu, 11 Jul 2019 14:45:57 GMT"/>
-    <title>Инавто СПб - сервисное обслуживание Volvo, ремонт Volvo</title>
+    <?php $this->registerCsrfMetaTags() ?>
+    <title><?= Html::encode($this->title) ?></title>
     <link href="https://inavtospb.ru/" rel="canonical"></link>
     <link href="https://m.inavtospb.ru/" rel="alternate" media="only screen and (max-width: 640px)"></link>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" id="viewport" content="width=device-width, initial-scale=0.75" />
-
+    <?php $this->head() ?>
 	<link rel="icon" type="shortcut icon" href="/data/img/favicons/inavtospb.ico?v=2" />
 	<link rel="icon" sizes="256x160" href="/data/img/favicons/inavtospb-256x160.png?v=2" type="image/png" />
 	<link rel="icon" sizes="192x192" href="/data/img/favicons/inavtospb-192x192.png?v=2" type="image/png" />
@@ -436,63 +435,7 @@ AppAsset::register($this);
                         <?= frontend\widgets\FormWidget::widget(['tpl' => 'index', 'flag' => 1]);?>
 			<a href="/#calc" class="btn calc"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#car"></use></svg>Калькулятор ТО</a>
 			<button class="btn green repairButton"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#wrench"></use></svg>Запись на сервис</button>
-<div class="modal repairModal">
-	<span class="close close-btn"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#clear"></use></svg></span>
-	<div class="modal-header">
-		<h3>Запись на сервис</h3>
-	</div>
-	<div class="modal-body text-center">
-		<form method="POST" action="">
-			<div>
-				<input class="" type="text" name="phone" value="" placeholder="+7 ( ___ ) ___ - __ - __" />
-			</div>
-			<div>
-				<input type="hidden" name="city" value="" />
-				<select name="service">
-					<option>Выберите сервисную станцию</option>
-					<option value="ЮГ - Салова 68">ЮГ - Салова 68</option>
-					<option value="СЕВЕР - Екатериненский 5А">СЕВЕР - Екатериненский 5А</option>
-				</select>
-			</div>
-			<div>
-				<input class="" type="text" name="email" value="" placeholder="e-mail" />
-			</div>
-			<div>
-				<input type="text" name="auto" value="" placeholder="Ваш автомобиль" />
-			</div>
-			<div>
-				<textarea rows="5" placeholder="дополнительная информация" name="info"></textarea>
-			</div>
-
-			<button type="submit" name="sendRepairOrder" value="1" class="btn success">Записаться на сервис</button>
-		</form>
-			</div>
-</div>
-
-<script type="text/javascript">
-
-	function closeAllModals() {
-		$('.backdrop').toggleClass('show',false);
-		$('.modal').toggleClass('show',false);
-	}
-
-	function showRepairOrder() {
-		$('.modal.repairModal').toggleClass('show',true);
-		$('.backdrop').toggleClass('show',true);
-		$('.modal.repairModal').find('input[name="city"]').val('m'+'a'+'rocco');
-		setTimeout(function(){ $('.modal.repairModal input[name="phone"]').focus() }, 100);
-	}
-
-	$(document).ready(function(){
-		
-		$('.repairButton').click(showRepairOrder);
-
-		$('.backdrop').click(closeAllModals);
-		$('.modal .close-btn').click(closeAllModals);
-
-	});
-</script>
-
+                        <?= frontend\widgets\FormWidget::widget(['tpl' => 'service', 'flag' => 2]);?>
 		</div>
 	</div>
 </header>
@@ -619,7 +562,7 @@ AppAsset::register($this);
 	</div>
 </footer>
 
-<div class="backdrop <?=Yii::$app->session->hasFlash('show') ? Yii::$app->session->getFlash('show') : ''; ?><?=Yii::$app->session->hasFlash('show1') ? Yii::$app->session->getFlash('show1') : ''; ?>"></div>
+<div class="backdrop <?=Yii::$app->session->hasFlash('show') ? Yii::$app->session->getFlash('show') : ''; ?><?=Yii::$app->session->hasFlash('show1') ? Yii::$app->session->getFlash('show1') : ''; ?><?=Yii::$app->session->hasFlash('show2') ? Yii::$app->session->getFlash('show2') : ''; ?>"></div>
 </body>
 </html>
 

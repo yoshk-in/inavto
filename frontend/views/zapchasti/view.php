@@ -36,7 +36,7 @@
 		<?=$model->body; ?>
 	</div>
 	<div class="orderParts">
-		<a class="btn parts">
+		<a class="btn red">
 			<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#settings"></use></svg><?=$model->title; ?>
 		</a><br>
 		<a href="<?= yii\helpers\Url::to(['/remont/category', 'alias' => $model->alias]); ?>" class="btn green">

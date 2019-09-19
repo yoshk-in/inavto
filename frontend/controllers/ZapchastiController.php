@@ -20,7 +20,9 @@ class ZapchastiController extends SiteController
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $page = \backend\models\Pages::find()->where(['alias' => 'zapchasti'])->one();
+        $this->setMeta($page->meta_title, $page->keywords, $page->description);
+        return $this->render('index', ['page' => $page]);
     }
 
     /**
@@ -93,6 +95,10 @@ class ZapchastiController extends SiteController
             $parents = PartsCategories::find()->where(['is', 'parent', null])->orWhere(['parent' => 0])->all();
             Yii::$app->cache->set('parents_cats_parts', $parents, $this->cache_time);
         }
+        
+        $this->setMeta($model->meta_title, $model->keywords, $model->description);
+        Yii::$app->view->registerLinkTag(['rel' => 'canonical', 'href' => \yii\helpers\Url::to(['zapchasti/category', 'alias' => $alias], true)]);
+        
         return $this->render('view', [
             'model' => $model,
             'cats' => $cats,
@@ -102,75 +108,7 @@ class ZapchastiController extends SiteController
             'car' => $car
         ]);
     }
-    
-    /**
-     * Creates a new PartsCategories model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new PartsCategories();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Updates an existing PartsCategories model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Deletes an existing PartsCategories model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the PartsCategories model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return PartsCategories the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = PartsCategories::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
-    
+   
     protected function getTree($arr)
     {
         $new_arr = array();

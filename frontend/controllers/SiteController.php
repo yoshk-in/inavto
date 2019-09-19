@@ -79,6 +79,8 @@ class SiteController extends Controller
             Yii::$app->cache->set('main_page', $main_page, $this->cache_time);
         }
         
+        $this->setMeta($main_page->meta_title, $main_page->keywords, $main_page->description);
+        
         return $this->render('index', [
             'main_page' => $main_page,
             'cars' => $cars,
@@ -92,12 +94,12 @@ class SiteController extends Controller
         if($message->load(Yii::$app->request->post())){
             
             if($message->save()){
-                Yii::$app->session->setFlash('success'.Yii::$app->request->post('flag'), "Данные отправлены");
-                Yii::$app->session->setFlash('show'.Yii::$app->request->post('flag'), "show");
+                Yii::$app->session->setFlash('success'.$message->flag, "Данные отправлены");
+                Yii::$app->session->setFlash('show'.$message->flag, "show");
                 return $this->redirect(Yii::$app->request->referrer);
             }else{
-                Yii::$app->session->setFlash('error'.Yii::$app->request->post('flag'), "Ошибка отправки");
-                Yii::$app->session->setFlash('show'.Yii::$app->request->post('flag'), "show");
+                Yii::$app->session->setFlash('error'.$message->flag, "Ошибка отправки");
+                Yii::$app->session->setFlash('show'.$message->flag, "show");
                 return $this->redirect([Yii::$app->request->referrer, 'message' => $message]);
             }
         }
@@ -166,7 +168,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionContact()
+    /*public function actionContact()
     {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -182,7 +184,7 @@ class SiteController extends Controller
                 'model' => $model,
             ]);
         }
-    }
+    }*/
     
     public function actionPage($alias)
     {
@@ -196,7 +198,16 @@ class SiteController extends Controller
              throw new \yii\web\HttpException(404, 'Такой страницы нет');
         }
         
+        $this->setMeta($model->meta_title, $model->keywords, $model->description);
+        
         return $this->render('page', ['model' => $model]);
+    }
+    
+    protected function setMeta($title = null, $keywords = null, $description = null)
+    {
+        $this->view->title = $title;
+        $this->view->registerMetaTag(['name' => 'keywords', 'content' => "$keywords"]);
+        $this->view->registerMetaTag(['name' => 'description', 'content' => "$description"]);
     }
 
     /**

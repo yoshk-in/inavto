@@ -52,7 +52,7 @@ class Messages extends \yii\db\ActiveRecord
     {
         return [
             [['phone'], 'required'],
-            [['service_id'], 'integer'],
+            [['service_id', 'flag'], 'integer'],
             [['created', 'modified'], 'safe'],
             [['phone'], 'string', 'max' => 50],
             [['email', 'avto'], 'string', 'max' => 100],
@@ -75,6 +75,7 @@ class Messages extends \yii\db\ActiveRecord
             'message' => 'Сообщение',
             'created' => 'Дата создания',
             'modified' => 'Дата изменения',
+            'flag' => 'Флаг'
         ];
     }
 
