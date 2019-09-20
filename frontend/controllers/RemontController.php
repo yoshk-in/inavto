@@ -36,9 +36,21 @@ class RemontController extends SiteController
             $final_arr = $this->finalArr($remont_parents, $this->getTree($jobs));
             Yii::$app->cache->set('all_remont_jobs', $final_arr, $this->cache_time);
         }
-    
+        
+        $page = \backend\models\Pages::find()->where(['alias' => 'remont'])->one();
+       
+       $this->setMeta($page->meta_title, $page->keywords, $page->description);
+       
+        if($this->layout == 'mobile'){
+           return $this->render('mobile_index', [
+               'jobs' => $final_arr,
+                'page' => $page,
+            ]); 
+        }
+        
        return $this->render('index',[
-           'jobs' => $final_arr
+           'jobs' => $final_arr,
+           'page' => $page
        ]);
     }
 
@@ -121,6 +133,22 @@ class RemontController extends SiteController
         if(!$parents){
             $parents = JobsCategories::find()->where(['is', 'parent', null])->andWhere(['is', 'service', null])->orWhere(['service' => 0])->all();
             Yii::$app->cache->set('parents_cats_jobs', $parents, $this->cache_time);
+        }
+        
+        $this->setMeta($model->title, $model->keywords, $model->description);
+        Yii::$app->view->registerLinkTag(['rel' => 'canonical', 'href' => \yii\helpers\Url::to(['remont/category', 'alias' => $alias], true)]);
+        
+         if($this->layout == 'mobile'){
+           return $this->render('mobile_view', [
+               'jobs' => $final_arr,
+                'model' => $model,
+                'parents' => $parents,
+                'f_gen' => $f_gen,
+                'f_motor' => $f_motor,
+                'slug' => $slug,
+                'current_engines' => $current_engines,
+                'car' => $car
+            ]); 
         }
         
         return $this->render('view', [

@@ -189,39 +189,49 @@ class Parts extends \yii\db\ActiveRecord
     
     public function afterSave($insert, $changedAttributes)
     {
-       $this->unlinkAll('generation', true);
-       if($this->generations && !empty($this->generations))
-        foreach($this->generations as $value){
-            $item = Generations::findOne($value);
-            $this->link('generation', $item);
+       if($this->generations && !empty($this->generations)){
+           $this->unlinkAll('generation', true);
+           foreach($this->generations as $value){
+                $item = Generations::findOne($value);
+                $this->link('generation', $item);
+            }
+       }
+        
+        
+       if($this->engines && !empty($this->engines)){
+           $this->unlinkAll('engine', true);
+           foreach($this->engines as $value){
+                $item = Engines::findOne($value);
+                $this->link('engine', $item);
+            }
+       }
+        
+        
+        if($this->categories && !empty($this->categories)){
+            $cats = $this->categories;
+            $this->unlinkAll('cats', true);
+            foreach($cats as $key => $value){
+                $item = PartsCategories::findOne($value);
+                $this->link('cats', $item);
+            }
         }
         
-        $this->unlinkAll('engine', true);
-       if($this->engines && !empty($this->engines))
-        foreach($this->engines as $value){
-            $item = Engines::findOne($value);
-            $this->link('engine', $item);
+        
+        if($this->cars && !empty($this->cars)){
+            $this->unlinkAll('avtos', true);
+            foreach($this->cars as $value){
+                $item = Cars::findOne($value);
+                $this->link('avtos', $item);
+            }
         }
         
-        $this->unlinkAll('cats', true);
-        if($this->categories && !empty($this->categories))
-        foreach($this->categories as $value){
-            $item = PartsCategories::findOne($value);
-            $this->link('cats', $item);
-        }
         
-        $this->unlinkAll('avtos', true);
-        if($this->cars && !empty($this->cars))
-        foreach($this->cars as $value){
-            $item = Cars::findOne($value);
-            $this->link('avtos', $item);
-        }
-        
-        $this->unlinkAll('jobs', true);
-        if($this->works && !empty($this->works))
-        foreach($this->works as $value){
-            $item = Jobs::findOne($value);
-            $this->link('jobs', $item);
+        if($this->works && !empty($this->works)){
+            $this->unlinkAll('jobs', true);
+            foreach($this->works as $value){
+                $item = Jobs::findOne($value);
+                $this->link('jobs', $item);
+            }
         }
         
         parent::afterSave($insert, $changedAttributes);

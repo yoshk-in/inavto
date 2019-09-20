@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'main',
                 'format' => 'html',
                 'value' => function($data){
-                    return $data->main ? '<span>Да</span>' : '<span>Нет</span>';
+                    return $data->main == 1 ? '<span>Да</span>' : '<span>Нет</span>';
                 }
             ],
             [

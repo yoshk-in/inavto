@@ -6,21 +6,17 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Orders */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
+$this->title = 'Заказ на ТО №'.$model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Заказы', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
 ?>
 <div class="orders-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -31,9 +27,46 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'model',
-            'generation_id',
-            'engine_id',
+            [
+              'attribute' => 'generation_id',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->generation->title;
+                }
+            ],
+            [
+              'attribute' => 'engine_id',
+                'format' => 'html',
+                'value' => function($data){
+                    return $data->engine->title;
+                }
+            ],
             'year',
+             [
+                'attribute' => 'works',
+                'format' => 'html',
+                'value' => function($data){
+                    $html = '';
+                    foreach($data->jobs as $key => $value){
+                        foreach($value->cats as $k => $v){
+                            if($v->service)
+                            $html .= '<p>' . Html::a($value->title . ' - '. $value->price, yii\helpers\Url::to(['jobs/view','cat_id' => $v->id, 'id' => $value->id])) . '</p>';
+                        }
+                    }
+                    return $html;
+                }
+             ],
+            [
+                'attribute' => 'detales',
+                'format' => 'html',
+                'value' => function($data){
+                    $html = '';
+                    foreach($data->parts as $key => $value){
+                        $html .= '<p>' . $value->code . ' - ' . $value->title . ' - '. $value->price  . '</p>';
+                    }
+                    return $html;
+                }
+             ],
             'email:email',
             'phone',
             'created',

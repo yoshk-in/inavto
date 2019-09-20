@@ -61,7 +61,7 @@ use kartik\select2\Select2;
     
     <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
 
-   <?= $form->field($model, 'recomended')->checkbox(['0', '1']) ?>
+    <?= $form->field($model, 'recomended')->dropDownList([null => 'Нет', '1' => 'Да']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>

@@ -63,7 +63,7 @@ class PartsController extends Controller
         $part_category = PartsCategories::findOne($id);
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'part_category' => $part_category
+            'part_category' => $part_category,
         ]);
     }
     

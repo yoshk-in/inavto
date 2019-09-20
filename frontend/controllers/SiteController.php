@@ -1,21 +1,15 @@
 <?php
 namespace frontend\controllers;
 
-use frontend\models\ResendVerificationEmailForm;
-use frontend\models\VerifyEmailForm;
 use Yii;
-use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
 use frontend\models\ContactForm;
-use common\models\Orders;
+use frontend\models\Orders;
 use common\models\Pages;
+use common\models\Messages;
 
 /**
  * Site controller
@@ -53,6 +47,15 @@ class SiteController extends Controller
             ],
         ];
     }
+    
+    public function beforeAction($action)
+    {
+        $cookies = Yii::$app->request->cookies;
+       if($cookies->getValue('version') && $cookies->getValue('version') == 'mobile'){
+           $this->layout = 'mobile';
+       }
+        return parent::beforeAction($action);
+    }
 
     /**
      * {@inheritdoc}
@@ -77,7 +80,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $model = new Orders();
+        $cars = \common\models\Cars::find()->all();
      
         $main_page = Yii::$app->cache->get('main_page');
         if(!$main_page){
@@ -85,30 +88,77 @@ class SiteController extends Controller
             Yii::$app->cache->set('main_page', $main_page, $this->cache_time);
         }
         
-        if($model->load(Yii::$app->request->post())){
+        $this->setMeta($main_page->meta_title, $main_page->keywords, $main_page->description);
+        
+        if($this->layout == 'mobile'){
+            return $this->render('mobile', [
+                'main_page' => $main_page,
+            ]);
+        }
+        return $this->render('index', [
+            'main_page' => $main_page,
+            'cars' => $cars,
+        ]);
+    }
+    
+    public function actionMessage()
+    {
+        $message = new Messages();
+        
+        if($message->load(Yii::$app->request->post())){
+            
+            if($message->save()){
+                Yii::$app->session->setFlash('success'.$message->flag, "Данные отправлены");
+                Yii::$app->session->setFlash('show'.$message->flag, "show");
+                return $this->redirect(Yii::$app->request->referrer);
+            }else{
+                Yii::$app->session->setFlash('error'.$message->flag, "Ошибка отправки");
+                Yii::$app->session->setFlash('show'.$message->flag, "show");
+                return $this->redirect([Yii::$app->request->referrer, 'message' => $message]);
+            }
+        }
+    }
+    
+    public function actionOrder()
+    {
+        $model = new Orders();
+         if($model->load(Yii::$app->request->post())){
             $model->model = Yii::$app->request->post('model');
             $model->generation_id = Yii::$app->request->post('generation');
             $model->engine_id = Yii::$app->request->post('motor');
             $model->year = Yii::$app->request->post('range');
-            $model->year = Yii::$app->request->post('range');
             $model->works = Yii::$app->request->post('rec');
+            $model->sets = Yii::$app->request->post('set');
             if($model->save()){
                 Yii::$app->session->setFlash('success', "Данные отправлены");
                 Yii::$app->session->setFlash('show', "show");
-                $this->redirect(Yii::$app->request->referrer);
+                return $this->redirect(Yii::$app->request->referrer);
             }else{
                 Yii::$app->session->setFlash('error', "Ошибка отправки");
                 Yii::$app->session->setFlash('show', "show");
-                $this->redirect([Yii::$app->request->referrer, 'model' => $model]);
+                return $this->redirect([Yii::$app->request->referrer, 'model' => $model]);
             }
         }
-        
-        return $this->render('index', [
-            'model' => $model,
-            'main_page' => $main_page,
-        ]);
     }
     
+    public function actionVersion()
+    {
+        if(Yii::$app->request->get()){
+            $cookies = Yii::$app->response->cookies;
+            if(Yii::$app->request->get('version') == 'desktop'){
+                $cookies->add(new \yii\web\Cookie([
+                    'name' => 'version',
+                    'value' => 'desktop',
+                ]));
+            }else{
+                $cookies->add(new \yii\web\Cookie([
+                    'name' => 'version',
+                    'value' => 'mobile',
+                ]));
+            }
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+    }
     
 
     /**
@@ -151,7 +201,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionContact()
+    /*public function actionContact()
     {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -167,7 +217,7 @@ class SiteController extends Controller
                 'model' => $model,
             ]);
         }
-    }
+    }*/
     
     public function actionPage($alias)
     {
@@ -181,7 +231,16 @@ class SiteController extends Controller
              throw new \yii\web\HttpException(404, 'Такой страницы нет');
         }
         
+        $this->setMeta($model->meta_title, $model->keywords, $model->description);
+        
         return $this->render('page', ['model' => $model]);
+    }
+    
+    protected function setMeta($title = null, $keywords = null, $description = null)
+    {
+        $this->view->title = $title;
+        $this->view->registerMetaTag(['name' => 'keywords', 'content' => "$keywords"]);
+        $this->view->registerMetaTag(['name' => 'description', 'content' => "$description"]);
     }
 
     /**

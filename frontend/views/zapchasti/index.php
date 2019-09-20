@@ -1,3 +1,6 @@
+<?php
+use yii\widgets\ActiveForm;
+?>
 <?= \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'cache_time' => 60]); ?>
 <section class="content">
 		<div class="row">
@@ -8,22 +11,29 @@
     <svg class="i arrow"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#keyboard-down"></use></svg><a href="/zapchasti/">Запчасти Volvo</a>
    
 </div>
-        <h1>Запчасти Volvo</h1>
-        <p>Автосервис ИНАВТО+ предлагает приобрести оригинальные и неоригинальные запчасти Volvo для всего модельного ряда. Наличие большинства запчастей и цены доступны в общей таблице. При необходимости Вы можете уточнить свою модель вольво и увидеть доступный список запчастей именно для нее.</p><p>Большинство самых распространенных запчастей вольво есть у нас в наличии, на нашем складе, время поступления других запчастей может составлять от одного до нескольких дней после заказа.
-</p><p>Для заказа запчастей Вы можете позвонить по нашим контактным телефонам в заголовке сайта, либо оставить заявку через форму обратной связи
-</p>
+        <h1><?=$page->title; ?></h1>
+        <?=$page->body; ?>
         <div class="fastOrder">
-            <form method="POST" action="">
+            <?php
+                if(!isset($message)) $message = new \common\models\Messages;
+                $form = ActiveForm::begin([
+                    'action'=>\yii\helpers\Url::to(['site/message']),
+                ]); 
+            ?>
                 <div class="btnGroup">
-                    <input class="" type="text" name="phone" value="" placeholder="+7 ( ___ ) ___ - __ - __">
-                    <select name="service">
-                        <option>Выберите сервисную станцию</option>
-                        <option value="ЮГ - Салова 68">ЮГ - Салова 68</option>
-                        <option value="СЕВЕР - Екатериненский 5А">СЕВЕР - Екатериненский 5А</option>
-                    </select>
-                    <button type="submit" name="sendRepairOrder" value="1" class="btn success">Записаться на ТО Volvo</button>
-                </div>
-            </form>
+                            <?= $form->field($message, 'phone', [
+                                   'inputOptions'=>['placeholder' => '+7 ( ___ ) ___ - __ - __'],
+                                   'template'=>"{input}",
+                                ]); ?>
+                            <?=$form->field($message, 'flag', ['template' => "{input}"])->hiddenInput(['value' => 2]) ?>
+                             <?= $form->field($message, 'service_id', [
+                                    'options'=>['tag' => null],
+                                   'template'=>"{input}"
+                                ])->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Services::find()->all(), 'id', 'title'), ['prompt' => 'Выберите  сервисную станцию']) ?>
+
+			<button type="submit" name="sendPartsOrder" value="1" class="btn success">Записаться на ТО Volvo</button>
+                        </div>
+                  <?php ActiveForm::end(); ?>
         </div>
     </div>
     <div class="span4 cars">
@@ -31,9 +41,6 @@
     </div>
 </div>
 
-
-
-<p>Не найдена модель автомобиля s40.</p>
 
 
 <script type="text/javascript">

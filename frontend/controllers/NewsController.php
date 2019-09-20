@@ -28,7 +28,13 @@ class NewsController extends SiteController{
         $news = $query->offset($pages->offset)
                         ->limit($pages->limit)
                         ->all();
-        return $this->render('index', ['news' => $news, 'pages' => $pages]);
+        $page = \backend\models\Pages::find()->where(['alias' => 'news'])->one();
+        $this->setMeta($page->meta_title, $page->keywords, $page->description);
+        Yii::$app->view->registerLinkTag(['rel' => 'canonical', 'href' => \yii\helpers\Url::to(['news'], true)]);
+        if($this->layout == 'mobile'){
+            return $this->render('mobile_index', ['news' => $news, 'pages' => $pages, 'page' => $page]);
+        }
+        return $this->render('index', ['news' => $news, 'pages' => $pages, 'page' => $page]);
     }
     
     public function actionPage($alias)
@@ -38,7 +44,13 @@ class NewsController extends SiteController{
             $model = News::find()->where(['alias' => $alias])->one();
             Yii::$app->cache->set('news_'.$alias, $model, $this->cache_time);
         }
-       
+         if(!$model){
+             throw new \yii\web\HttpException(404, 'Такой страницы нет');
+        }
+       $this->setMeta($model->title, $model->keywords, $model->description);
+       if($this->layout == 'mobile'){
+            return $this->render('mobile_page', ['model' => $model]);
+        }
         return $this->render('page', ['model' => $model]);
     }
 }

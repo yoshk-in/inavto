@@ -34,6 +34,7 @@ class Jobs extends \yii\db\ActiveRecord
     public $car_id;
     public $generations;
     public $items;
+    public $comment;
     
     public function behaviors()
     {
@@ -66,7 +67,7 @@ class Jobs extends \yii\db\ActiveRecord
             [['title'], 'required'],
             [['jc_id', 'recomended'], 'integer'],
             [['price'], 'number'],
-            [['created', 'modified', 'engines', 'generations', 'years', 'works', 'items'], 'safe'],
+            [['created', 'modified', 'engines', 'generations', 'years', 'works', 'items', 'comment'], 'safe'],
             [['title'], 'string', 'max' => 255],
             [['jc_id'], 'exist', 'skipOnError' => true, 'targetClass' => JobsCategories::className(), 'targetAttribute' => ['jc_id' => 'id']],
         ];
@@ -88,7 +89,8 @@ class Jobs extends \yii\db\ActiveRecord
             'generations' => 'Поколения авто',
             'engines' => 'Выбрать двигатели',
             'years' => 'Срок эксплуотации авто',
-            'items' => 'Набор запчастей'
+            'items' => 'Набор запчастей',
+            'comment' => 'Примечание'
         ];
     }
 
@@ -131,40 +133,49 @@ class Jobs extends \yii\db\ActiveRecord
     
     public function afterSave($insert, $changedAttributes)
     {
-       $this->unlinkAll('periods', true);
-       if($this->years && !empty($this->years))
-        foreach($this->years as $value){
-            $item = Years::findOne($value);
-            $this->link('periods', $item);
+        if($this->years && !empty($this->years)){
+            $this->unlinkAll('periods', true);
+            foreach($this->years as $value){
+                $item = Years::findOne($value);
+                $this->link('periods', $item);
+            }
+        }
+       
+        
+         if($this->engines && !empty($this->engines)){
+             $this->unlinkAll('motors', true);
+            foreach($this->engines as $value){
+                $item = Engines::findOne($value);
+                $this->link('motors', $item);
+            }
+         }
+        
+        
+        if($this->generations && !empty($this->generations)){
+            $this->unlinkAll('generation', true);
+            foreach($this->generations as $value){
+                $item = Generations::findOne($value);
+                $this->link('generation', $item);
+            }
         }
         
-        $this->unlinkAll('motors', true);
-        if($this->engines && !empty($this->engines))
-        foreach($this->engines as $value){
-            $item = Engines::findOne($value);
-            $this->link('motors', $item);
+        
+        if($this->works && !empty($this->works)){
+            $this->unlinkAll('cats', true);
+            foreach($this->works as $value){
+                $item = JobsCategories::findOne($value);
+                $this->link('cats', $item);
+            }
         }
         
-        $this->unlinkAll('generation', true);
-        if($this->generations && !empty($this->generations))
-        foreach($this->generations as $value){
-            $item = Generations::findOne($value);
-            $this->link('generation', $item);
+        if($this->items && !empty($this->works)){
+            $this->unlinkAll('parts', true);
+            foreach($this->items as $value){
+                $item = Parts::findOne($value);
+                $this->link('parts', $item);
+            }
         }
         
-        $this->unlinkAll('cats', true);
-        if($this->works && !empty($this->works))
-        foreach($this->works as $value){
-            $item = JobsCategories::findOne($value);
-            $this->link('cats', $item);
-        }
-        
-        $this->unlinkAll('parts', true);
-        if($this->items && !empty($this->works))
-        foreach($this->items as $value){
-            $item = Parts::findOne($value);
-            $this->link('parts', $item);
-        }
         
         parent::afterSave($insert, $changedAttributes);
     }

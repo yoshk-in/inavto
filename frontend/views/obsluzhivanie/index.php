@@ -1,3 +1,6 @@
+<?php
+use yii\widgets\ActiveForm;
+?>
 <?= \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'cache_time' => 60]); ?>
 <section class="content">
 		<div class="row">
@@ -6,27 +9,33 @@
 	<noindex><a href="<?= yii\helpers\Url::home();?>">Главная</a></noindex>
         <svg class="i arrow"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#keyboard-down"></use></svg> <a href="<?= yii\helpers\Url::to(['obsluzhivanie/index']);?>">Техническое и сервисное обслуживание Volvo</a>
 </div>
-        <h1>Обслуживание Volvo</h1>
-        <p>Мы предлагаем Вам доступные цены на <em>профессиональный ремонт</em> Вашего автомобиля Volvo в сочетании с <em>честностью</em> и <em>прозрачностью</em> в работе. Наши мастера отлично знают устройство всех моделей Volvo, их проблемные узлы и часто встречающиеся неполадки. Уже больше 25 лет мы работаем на рынке ремонта и сервисного обслуживания автомобилей. Благодаря полученному опыту мы можем предложить своим клиентам отличное качество и дать гарантии на все свои работы.
-</p><p>В наличии всегда есть большой выбор <a href="/zapchasti" target="_blank">всех запчастей для ремонта Volvo</a>, а наши менеджеры помогут подобрать оптимальные запчасти именно для Вашей модели авто.
-</p><p>На сервисах ИНАВТО+ установлено современное ремонтное и диагностическое оборудование, есть охраняемая стоянка и видеонаблюдение. Для клиентов сервиса доступна комната отдыха с телевизором и бесплатным Wi-Fi.
-</p><p>На нашем сайте Вы можете найти все цены на ремонт конкретной модели Volvo, а в <a href="/zapchasti">разделе запчастей</a> - уточнить наличие и стоимость деталей и расходных материалов.</p><p>Ознакомиться с основным перечнем работ по ремонту вольво и ценами Вы можете в таблице ниже, обратите внимание, что присутствует возможность уточнить свою модель авто, поколение и двигатель.</p>
+        <h1><?=$page->title; ?></h1>
+        <?=$page->body; ?>
         <div class="fastOrder">
-            <form method="POST" action="">
+            <?php
+                if(!isset($message)) $message = new \common\models\Messages;
+                $form = ActiveForm::begin([
+                    'action'=>\yii\helpers\Url::to(['site/message']),
+                ]); 
+            ?>
                 <div class="btnGroup">
-                    <input class="" type="text" name="phone" value="" placeholder="+7 ( ___ ) ___ - __ - __">
-                    <select name="service">
-                        <option>Выберите сервисную станцию</option>
-                        <option value="ЮГ - Салова 68">ЮГ - Салова 68</option>
-                        <option value="СЕВЕР - Екатериненский 5А">СЕВЕР - Екатериненский 5А</option>
-                    </select>
-                    <button type="submit" name="sendRepairOrder" value="1" class="btn success">Записаться на ремонт</button>
-                </div>
-            </form>
+                            <?= $form->field($message, 'phone', [
+                                   'inputOptions'=>['placeholder' => '+7 ( ___ ) ___ - __ - __'],
+                                   'template'=>"{input}",
+                                ]); ?>
+                            <?=$form->field($message, 'flag', ['template' => "{input}"])->hiddenInput(['value' => 2]) ?>
+                             <?= $form->field($message, 'service_id', [
+                                    'options'=>['tag' => null],
+                                   'template'=>"{input}"
+                                ])->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Services::find()->all(), 'id', 'title'), ['prompt' => 'Выберите  сервисную станцию']) ?>
+
+			<button type="submit" name="sendPartsOrder" value="1" class="btn success">Записаться на ТО Volvo</button>
+                        </div>
+                  <?php ActiveForm::end(); ?>
         </div>
     </div>
     <div class="span4 cars">
-         <?= \frontend\widgets\ListWidget::widget(['tpl' => 'index', 'flag' => 'zapchasti', 'cache_time' => 60]); ?>
+         <?= \frontend\widgets\ListWidget::widget(['tpl' => 'index', 'flag' => 'obsluzhivanie', 'cache_time' => 60]); ?>
     </div>
 </div>
 

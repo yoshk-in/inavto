@@ -8,6 +8,8 @@ use common\models\Cars;
 use common\models\Jobs;
 use common\models\JobcatsJobs;
 use backend\models\SearchJobsCategories;
+use common\models\UploadFile;
+use yii\web\UploadedFile;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -24,10 +26,56 @@ class Jobs_categoriesController extends SiteController
     {
         $searchModel = new SearchJobsCategories();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        $dataJobs = new yii\data\ActiveDataProvider([
+            'query' => Jobs::find()
+        ]);
+        
+        $model = new UploadFile();
+        
+        if (Yii::$app->request->isPost) {
+            $model->file = UploadedFile::getInstance($model, 'file');
+            if ($model->upload()) {
+                $data = \moonland\phpexcel\Excel::import('uploads/' . $model->file->name, [
+                    'setFirstRecordAsKeys' => false,  
+                    'setIndexSheetByName' => true
+                ]); 
+             unset($data[1]);
+            
+                foreach($data as $key => $value){
+                    
+                    $new_val = array_values($value);
+                    
+                    $id = $new_val[1];
+                    $item = Jobs::findOne($id);
+                    if(!$item){
+                        $item = new Jobs();
+                    }
+                    
+                    $categories = explode(',', $new_val[4]);
+                    $new_arr = array();
+                    foreach($categories as $k => $v){
+                        if(!$v){
+                            continue;
+                        }
+                        $new_arr[] = (int) trim($v);
+                    }
+                    
+                    $item->title = (string) $new_val[2];
+                    $item->price = (int) $new_val[3];
+                    $item->works = $new_arr;
+                    $item->save();
+                }
+                Yii::$app->session->setFlash('success', "Импорт выполнен");
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'dataJobs' => $dataJobs,
+            'model' => $model
         ]);
     }
 

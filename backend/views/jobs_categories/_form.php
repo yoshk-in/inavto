@@ -38,7 +38,7 @@ mihaildev\elfinder\Assets::noConflict($this);
         ]);
     ?>
 
-    <?= $form->field($model, 'service')->checkbox(['0', '1']) ?>
+    <?= $form->field($model, 'service')->dropDownList([null => 'Нет', '1' => 'Да']) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
