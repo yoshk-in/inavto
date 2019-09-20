@@ -22,6 +22,11 @@ class ZapchastiController extends SiteController
     {
         $page = \backend\models\Pages::find()->where(['alias' => 'zapchasti'])->one();
         $this->setMeta($page->meta_title, $page->keywords, $page->description);
+        if($this->layout == 'mobile'){
+           return $this->render('mobile_index', [
+                'page' => $page,
+            ]); 
+        }
         return $this->render('index', ['page' => $page]);
     }
 
@@ -98,6 +103,17 @@ class ZapchastiController extends SiteController
         
         $this->setMeta($model->meta_title, $model->keywords, $model->description);
         Yii::$app->view->registerLinkTag(['rel' => 'canonical', 'href' => \yii\helpers\Url::to(['zapchasti/category', 'alias' => $alias], true)]);
+        
+        if($this->layout == 'mobile'){
+           return $this->render('mobile_view', [
+                'model' => $model,
+                'cats' => $cats,
+                'parents' => $parents,
+                'f_gen' => $f_gen,
+                'slug' => $slug,
+                'car' => $car
+            ]); 
+        }
         
         return $this->render('view', [
             'model' => $model,

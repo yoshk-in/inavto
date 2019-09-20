@@ -1,0 +1,1151 @@
+@font-face{
+    font-family:'volvo';
+    src:url("/fonts/inavtospbb/webfont.eot");
+    src:url("/fonts/inavtospbb/webfont.eot?#iefix") format("embedded-opentype"),
+    url("/fonts/inavtospbb/webfont.woff") format("woff"),
+    url("/fonts/inavtospbb/webfont.ttf") format("truetype"),
+    url("/fonts/inavtospbb/webfont.svg#clear_sans_thinregular") format("svg");
+    font-weight:normal;
+    font-style:normal
+}
+
+@font-face{
+    font-family:'Rouble';
+    src:local('ALSRublRegular');
+    src:url('/fonts/rubl/Rouble.eot');
+    src:url('/fonts/rubl/Rouble.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/rubl/Rouble.woff') format('woff')
+}
+
+@font-face{
+    font-family:'volvoc';
+    src:url("/fonts/volvoc/webfont.eot");
+    src:url("/fonts/volvoc/webfont.eot?#iefix") format("embedded-opentype"),
+    url("/fonts/volvoc/webfont.woff") format("woff"),
+    url("/fonts/volvoc/webfont.ttf") format("truetype"),
+    url("/fonts/volvoc/webfont.svg#clear_sans_thinregular") format("svg");
+    font-weight:normal;
+    font-style:normal
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    font-family: Arial, Tahoma, sans-serif;
+
+    font-size: 12pt;
+    color: black;
+}
+
+a {
+    color:#0f548d;
+    text-decoration: underline;
+}
+
+a:hover {
+    color:#18619e;
+    text-decoration: none;
+}
+
+a:visited {
+    color:#207dca;
+}
+
+
+ul.list>li {
+    padding: 3px 0;
+}
+
+input, select {
+    box-sizing: border-box;
+    border: 1px solid #c9d3d6;
+    margin: 0;
+    display: inline-block;
+    color: #5a5a5a;
+    background-color: #ffffff;
+    font-size: 11pt;
+    border-radius: 4px;
+    padding: 3px 8px 2px 8px;
+}
+
+select {
+    -webkit-appearance: none;
+    background-image: url('/img/admin/svg/arrow.svg?111');
+    background-repeat: no-repeat;
+    background-position: right 12px top 50%;
+    background-size: 12px auto;
+    font-weight: 300;
+    color:black;
+    padding-right: 30px;
+    line-height: 18pt;
+    font-size: 11pt;
+}
+
+input[type="text"], input[type="password"], textarea {
+    position: relative;
+    display: inline-block;
+    font-weight: 300;
+
+    box-sizing: border-box;
+    background: none;
+    color:black;
+    border:1px solid lightgray;
+    border-radius: 3px;
+    font-size: 11pt;
+    line-height: 18pt;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+    padding: 5px 8px 6px 8px;
+    margin: 0;
+    outline: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+    border: 1px solid #5f9bb7 !important;
+    box-shadow: 0 0 4px rgba(15,84,141,0.37);
+    z-index:1;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.nobr {
+    white-space: nowrap;
+}
+
+
+.btn {
+    font-family: 'Roboto Condensed', Arial, sans-serif;
+    text-transform: uppercase;
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    color:black;
+    background: #f1f1f1;
+    border:1px solid lightgray;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-radius: 3px;
+
+    padding: 2px 8px 3px 8px;
+    margin: 0 0 4px 0;
+    outline: 0;
+    font-size: 10.3pt;
+    line-height: 20pt;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+    cursor: pointer;
+}
+
+.btn.small {
+    color:#444;
+    border-color:#aaa;
+    padding: 3px 12px 1px 12px;
+    font-size: 11pt;
+    line-height: 19pt;
+}
+
+a.btn.desktop, a:visited.btn.desktop {
+    color:white;
+}
+
+a.btn.desktop {
+    border-color:white;
+    background: none;
+}
+
+a.btn.desktop:hover > svg.i {
+    color:white;
+}
+
+svg.i {
+    width: 16px;
+    height: 16px;
+    background: inherit;
+    display: inline-table;
+    vertical-align: middle;
+    color: inherit;
+}
+
+.btn>.i {
+    display: inline-table;
+    width:17px;
+    height:17px;
+    margin: -2px 3px 0 0;
+}
+
+.btn.size_l {
+    min-height: 48px;
+    padding: 0 25px;
+    font-size: 14pt;
+    line-height: 42px;
+}
+
+.btn.parts, .btn.red {
+    border-color:#ad2c2c;
+    color:#ad2c2c;
+    background: none;
+}
+
+.green {
+    color:#3f7f4e;
+}
+
+.btn.green {
+    border-color: #3f7f4e;
+    background: white;
+    color:#3f7f4e !important;
+}
+
+a.btn.parts:hover, a.btn.parts:visited, a.btn.red:hover, a.btn.red:visited {
+    border-color:#ad2c2c;
+    color:#ad2c2c;
+}
+
+.btn.success, button.success {
+    border-color: #3f7f4e;
+    color:white;
+    background: #54a564;
+}
+
+.btn.calc, .btn.info, button.info {
+    border-color:#436fa5;
+    color:#436fa5;
+    background: none;
+}
+
+a.btn.calc:hover, a.btn.calc:visited, .btn.info:hover, button.info:hover {
+    border-color:#436fa5;
+    color:#436fa5;
+}
+
+.btn.calc>.i {
+    width:21px;
+    height:21px;
+    margin-top: -4px;
+}
+
+.btn.parts>.i {
+    width: 19px;
+    height: 19px;
+}
+
+.btn.mobile {
+    margin: 12px 0 0 0;
+    color:white;
+    border-color:white;
+    background: none;
+}
+
+a.btn.mobile {
+    color:white;
+}
+
+.alert-error {
+    color: #de5656;
+}
+
+.alert-success {
+    color: #3da351;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+a.btn:hover {
+    color:black;
+}
+
+a.btn:visited {
+    color:black;
+}
+
+.ruble {
+    font-family: Rouble;
+    font-size: 1em;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+.green { color: #45b263 }
+.error { color:#cc0000 }
+
+.ruble {
+    font-family: Rouble;
+    font-size: 1em;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+.row {
+    width: 100%;
+}
+
+.row.flex {
+    display: flex;
+}
+
+.row:not(.flex):before, .row:not(.flex):after {
+    display: table;
+    line-height: 0;
+    content: "";
+}
+
+.row:not(.flex):after {
+    clear: both;
+}
+
+
+.row>div {
+    box-sizing: border-box;
+}
+
+.row:not(.flex)>div, .row:not(.flex)>li {
+    float: left;
+    display: block;
+}
+
+.row>.span1 { width:8.33332% }
+.row>.span2 { width:16.66665% }
+.row>.span3 { width:24.99998% }
+.row>.span4 { width:33.33332% }
+.row>.span5 { width:41.66665% }
+.row>.span6 { width:49.99998% }
+.row>.span7 { width:58.33331% }
+.row>.span8 { width:66.66664% }
+.row>.span9 { width:74.99999% }
+.row>.span12 { width:100% }
+
+.row:not(.flex).grid>div, .row:not(.flex).grid>li {
+    margin-right: 2%;
+}
+
+.row:not(.flex).grid>div:last-of-type, .row:not(.flex).grid>li:last-of-type {
+    margin-right: 0;
+}
+
+.row.grid>.span1 { width:6.5% }
+.row.grid>.span2 { width:15% }
+.row.grid>.span3 { width:23.5% }
+.row.grid>.span4 { width:32% }
+.row.grid>.span5 { width:40.5% }
+.row.grid>.span6 { width:49% }
+.row.grid>.span7 { width:57.5% }
+.row.grid>.span8 { width:66% }
+.row.grid>.span12 { width:100% }
+
+.rowa {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+
+    -webkit-flex-flow: row wrap;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+
+    -webkit-align-content: center;
+    -ms-flex-line-pack: center;
+    align-content: center;
+
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.rowa .block {
+    -webkit-flex-basis: auto;
+    -ms-flex-preferred-size: auto;
+    flex-basis: auto;
+    width: 47%;
+}
+
+.wrapper {
+    position: relative;
+    min-height: 100%;
+    box-sizing: border-box;
+    padding: 0 0 120px 0;
+}
+
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 120px;
+    z-index: 1;
+    background: #003057;
+}
+
+
+
+h1, h2, h3 {
+    letter-spacing: 0.3pt;
+    font-weight: normal;
+    font-family: volvoc, Roboto, Arial, sans-serif;
+    padding: 0;
+    margin: 8px 0 16px 0;
+    color:black;
+}
+
+h1 {
+    margin: 10px 6px 12px 6px;
+    padding: 0;
+    line-height: 20pt;
+    font-size: 200%;
+}
+
+h2 {
+    font-size: 160%;
+    margin: 10px 7px 8px 7px;
+    line-height: 18pt;
+}
+
+p {
+    padding: 4px 0 8px 0;
+    margin: 0;
+}
+
+.nobr {
+    white-space: nowrap;
+}
+
+.wrapper {
+    position: relative;
+    width:100%;
+    min-height:100%;
+}
+
+.content {
+    padding: 8px 0;
+}
+
+.content > p:not(.imageContainer), .text > p:not(.imageContainer) {
+    padding: 8px 6px;
+}
+
+
+header {
+    color:white;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 6px 6px 0 6px;
+}
+
+header .buttons {
+    margin: 12px 0 0 0;
+}
+
+header .buttons > .btn {
+    float:left;
+    width:50%;
+    border-radius: 0;
+}
+
+header .buttons > .btn:first-child {
+    border-radius: 3px 0 0 3px;
+}
+
+header .buttons > .btn:last-of-type {
+    border-radius: 0 3px 3px 0;
+}
+
+header .buttons > .btn:not(:first-child) {
+    margin-left: -1px;
+}
+
+header .logo {
+    text-align: left;
+    padding: 6px 4px;
+}
+
+header img.inavtospb-logo {
+    float: left;
+    width:72px;
+    height:72px;
+}
+
+header .logo a.inavto>div {
+    display: inline-table;
+    float: left;
+    padding: 0 0 0 10px;
+    box-sizing: border-box;
+}
+
+header .logo a.inavto strong {
+    font-family: volvoc, Arial, Tahoma, sans-serif;
+    color: black;
+    display: block;
+    font-size: 340%;
+    font-weight: normal;
+    letter-spacing: 3.2pt;
+    line-height: 32pt;
+}
+
+header .logo a.inavto em {
+    font-weight: normal;
+    white-space: nowrap;
+    font-style: normal;
+    text-transform: uppercase;
+    color: #9d9d9d;
+    font-size: 9pt;
+    font-family: "Roboto Condensed", Arial, sans-serif;
+}
+
+header .service {
+    padding-left: 28px;
+}
+
+header .service.s1 {
+    margin:6px 0 12px 0;
+}
+
+header .service>a {
+    font-family: "Roboto Condensed", Arial, sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+    margin:0 0 0 0;
+    color:black;
+    display: block;
+    position: relative;
+}
+
+header .service>a>svg, header .service>time>svg {
+    display: block;
+    position: absolute;
+}
+
+header .service>a>svg {
+    top:2px;
+    left:-24px;
+}
+
+header .service time {
+    font-family: "Roboto", Arial, sans-serif;
+    font-weight: normal;
+    font-size:11pt;
+    display: block;
+    position: relative;
+    margin: 3px 0 4px 0;
+    color:#939393
+}
+
+header .service>time>svg {
+    top:0;
+    left:-24px;
+    width:18px;
+    height:18px;
+}
+
+header .service a>em {
+    font-style:normal;
+    color:gray;
+    font-size: 90%;
+}
+
+header .service .phone {
+    color:#939393;
+    position: relative;
+    display: block;
+    width:100%;
+    font-weight: 300;
+    font-family: Roboto, Arial;
+}
+
+header .service .phone .number {
+    text-decoration: none;
+    display: block;
+    color:black;
+    position: absolute;
+    top:0;
+    font-weight: 300;
+    font-family: Roboto, Arial;
+    left:35%;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    z-index: 1050;
+    width: 500px;
+    max-width: 100%;
+    margin-left: -50%;
+    background: #ffffff;
+    box-sizing: border-box;
+    padding: 0;
+    outline: none;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    -o-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+}
+
+.modal-header {
+    padding: 10px 16px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-family: "Roboto Condensed", "Arial Narrow", Arial;
+    line-height: 30px;
+}
+
+.modal.show {
+    opacity: 1;
+    visibility: visible;
+    top: 0;
+    left: 50%;
+}
+
+.modal .close {
+    display: block;
+    position: absolute;
+    right: 16px;
+    top: 8px;
+    color: #000000;
+    font-size: 180%;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.modal .close>svg.i {
+    width:22px;
+    height:22px;
+    color:gray;
+    cursor: pointer;
+}
+
+.modal-body {
+    position: relative;
+    max-height: 460px;
+    padding: 14px 20px 20px 20px;
+    overflow-y: auto;
+}
+
+.backdrop {
+    opacity: 0;
+    visibility: hidden;
+
+    content: '';
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index:99;
+    background: black;
+
+    -webkit-transition: opacity ease-out .2s;
+    -moz-transition: opacity ease-out .2s;
+    -o-transition: opacity ease-out .2s;
+    transition: opacity ease-out .2s;
+}
+
+.backdrop.show {
+    opacity: 0.37;
+    visibility: visible;
+}
+
+
+
+.menuToggle {
+    position:fixed;
+    right:0;
+    top:0;
+    width:52px;
+    height:46px;
+    background: #5470a2;
+    -webkit-border-radius: 0 0 0 7px;
+    -moz-border-radius: 0 0 0 7px;
+    border-radius: 0 0 0 7px;
+    -webkit-transition: all .4s ease-out;
+    -moz-transition: all .4s ease-out;
+    -o-transition: all .4s ease-out;
+    transition: all .4s ease-out;
+    z-index:100;
+}
+
+.menuToggle>span {
+    width:26px;
+    height:26px;
+    display: block;
+    margin: 7px auto 0 auto;
+}
+
+.menuToggle>span svg {
+    width:26px;
+    height:26px;
+    color:white;
+}
+
+.menuToggle>ul {
+    font-size: 10pt;
+    display: block;
+    padding: 6px 16px;
+    color:white;
+
+    overflow: auto;
+    max-height: 600px;
+
+    margin: 0;
+    position: absolute;
+    width:272px;
+    left:100%;
+    top:0;
+    opacity: 0;
+    visibility: hidden;
+    background: #5470a2;
+    box-sizing: border-box;
+    z-index: 100;
+    -webkit-border-radius: 0 0 0 7px;
+    -moz-border-radius: 0 0 0 7px;
+    border-radius: 0 0 0 7px;
+}
+
+.menuToggle>ul a {
+    color:white;
+    text-decoration: none;
+}
+
+.menuToggle.show {
+    right:268px;
+}
+
+.menuToggle.show>ul {
+    visibility: visible;
+    opacity: 1;
+}
+
+.menuToggle>ul li {
+    list-style: none;
+    padding: 2px 0;
+    margin: 0;
+}
+
+.menuToggle>ul li>a {
+    display: block;
+    padding: 2px 0;
+}
+
+.menuToggle>ul>li>a {
+    font-weight: bold;
+    color:white;
+}
+
+.menuToggle>ul>li>ul {
+    padding: 4px 0 4px 14px;
+    margin: 0;
+}
+
+.imageContainer {
+    text-align: center;
+}
+
+.imageContainer a img {
+    max-width:100%;
+}
+
+.dirs {
+    padding: 8px 6px;
+    font-family: "Roboto Condensed", Arial, sans-serif;
+    color: gray;
+    vertical-align: middle;
+    font-size: 12pt;
+}
+
+.dirs a {
+    color: gray;
+    text-decoration: none;
+}
+
+.dirs svg.i.arrow {
+    width: 18px;
+    height: 18px;
+    margin: -2px 0 0 0;
+    display: inline-table;
+    vertical-align: middle;
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+
+.userCarSelect {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    margin: 4px 0 10px 0;
+    border-top: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+    color: #777;
+}
+
+.userCarSelect select {
+    margin: 0 0 3px 0;
+}
+
+.userCarSelect span {
+    white-space: nowrap;
+    line-height: 20pt;
+}
+
+.userCarSelect a.filterReset {
+    color: #d03c00;
+    font-size: 90%;
+    margin: 3px 0 6px 0;
+
+    display: inline-block;
+    line-height: 14pt;
+    text-decoration: none;
+    border-bottom: 1px dotted #d03c00;
+    white-space: nowrap;
+}
+
+.userCarSelect svg.i, .filterWarning svg.i {
+    width: 22px;
+    height: 22px;
+    margin: -4px 6px 0 0;
+    display: inline-table;
+    vertical-align: middle;
+    color: black;
+}
+
+.descParts {
+    width:100%;
+    padding: 0 6px;
+}
+
+.orderParts {
+    width:100%;
+    padding: 0 6px;
+}
+
+.filterWarning {
+    padding: 8px 6px;
+    color: #777;
+}
+
+.filterWarning svg.i {
+    width: 22px;
+    height: 22px;
+    color: #d03c00;
+    margin: -2px 4px 0 0;
+}
+
+.table.carParts, .table.carWorks {
+    margin: 0 0 10px 0;
+}
+
+.table {
+    width: 100%;
+}
+
+
+.carWorks .workName {
+    width:50%;
+    padding: 3px 3px 3px 6px;
+}
+
+.carWorks .prices {
+    width: 50%;
+    padding: 3px 6px 3px 3px;
+}
+
+.carWorks .row.work .prices {
+    font-family: "Roboto Condensed", "Arial Narrow", Arial;
+}
+
+.carWorks .row.work .prices .car {
+    color:black;
+}
+
+.carWorks .row.work .prices .partsPrice, .carWorks .row.work .prices .workPrice {
+    color:#777;
+}
+
+.carWorks .row.work .prices .partsPrice span, .carWorks .row.work .prices .workPrice span {
+    color:black;
+}
+
+.carWorks .row.work .prices .workPrice {
+    margin: 0 0 10px 0;
+}
+
+
+.table>.row.subtopic {
+    text-align: left;
+    /* border-left: 1px solid #c9c9c9; */
+    border-radius: 3px 0 0 0;
+}
+
+.table>.row.subtopic:before {
+    content: ' ';
+    position: relative;
+    width: calc(100% - 3px);
+    height: 1px;
+    top: 0;
+    left: 0;
+    background: #c9c9c9;
+}
+
+.table.carParts>.row.subtopic .name {
+    padding: 0 0 0 6px;
+}
+
+.table.carParts>.row.subtopic .name, .table.carWorks>.row.subtopic .name {
+    padding: 0 0 0 6px;
+    width: 89%;
+}
+
+.table>.row.subtopic.active h3 {
+    font-weight: 500;
+    color: black;
+}
+
+.table>.row.subtopic h3 {
+    text-transform: uppercase;
+    font-family: "Roboto Condensed", Arial, sans-serif;
+    font-weight: 200;
+    width:100%;
+    height:36px;
+    color: #555;
+    font-size: 95%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 36px;
+    vertical-align: middle;
+}
+
+.table>.row.subtopic label {
+    cursor: pointer;
+    display: block;
+    height:36px;
+    width:100%;
+    position: absolute;
+    left:0;
+    top:0;
+}
+
+.table>.row.subtopic h3 label span {
+    display: none;
+}
+
+.table>.row.subtopic .toggle {
+    width: 11%;
+    text-align: right;
+}
+
+.table>.row.subtopic .toggle {
+    position: relative;
+}
+
+.table>.row.subtopic .toggle .btn {
+    background: none;
+    position: absolute;
+    display: block;
+    font-size: 200%;
+    border-radius: 0 3px 0 0;
+    height: 38px;
+    padding: 0;
+    text-align: center;
+    font-weight: 300;
+    font-family: "Roboto", Arial, sans-serif;
+    line-height: 34px;
+    top: -1px;
+    right: 0;
+    border: 1px solid #c9c9c9;
+}
+
+.table>.row.subtopic .toggle .btn svg.i {
+    margin: 0;
+    width: 26px;
+    height: 26px;
+}
+
+.table>.row.subtopic .toggle .btn input {
+    display: none;
+}
+
+.table>.row.subtopic .toggle .btn input + svg {
+    color: #7badd6;
+}
+
+.table>.row.subtopic .toggle .btn input:checked + svg {
+    color: #ad2c2c;
+}
+
+.table>.slide>.row.header {
+    background: #e2e2e2;
+    color: #555;
+    font-family: "Roboto Condensed", Arial, sans-serif;
+    font-weight: 400;
+    font-size: 90%;
+}
+
+.table>.slide>.row:not(.header):not(.signatures):nth-child(even) {
+    background: #f4f4f4;
+}
+
+
+.table.bordered>.slide>.row:not(:last-of-type)>div {
+    /*border-bottom-width: 1px;
+    border-bottom-style: solid;*/
+}
+
+.table.bordered>.row:not(.subtopic)>div:not(:last-of-type), .table.bordered .row.work>div:not(:last-of-type), .table.bordered:not(.listWorks) .row.part>div:not(:last-of-type), .table.bordered .work>.row>div:not(:last-of-type), .table.bordered .row.header>div:not(:last-of-type) {
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #fff;
+}
+
+.table.bordered>.slide>.row:not(:last-of-type)>div, .table.bordered>.slide>.work:not(:last-of-type)>.row>div, .table.bordered>.row:not(.subtopic):not(:last-of-type), .table.bordered>.row.active {
+    /*border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-color: #fff;*/
+}
+
+.table>.slide>.row.header>div {
+    padding: 10px 6px;
+}
+
+
+.table.carParts .partName {
+    width: 59%;
+    padding: 3px 3px 3px 6px;
+}
+
+.table.carParts .compatibleGenerations {
+    font-family: "Roboto", Arial, sans-serif;
+    color: #777;
+    padding: 3px 0;
+    font-size: 85%;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+}
+
+.table.carParts .articul {
+    width: 19%;
+    padding: 3px;
+    font-weight: 400;
+    font-size: 90%;
+    text-align: center;
+    border-bottom: none;
+    color: #555;
+    font-family: "Roboto Condensed", Arial, sans-serif;
+}
+
+.table.carParts .price {
+    padding: 3px;
+    width: 22%;
+    text-align: right;
+}
+
+.table.carParts .vendor {
+    color:#777;
+}
+
+.table.carParts .vendor .isOriginal {
+    color: #0b6d0b;
+    font-size: 90%;
+    font-family: "Roboto Condensed", Arial, sans-serif;
+}
+
+input.error {
+    background: #ffece9;
+    color: #c31900;
+    border-color: #e96127;
+    z-index: 1;
+}
+
+.modal.partsModal form input, .modal.partsModal form textarea, .modal.partsModal form select,
+.modal.repairModal form input, .modal.repairModal form textarea, .modal.repairModal form select {
+    width:85%;
+    margin: 0 auto;
+}
+
+.modal.partsModal form > div:first-of-type > *, .modal.repairModal form > div:first-of-type > * {
+    border-radius: 3px 3px 0 0;
+}
+
+.modal.partsModal form > div:not(:first-of-type) > *, .modal.repairModal form > div:not(:first-of-type) > * {
+    border-radius: 0;
+    margin-top: -1px;
+}
+
+.modal.partsModal form > div:last-of-type > *, .modal.repairModal form > div:last-of-type > * {
+    border-radius: 0 0 3px 3px;
+}
+
+.modal.partsModal form textarea, .modal.repairModal form textarea {
+    resize: none;
+    line-height: normal;
+
+}
+
+.modal.partsModal form > *:not(:first-of-type), .modal.repairModal form > *:not(:first-of-type) {
+    border-top:none;
+}
+
+
+
+footer .in {
+    padding: 16px 6px 8px 6px;
+    text-align: center;
+}
+
+footer .rights {
+    padding: 8px 0;
+    color: #87bce6;
+    font-size: 10pt;
+    text-align: center;
+}
+
+footer .copyright {
+    box-sizing: border-box;
+    background: #032a49;
+    padding: 8px 6px 10px 6px;
+}
+
+footer .counters {
+    padding: 8px 6px;
+    text-align: center;
+}

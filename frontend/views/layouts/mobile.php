@@ -18,7 +18,7 @@ AppAsset::register($this);
     <link href="https://inavtospb.ru/" rel="canonical"></link>
     <link href="https://m.inavtospb.ru/" rel="alternate" media="only screen and (max-width: 640px)"></link>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" id="viewport" content="width=device-width, initial-scale=0.75" />
+    <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1, maximum-scale=1;" />
     <?php $this->head() ?>
 	<link rel="icon" type="shortcut icon" href="/data/img/favicons/inavtospb.ico?v=2" />
 	<link rel="icon" sizes="256x160" href="/data/img/favicons/inavtospb-256x160.png?v=2" type="image/png" />
@@ -27,7 +27,7 @@ AppAsset::register($this);
 	<link rel="icon" sizes="32x32" href="/data/img/favicons/inavtospb-32x32.png?v=2" type="image/png" />
 	<link rel="icon" sizes="16x16" href="/data/img/favicons/inavtospb-16x16.png?v=2" type="image/png" />
 
-	<link type="text/css" rel="Stylesheet" media="screen" href="/css/common.css" />
+	<link type="text/css" rel="Stylesheet" media="screen" href="/css/mobile.css" />
 	<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100|Roboto:300,400,500" rel="stylesheet" />
 	<link rel="stylesheet" type="text/css" href="/css/zoomImage.css?14064" media="screen" />
 
@@ -35,7 +35,6 @@ AppAsset::register($this);
 	<script type="text/javascript" src="/js/lib/jquery.cookie.js"></script>
 	<script type="text/javascript" src="/js/lib/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/js/core3.js"></script>
-	<script type="text/javascript" src="/js/zoomImage.js"></script>
 
     <script type="text/javascript">
         var PATH = "/";
@@ -413,111 +412,50 @@ AppAsset::register($this);
 			C72.411,49.38,72.561,50.688,74.869,52.943z"/>
 	</symbol>
 </svg>
+
 <div class="wrapper">
+
 	<header>
-	<div class="row">
-		<div class="logo span3">
-			<a href="/" class="row inavto" title="ИНАВТО+ - сервис и ремонт Volvo c 1992 года">
-				<img src="/img/inavto-144.png" class="inavtospb-logo" alt="ИНАВТО+" />
-				<div>
-					<strong>ИНАВТО+</strong>
-					<em>ремонт volvo в спб с 1992 года</em>
-				</div>
-			</a>
-		</div>
-		<?php 
+	<div class="logo">
+		<a href="/" class="row inavto" title="ИНАВТО+ - сервис и ремонт Volvo c 1992 года">
+			<img src="/img/inavto-144.png" class="inavtospb-logo" alt="ИНАВТО+">
+			<div>
+				<strong itemprop="name">ИНАВТО+</strong>
+				<em>ремонт volvo в спб с 1992 года</em>
+			</div>
+		</a>
+	</div>
+
+	<?php 
                     if ($this->beginCache('ContactsWidget', ['duration' => 60])) { 
                     echo \frontend\widgets\ContactsWidget::widget(['tpl' => 'index']);     
                     $this->endCache(); } 
                 ?>
 
-		<div class="buttons span2">
-			<button class="btn parts"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#settings"></use></svg>Заказ запчастей</button>
+	<div class="buttons">
+                    <button class="btn parts"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#settings"></use></svg>Заказ запчастей</button>
                         <?= frontend\widgets\FormWidget::widget(['tpl' => 'index', 'flag' => 1]);?>
-			<a href="/#calc" class="btn calc"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#car"></use></svg>Калькулятор ТО</a>
 			<button class="btn green repairButton"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#wrench"></use></svg>Запись на сервис</button>
                         <?= frontend\widgets\FormWidget::widget(['tpl' => 'service', 'flag' => 2]);?>
-		</div>
 	</div>
-</header>
-<?= \frontend\widgets\MenuWidget::widget(['tpl' => 'index', 'cache_time' => 60])?>
-<script type="text/javascript">
-	$(document).ready(function(){
 
-		// callback form
-		$('.callback').click(function(){
-			$('.modal.callback').toggleClass('show',true);
-			$('.backdrop').toggleClass('show',true);
-		});
-	});
-</script>
-	<a name="calc"></a>
-<?=$content; ?>
-</div>
-<footer>
+</header>
+    <?= \frontend\widgets\MenuWidget::widget(['tpl' => 'mobile', 'cache_time' => 60])?>
+	
+
+	<?=$content; ?>
+
+	<footer>
 	<div class="in">
-		<div class="row">
-			<div class="left span9">
-				<nav class="footerMenu">
-					<ol>
-						<li><a href="/inavto">Наш сервис</a></li>
-						<li><a href="/zapchasti">Запасные части</a></li>
-						<!--<li><a href="/diagnostika-volvo">Диагностика Volvo</a></li>-->
-						<li><a href="/protochka-tormoznih-diskov">Проточка тормозных дисков</a></li>
-						<li><a href="/vtoraya-pedal">Установка дублирующих педалей</a></li>
-						<li><a href="/diesel-bosch">Дизельная аппаратура Bosch</a></li>
-						<li><a href="/diesel-delphi">Дизельная аппаратура Delphi</a></li>
-					</ol>
-					<ul>
-						<li><a href="/remont"><strong>Ремонт Volvo</strong></a></li>
-						<li><a href="/remont/volvo-xc90">Ремонт Volvo XC90</a></li>
-						<li><a href="/remont/volvo-xc70">Ремонт Volvo XC70</a></li>
-						<li><a href="/remont/volvo-xc60">Ремонт Volvo XC60</a></li>
-						<li><a href="/remont/volvo-s80">Ремонт Volvo S80</a></li>
-						<li><a href="/remont/volvo-s60">Ремонт Volvo S60</a></li>
-						<li><a href="/remont/volvo-s40-v40">Ремонт Volvo S40 и V40</a></li>
-						<li><a href="/remont/volvo-v50">Ремонт Volvo V50</a></li>
-						<li><a href="/remont/volvo-c30">Ремонт Volvo C30</a></li>
-					</ul>
-					<ul>
-						<li><a href="/obsluzhivanie"><strong>Обслуживание Volvo</strong></a></li>
-						<li><a href="/obsluzhivanie/volvo-xc90">Обслуживание Volvo XC90</a></li>
-						<li><a href="/obsluzhivanie/volvo-xc70">Обслуживание Volvo XC70</a></li>
-						<li><a href="/obsluzhivanie/volvo-xc60">Обслуживание Volvo XC60</a></li>
-						<li><a href="/obsluzhivanie/volvo-s80">Обслуживание Volvo S80</a></li>
-						<li><a href="/obsluzhivanie/volvo-s60">Обслуживание Volvo S60</a></li>
-						<li><a href="/obsluzhivanie/volvo-s40-v40">Обслуживание Volvo S40 и V40</a></li>
-						<li><a href="/obsluzhivanie/volvo-v50">Обслуживание Volvo V50</a></li>
-						<li><a href="/obsluzhivanie/volvo-c30">Обслуживание Volvo C30</a></li>
-					</ul>
-				</nav>
-			</div>
-			<div class="right span3">
-				<div>
-					<a href="/contacts" class="service">
-						Автосервис на <span class="vector">юге</span> СПб:<br />
-						ул. Салова д. 68
-						<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#placeholder"></use></svg>
-					</a>
-					<a href="/contacts" class="service">
-						Автосервис на <span class="vector">севере</span> СПб:<br />
-						Екатерининский пр. 5А
-						<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#placeholder"></use></svg>
-					</a>
-				</div>
-				<div class="social">
-					<a href="https://vk.com/inavtospbru"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#vk"></use></svg></a>
-					<!--<a href="http://facebook.com/inavtospb"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#facebook"></use></svg></a>-->
-				</div>
-                            <noindex><a rel="nofollow" href="<?= \yii\helpers\Url::to(['site/version', 'version' => 'mobile']); ?>" class="btn mobile"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#iphone"></use></svg>Мобильная версия</a></noindex>
-			</div>
-		</div>
+            <a href="<?= \yii\helpers\Url::to(['site/version', 'version' => 'desktop']); ?>" class="btn desktop"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#desktop"></use></svg>Полная версия сайта</a>
 	</div>
 	<div class="copyright">
-		<div class="in">
-			<div class="row">
-				<div class="counters span2">
-					<!-- Yandex.Metrika counter -->
+		<div class="rights">
+			Все права защищены. ©<br />
+			Дублирование контента разрешается только с прямой ссылкой на источник.
+		</div>
+		<div class="counters">
+			<!-- Yandex.Metrika counter -->
 <script type="text/javascript" >
 	(function (d, w, c) {
 		(w[c] = w[c] || []).push(function() {
@@ -546,24 +484,12 @@ AppAsset::register($this);
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/48430814" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
-					&nbsp;
-				</div>
-				<div class="rights span5">
-					Все права защищены. &copy; <br />Дублирование контента разрешается только с прямой ссылкой на источник.
-					<noindex><a href="/user/login" rel="nofollow" class="signin">Вход</a></noindex>
-				</div>
-				<div class="inavto span2"><a title="сверисное обслуживание и ремонт Volvo в СПб" href="/" class="inavtoPlus">ИНАВТО+</a></div>
-				<div class="volvo span3">
-					<a href="/remont" title="ремонт VOLVO с 1992 года" class="repair">
-						<em>Ремонт Volvo c 1992 года</em>
-					</a>
-				</div>
-			</div>
 		</div>
 	</div>
 </footer>
 
-<div class="backdrop <?=Yii::$app->session->hasFlash('show') ? Yii::$app->session->getFlash('show') : ''; ?><?=Yii::$app->session->hasFlash('show1') ? Yii::$app->session->getFlash('show1') : ''; ?><?=Yii::$app->session->hasFlash('show2') ? Yii::$app->session->getFlash('show2') : ''; ?>"></div>
+</div>
+
 </body>
 </html>
 

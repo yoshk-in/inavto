@@ -40,6 +40,12 @@ class ObsluzhivanieController extends SiteController
         
        $page = \backend\models\Pages::find()->where(['alias' => 'obsluzhivanie'])->one();
        $this->setMeta($page->meta_title, $page->keywords, $page->description);
+       
+        if($this->layout == 'mobile'){
+           return $this->render('mobile_index', [
+                'page' => $page,
+            ]); 
+        }
    
        return $this->render('index',[
            'jobs' => $final_arr,
@@ -128,6 +134,19 @@ class ObsluzhivanieController extends SiteController
         
         $this->setMeta($model->title, $model->keywords, $model->description);
         Yii::$app->view->registerLinkTag(['rel' => 'canonical', 'href' => \yii\helpers\Url::to(['obsluzhivanie/category', 'alias' => $alias], true)]);
+        
+        if($this->layout == 'mobile'){
+           return $this->render('mobile_view', [
+                'jobs' => $final_arr,
+                'model' => $model,
+                'parents' => $parents,
+                'f_gen' => $f_gen,
+                'f_motor' => $f_motor,
+                'slug' => $slug,
+                'current_engines' => $current_engines,
+                'car' => $car
+            ]);
+        }
         
         return $this->render('view', [
             'jobs' => $final_arr,

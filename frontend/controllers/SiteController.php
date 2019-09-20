@@ -47,6 +47,15 @@ class SiteController extends Controller
             ],
         ];
     }
+    
+    public function beforeAction($action)
+    {
+        $cookies = Yii::$app->request->cookies;
+       if($cookies->getValue('version') && $cookies->getValue('version') == 'mobile'){
+           $this->layout = 'mobile';
+       }
+        return parent::beforeAction($action);
+    }
 
     /**
      * {@inheritdoc}
@@ -81,6 +90,11 @@ class SiteController extends Controller
         
         $this->setMeta($main_page->meta_title, $main_page->keywords, $main_page->description);
         
+        if($this->layout == 'mobile'){
+            return $this->render('mobile', [
+                'main_page' => $main_page,
+            ]);
+        }
         return $this->render('index', [
             'main_page' => $main_page,
             'cars' => $cars,
@@ -124,6 +138,25 @@ class SiteController extends Controller
                 Yii::$app->session->setFlash('show', "show");
                 return $this->redirect([Yii::$app->request->referrer, 'model' => $model]);
             }
+        }
+    }
+    
+    public function actionVersion()
+    {
+        if(Yii::$app->request->get()){
+            $cookies = Yii::$app->response->cookies;
+            if(Yii::$app->request->get('version') == 'desktop'){
+                $cookies->add(new \yii\web\Cookie([
+                    'name' => 'version',
+                    'value' => 'desktop',
+                ]));
+            }else{
+                $cookies->add(new \yii\web\Cookie([
+                    'name' => 'version',
+                    'value' => 'mobile',
+                ]));
+            }
+            return $this->redirect(Yii::$app->request->referrer);
         }
     }
     

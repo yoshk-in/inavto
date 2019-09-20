@@ -31,6 +31,9 @@ class NewsController extends SiteController{
         $page = \backend\models\Pages::find()->where(['alias' => 'news'])->one();
         $this->setMeta($page->meta_title, $page->keywords, $page->description);
         Yii::$app->view->registerLinkTag(['rel' => 'canonical', 'href' => \yii\helpers\Url::to(['news'], true)]);
+        if($this->layout == 'mobile'){
+            return $this->render('mobile_index', ['news' => $news, 'pages' => $pages, 'page' => $page]);
+        }
         return $this->render('index', ['news' => $news, 'pages' => $pages, 'page' => $page]);
     }
     
@@ -45,6 +48,9 @@ class NewsController extends SiteController{
              throw new \yii\web\HttpException(404, 'Такой страницы нет');
         }
        $this->setMeta($model->title, $model->keywords, $model->description);
+       if($this->layout == 'mobile'){
+            return $this->render('mobile_page', ['model' => $model]);
+        }
         return $this->render('page', ['model' => $model]);
     }
 }
