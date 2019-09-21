@@ -19,7 +19,7 @@
                         <?php if($value->type == 3): ?>
                         <div class="phone"><?=$arr[$value->type]; ?>: <span itemprop="faxNumber" class="number"><?=$value->title?></span></div>
                         <?php else: ?>
-                        <div class="phone">><?=$arr[$value->type]; ?>: <a href="tel:+7<?=str_replace(['(', ')', ' ', '-'], '', $value->title);?>" class="number"><span itemprop="telephone"><?=$value->title?></span></a></div>
+                        <div class="phone"><?=$arr[$value->type]; ?>: <a href="tel:+7<?=str_replace(['(', ')', ' ', '-'], '', $value->title);?>" class="number"><span itemprop="telephone"><?=$value->title?></span></a></div>
                         <?php endif; ?>
 			<?php endforeach;?>
                         <?php endif; ?>
@@ -45,7 +45,7 @@
                         <?php if($value->type == 3): ?>
                         <div class="phone"><?=$arr[$value->type]; ?>: <span itemprop="faxNumber" class="number"><?=$value->title?></span></div>
                         <?php else: ?>
-                        <div class="phone">><?=$arr[$value->type]; ?>: <a href="tel:+7<?=str_replace(['(', ')', ' ', '-'], '', $value->title);?>" class="number"><span itemprop="telephone"><?=$value->title?></span></a></div>
+                        <div class="phone"><?=$arr[$value->type]; ?>: <a href="tel:+7<?=str_replace(['(', ')', ' ', '-'], '', $value->title);?>" class="number"><span itemprop="telephone"><?=$value->title?></span></a></div>
                         <?php endif; ?>
 			<?php endforeach;?>
                         <?php endif; ?>

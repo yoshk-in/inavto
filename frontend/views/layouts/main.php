@@ -550,7 +550,7 @@ AppAsset::register($this);
 				</div>
 				<div class="rights span5">
 					Все права защищены. &copy; <br />Дублирование контента разрешается только с прямой ссылкой на источник.
-					<noindex><a href="/user/login" rel="nofollow" class="signin">Вход</a></noindex>
+                                        <noindex><a href="https://adm.inavtospb.ru" rel="nofollow" class="signin">Вход</a></noindex>
 				</div>
 				<div class="inavto span2"><a title="сверисное обслуживание и ремонт Volvo в СПб" href="/" class="inavtoPlus">ИНАВТО+</a></div>
 				<div class="volvo span3">
