@@ -12,7 +12,7 @@
                                                 <div class="row">
                                              <?php endif; ?>
 						<div class="span4">
-                                                    <a class="img" href="<?= \yii\helpers\Url::to(['site/page', 'alias' => $value->alias]); ?>"><img src="/data/img/inavto-salova.jpg" alt="общая информация о сервисе" /></a>
+                                                    <a class="img" href="<?= \yii\helpers\Url::to(['site/page', 'alias' => $value->alias]); ?>"><img src="<?=$value->image; ?>" alt="<?=$value->title?>" /></a>
 							<span class="txt">
 								<a class="topic" href="<?= \yii\helpers\Url::to(['site/page', 'alias' => $value->alias]); ?>"><?=$value->title?></a>
 								<p><?=$value->introtext?></p>

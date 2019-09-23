@@ -28,7 +28,7 @@ mihaildev\elfinder\Assets::noConflict($this);
 
     <?php
         echo $form->field($model, 'body')->widget(CKEditor::className(), [
-            'editorOptions' => ElFinder::ckeditorOptions('elfinder', ['height' => '200'])
+            'editorOptions' => ElFinder::ckeditorOptions('elfinder', ['height' => '200',  'preset' => 'full', 'allowedContent' => true]),
         ]);
     ?>
 
