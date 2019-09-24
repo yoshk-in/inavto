@@ -67,6 +67,39 @@ $this->params['breadcrumbs'][] = $this->title;
                     return implode(', ', $html);
                 }
             ],
+            [
+               'attribute' => 'cars',
+                'format' => 'text',
+                'value' => function($data){
+                    $html = array();
+                    foreach($data->avtos as $key => $value){
+                        $html[] = $value->id;
+                    }
+                    return implode(', ', $html);
+                }
+            ],
+            [
+               'attribute' => 'generations',
+                'format' => 'text',
+                'value' => function($data){
+                    $html = array();
+                    foreach($data->generation as $key => $value){
+                        $html[] = $value->id;
+                    }
+                    return implode(', ', $html);
+                }
+            ],
+            [
+               'attribute' => 'engines',
+                'format' => 'text',
+                'value' => function($data){
+                    $html = array();
+                    foreach($data->engine as $key => $value){
+                        $html[] = $value->id;
+                    }
+                    return implode(', ', $html);
+                }
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ];
 
