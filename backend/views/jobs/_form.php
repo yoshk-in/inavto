@@ -45,7 +45,7 @@ use kartik\select2\Select2;
    
     <?=$form->field($model, 'years')->widget(Select2::classname(), [
         'data' => $years,
-        'options' => ['placeholder' => 'На каком сроке эксплуотации необходима данная работа', 'multiple' => 'multiple', 'value' => $model->periods && !empty($model->periods) ? \common\helpers\HelpersFunctions::arrForObjectList($model->periods) : ''],
+        'options' => ['placeholder' => 'На каком сроке эксплуатации необходима данная работа', 'multiple' => 'multiple', 'value' => $model->periods && !empty($model->periods) ? \common\helpers\HelpersFunctions::arrForObjectList($model->periods) : ''],
         'pluginOptions' => [
             'allowClear' => true
         ],

@@ -51,7 +51,7 @@ class YearsController extends SiteController
         $model = new Years();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', "Год эксплуотации добавлен");
+            Yii::$app->session->setFlash('success', "Год эксплуатации добавлен");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -72,7 +72,7 @@ class YearsController extends SiteController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', "Год эксплуотации изменен");
+            Yii::$app->session->setFlash('success', "Год эксплуатации изменен");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -91,7 +91,7 @@ class YearsController extends SiteController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        Yii::$app->session->setFlash('success', "Год эксплуотации удален");
+        Yii::$app->session->setFlash('success', "Год эксплуатации удален");
         return $this->redirect(['index']);
     }
 

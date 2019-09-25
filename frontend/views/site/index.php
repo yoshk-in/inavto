@@ -65,7 +65,7 @@ use yii\widgets\ActiveForm;
             <?php $len_cars = count($cars); ?>
             <?php foreach($cars as $key => $value): ?>
 		'c<?=$value->id; ?>':{
-                    'model':'<?=$value->title; ?>',
+                    'model':'<?=str_replace('/', '', $value->title); ?>',
                     'id_car':'<?=$value->id; ?>',
                     'generations': {
                         <?php $i = 0; ?>

@@ -1120,9 +1120,9 @@ nav.menu .popup ul a:hover {
 .serviceCalc .volvo.xc60 { background-position: 66.666% top }
 .serviceCalc .volvo.s80 { background-position: 100% top }
 .serviceCalc .volvo.s60 { background-position: left 46% }
-.serviceCalc .volvo.s40 { background-position: 33.333% 46% }
+.serviceCalc .volvo.s40, .serviceCalc .volvo.cc{ background-position: 33.333% 46% }
 .serviceCalc .volvo.v40 { background-position: 33.333% 46% }
-.serviceCalc .volvo.v50 { background-position: 66.666% 46% }
+.serviceCalc .volvo.v50,  .serviceCalc .volvo { background-position: 66.666% 46% }
 .serviceCalc .volvo.c30 { background-position: 100% 46% }
 
 .works .warning {
