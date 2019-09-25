@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Years */
 
 $this->title = 'Количество лет ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Года эксплуотации', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Года эксплуатации', 'url' => ['index']];
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="years-view">
