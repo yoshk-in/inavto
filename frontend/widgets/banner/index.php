@@ -6,12 +6,12 @@
 		</a>
 	</div>-->
 	<div class="slide s1">
-		<a href="/news/chlenam-kluba-clubvolvo-ru" target="_blank">
+		<a href="/news/clubdiscount10" target="_blank">
 			<strong>Членам клуба clubvolvo.ru скидка на работы 10%</strong>
 		</a>
 	</div>
 	<div class="slide s2">
-		<a href="/news/poluchi-postoyannuyu-skidku-na-rabotu" target="_blank">
+		<a href="/news/framediscount5" target="_blank">
 			<strong>Получи постоянную скидку 5% на работу!</strong>
 			<em>За рамки номерного знака с информацией о наших сервис-центрах</em>
 		</a>

@@ -15,8 +15,8 @@ AppAsset::register($this);
     <meta http-equiv="Last-Modified" content="Thu, 11 Jul 2019 14:45:57 GMT"/>
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
-    <link href="https://inavtospb.ru/" rel="canonical"></link>
-    <link href="https://m.inavtospb.ru/" rel="alternate" media="only screen and (max-width: 640px)"></link>
+    <link href="https://inavtospb.ru/" rel="canonical">
+    <link href="https://m.inavtospb.ru/" rel="alternate" media="only screen and (max-width: 640px)">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" id="viewport" content="width=device-width, initial-scale=0.75" />
     <?php $this->head() ?>
@@ -550,7 +550,7 @@ AppAsset::register($this);
 				</div>
 				<div class="rights span5">
 					Все права защищены. &copy; <br />Дублирование контента разрешается только с прямой ссылкой на источник.
-                                        <noindex><a href="https://adm.inavtospb.ru" rel="nofollow" class="signin">Вход</a></noindex>
+                                        <noindex><a href="https://adm.inavtospb.ru" target="_blank" rel="nofollow" class="signin">Вход</a></noindex>
 				</div>
 				<div class="inavto span2"><a title="сверисное обслуживание и ремонт Volvo в СПб" href="/" class="inavtoPlus">ИНАВТО+</a></div>
 				<div class="volvo span3">
