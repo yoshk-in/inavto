@@ -140,7 +140,6 @@ class Jobs extends \yii\db\ActiveRecord
                 $this->link('periods', $item);
             }
         }
-       
         
          if($this->engines && !empty($this->engines)){
              $this->unlinkAll('motors', true);
@@ -150,15 +149,14 @@ class Jobs extends \yii\db\ActiveRecord
             }
          }
         
-        
         if($this->generations && !empty($this->generations)){
+           
             $this->unlinkAll('generation', true);
             foreach($this->generations as $value){
                 $item = Generations::findOne($value);
                 $this->link('generation', $item);
             }
         }
-        
         
         if($this->works && !empty($this->works)){
             $this->unlinkAll('cats', true);
@@ -168,14 +166,13 @@ class Jobs extends \yii\db\ActiveRecord
             }
         }
         
-        if($this->items && !empty($this->works)){
+        if($this->items && !empty($this->items)){
             $this->unlinkAll('parts', true);
             foreach($this->items as $value){
                 $item = Parts::findOne($value);
                 $this->link('parts', $item);
             }
         }
-        
         
         parent::afterSave($insert, $changedAttributes);
     }

@@ -55,6 +55,28 @@ $this->params['breadcrumbs'][] = $this->title;
                     return implode(', ', $html);
                 }
             ],
+            [
+                'attribute' => 'generations',
+                'format' => 'text',
+                'value' => function($data){
+                    $html = array();
+                    foreach($data->generation as $key => $value){
+                        $html[] = $value->id;
+                    }
+                    return implode(', ', $html);
+                }
+            ],
+            [
+                'attribute' => 'engines',
+                'format' => 'text',
+                'value' => function($data){
+                    $html = array();
+                    foreach($data->motors as $key => $value){
+                        $html[] = $value->id;
+                    }
+                    return implode(', ', $html);
+                }
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ];
 

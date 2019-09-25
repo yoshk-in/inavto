@@ -60,10 +60,30 @@ class Jobs_categoriesController extends SiteController
                         }
                         $new_arr[] = (int) trim($v);
                     }
+                   
+                    $generations = explode(',', $new_val[6]);
+                    $new_arr2 = array();
+                    foreach($generations as $k => $v){
+                        if(!$v){
+                            continue;
+                        }
+                        $new_arr2[] = (int) trim($v);
+                    }
+                    
+                    $engines = explode(',', $new_val[7]);
+                    $new_arr3 = array();
+                    foreach($engines as $k => $v){
+                        if(!$v){
+                            continue;
+                        }
+                        $new_arr3[] = (int) trim($v);
+                    }
                     
                     $item->title = (string) $new_val[2];
                     $item->price = (int) $new_val[3];
                     $item->works = $new_arr;
+                    $item->generations = $new_arr2;
+                    $item->engines = $new_arr3;
                     $item->save();
                 }
                 Yii::$app->session->setFlash('success', "Импорт выполнен");

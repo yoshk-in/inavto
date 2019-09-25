@@ -3201,6 +3201,7 @@ button.sendData .info {
 }
 
 .scrollPhotos .mask .tape .img .header {
+    display:block;
     left:0;
     top:0;
     font-size: 10pt;

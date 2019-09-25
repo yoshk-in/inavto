@@ -80,6 +80,33 @@ class Parts_categoriesController extends SiteController
                         $new_arr[] = (int) trim($v);
                     }
                     
+                    $cars = explode(',', $new_val[9]);
+                    $new_arr2 = array();
+                    foreach($cars as $k => $v){
+                        if(!$v){
+                            continue;
+                        }
+                        $new_arr2[] = (int) trim($v);
+                    }
+                    
+                    $generations = explode(',', $new_val[10]);
+                    $new_arr3 = array();
+                    foreach($generations as $k => $v){
+                        if(!$v){
+                            continue;
+                        }
+                        $new_arr3[] = (int) trim($v);
+                    }
+                    
+                    $engines = explode(',', $new_val[11]);
+                    $new_arr4 = array();
+                    foreach($engines as $k => $v){
+                        if(!$v){
+                            continue;
+                        }
+                        $new_arr4[] = (int) trim($v);
+                    }
+                    
                     $item->title = (string) $new_val[2];
                     $item->price = (int) $new_val[3];
                     $item->code = (string) $new_val[4];
@@ -87,6 +114,9 @@ class Parts_categoriesController extends SiteController
                     $item->original = $new_val[6];
                     $item->brand_id = $brand->id;
                     $item->categories = $new_arr;
+                    $item->cars = $new_arr2;
+                    $item->generations = $new_arr3;
+                    $item->engines = $new_arr4;
                     $item->save();
                 }
                 Yii::$app->session->setFlash('success', "Импорт выполнен");
