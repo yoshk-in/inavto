@@ -157,11 +157,15 @@ class Orders extends \yii\db\ActiveRecord
     
     public function afterSave($insert, $changedAttributes)
     {
+        $jobs_arr = array();
+        $parts_arr = array();
         if($this->works && !empty($this->works)){
             $this->unlinkAll('jobs', true);
             foreach($this->works as $value){
                 $item = \common\models\Jobs::findOne($value);
                 $this->link('jobs', $item);
+                $jobs_arr[$value]['title'] = $item->title;
+                $jobs_arr[$value]['price'] = $item->price;
             }
         }
         
@@ -170,8 +174,17 @@ class Orders extends \yii\db\ActiveRecord
             foreach($this->detales as $value){
                 $item = \common\models\Parts::findOne($value);
                 $this->link('parts', $item);
+                $parts_arr[$value]['title'] = $item->title;
+                $parts_arr[$value]['code'] = $item->code;
+                $parts_arr[$value]['price'] = $item->price;
             }
         }
+        
+        Yii::$app->mailer->compose('message', ['author' => 'Заказ:', 'body' => ['jobs' => $jobs_arr, 'parts' => $parts_arr], 'mail' => 'Kenny7423@yandex.ru', 'file' => ''])
+            ->setFrom(['Kenny7423@yandex.ru' => 'Сообщение с сайта'])
+            ->setTo($this->email)
+            ->setSubject('Заявка')
+            ->send();
         
         parent::afterSave($insert, $changedAttributes);
     }
