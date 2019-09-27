@@ -65,10 +65,10 @@ return [
             'useFileTransport' => false,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'smtp.yandex.ru',
-                'username' => 'Kenny7423@yandex.ru',
-                'password' => 'Bfn39Jrosd',
-                'port' => '465',
+                'host' => 'smtp.spaceweb.ru',
+                'username' => 'newsite@inavtospb.ru',
+                'password' => 'Aa6861827',
+                'port' => '2525',
                 'encryption' => 'ssl',
             ]
         ],
