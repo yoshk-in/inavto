@@ -181,7 +181,7 @@ class Orders extends \yii\db\ActiveRecord
         }
         
         Yii::$app->mailer->compose('message', ['author' => 'Заказ:', 'body' => ['jobs' => $jobs_arr, 'parts' => $parts_arr], 'mail' => 'Kenny7423@yandex.ru', 'file' => ''])
-            ->setFrom(['Kenny7423@yandex.ru' => 'Сообщение с сайта'])
+            ->setFrom(['newsite@inavtospb.ru' => 'Сообщение с сайта inavtospb.ru'])
             ->setTo($this->email)
             ->setSubject('Заявка')
             ->send();
