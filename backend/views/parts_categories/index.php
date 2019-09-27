@@ -106,7 +106,13 @@ $this->params['breadcrumbs'][] = $this->title;
         // Renders a export dropdown menu
         echo ExportMenu::widget([
             'dataProvider' => $dataPParts,
-            'columns' => $gridColumns
+            'columns' => $gridColumns,
+            'exportConfig' => [
+                ExportMenu::FORMAT_PDF => false,
+                ExportMenu::FORMAT_EXCEL => false,
+                ExportMenu::FORMAT_TEXT => false,
+                ExportMenu::FORMAT_HTML => false,
+             ]
         ]);
         ?>
     

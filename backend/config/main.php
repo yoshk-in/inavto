@@ -56,7 +56,7 @@ return [
             'class' => 'mihaildev\elfinder\PathController',
             'access' => ['@'],
             'root' => [
-                'baseUrl'=>'',
+                'baseUrl'=>'@front_path',
                 'basePath'=>'@frontend/web',
                 'path' => 'upload',
                 'name' => 'global'
