@@ -69,7 +69,7 @@ return [
                 'username' => 'newsite@inavtospb.ru',
                 'password' => 'Aa6861827',
                 'port' => '2525',
-                'encryption' => 'ssl',
+                'encryption' => 'tls',
             ]
         ],
     ],
