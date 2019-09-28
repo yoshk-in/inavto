@@ -6,7 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Года эксплуотации';
+$this->title = 'Года эксплуатации';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="years-index">
