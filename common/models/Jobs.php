@@ -88,7 +88,7 @@ class Jobs extends \yii\db\ActiveRecord
             'modified' => 'Дата изменения',
             'generations' => 'Поколения авто',
             'engines' => 'Выбрать двигатели',
-            'years' => 'Срок эксплуотации авто',
+            'years' => 'Срок эксплуатации авто',
             'items' => 'Набор запчастей',
             'comment' => 'Примечание'
         ];
