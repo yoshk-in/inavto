@@ -188,7 +188,7 @@ class JobsController extends Controller
     {
         $arr = array();
         if($current_id){
-            $arr = str_split($current_id);
+            $arr = explode(',', $current_id);
         }
         $data = \common\models\Generations::find()->select(['id', 'title'])->where(['car_id' => $id])->all();
         return $this->renderAjax('_option_generations', compact('data', 'arr'));
@@ -199,10 +199,10 @@ class JobsController extends Controller
         $arr = array();
         $default_arr = array();
         if($id){
-            $arr = str_split($id);
+            $arr = explode(',', $id);
         }
         if($current_id){
-            $default_arr = str_split($current_id);
+            $default_arr = explode(',', $current_id);
         }
         $data = \common\models\Engines::find()->select(['id', 'title'])->where(['generation_id' => $arr])->all();
         return $this->renderAjax('_option_engines', compact('data', 'default_arr'));
