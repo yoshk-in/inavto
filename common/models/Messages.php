@@ -86,4 +86,33 @@ class Messages extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Services::className(), ['id' => 'service_id']);
     }
+    
+    public function afterSave($insert, $changedAttributes)
+    {
+        $mail = 'master@inavtospb.ru';
+        
+        if($this->flag && $this->flag == 1){
+            if($this->service_id && $this->service_id == 1){
+                $mail = 'parts-inavto@yandex.ru';
+            }else{
+                $mail = 'inavtoplus@yandex.ru';
+            }
+        }
+        
+        if($this->flag && $this->flag == 2){
+            if($this->service_id && $this->service_id == 1){
+                $mail = 'master@inavtospb.ru';
+            }else{
+                $mail = 'ekat5@inavtospb.ru';
+            }
+        }
+        
+        Yii::$app->mailer->compose('send', ['author' => 'Заявка:', 'body' => ['phone' => $this->phone, 'text' => $this->message, 'email' => $this->email, 'avto' => $this->avto], 'mail' => 'newsite@inavtospb.ru', 'file' => ''])
+            ->setFrom(['newsite@inavtospb.ru' => 'Сообщение с сайта inavtospb.ru'])
+            ->setTo($mail)
+            ->setSubject('Заявка')
+            ->send();
+        
+        parent::afterSave($insert, $changedAttributes);
+    }
 }
