@@ -117,6 +117,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Запчасти', 'url' => ['inde
                 }
             ],
             'code',
+            'oem',
             'created',
             'modified',
         ],

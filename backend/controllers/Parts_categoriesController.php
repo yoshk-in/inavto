@@ -46,16 +46,16 @@ class Parts_categoriesController extends SiteController
                     
                     $new_val = array_values($value);
                     
-                    if($new_val[5] == 'Да'){
-                        $new_val[5] = 1;
-                    }else{
-                        $new_val[5] = null;
-                    }
-                    
                     if($new_val[6] == 'Да'){
                         $new_val[6] = 1;
                     }else{
                         $new_val[6] = null;
+                    }
+                    
+                    if($new_val[7] == 'Да'){
+                        $new_val[7] = 1;
+                    }else{
+                        $new_val[7] = null;
                     }
                     
                     $id = $new_val[1];
@@ -64,14 +64,14 @@ class Parts_categoriesController extends SiteController
                         $item = new Parts();
                     }
                     
-                    $brand = Brands::find()->where(['title' => $new_val[7]])->one();
+                    $brand = Brands::find()->where(['title' => $new_val[8]])->one();
                     if(!$brand){
                         $brand = new Brands();
-                        $brand->title = $new_val[7];
+                        $brand->title = $new_val[8];
                         $brand->save();
                     }
                     
-                    $categories = explode(',', $new_val[8]);
+                    $categories = explode(',', $new_val[9]);
                     $new_arr = array();
                     foreach($categories as $k => $v){
                         if(!$v){
@@ -80,7 +80,7 @@ class Parts_categoriesController extends SiteController
                         $new_arr[] = (int) trim($v);
                     }
                     
-                    $cars = explode(',', $new_val[9]);
+                    $cars = explode(',', $new_val[10]);
                     $new_arr2 = array();
                     foreach($cars as $k => $v){
                         if(!$v){
@@ -89,7 +89,7 @@ class Parts_categoriesController extends SiteController
                         $new_arr2[] = (int) trim($v);
                     }
                     
-                    $generations = explode(',', $new_val[10]);
+                    $generations = explode(',', $new_val[11]);
                     $new_arr3 = array();
                     foreach($generations as $k => $v){
                         if(!$v){
@@ -98,7 +98,7 @@ class Parts_categoriesController extends SiteController
                         $new_arr3[] = (int) trim($v);
                     }
                     
-                    $engines = explode(',', $new_val[11]);
+                    $engines = explode(',', $new_val[12]);
                     $new_arr4 = array();
                     foreach($engines as $k => $v){
                         if(!$v){
@@ -110,8 +110,9 @@ class Parts_categoriesController extends SiteController
                     $item->title = (string) $new_val[2];
                     $item->price = (int) $new_val[3];
                     $item->code = (string) $new_val[4];
-                    $item->check = $new_val[5];
-                    $item->original = $new_val[6];
+                    $item->oem = (string) $new_val[5];
+                    $item->check = $new_val[6];
+                    $item->original = $new_val[7];
                     $item->brand_id = $brand->id;
                     $item->categories = $new_arr;
                     $item->cars = $new_arr2;

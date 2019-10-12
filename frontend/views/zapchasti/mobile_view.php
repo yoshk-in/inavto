@@ -78,9 +78,9 @@
                             <div class="partName">
                                     Наименование запчасти:
                             </div>
-                            <div class="articul">
+                            <!--<div class="articul">
                                     Артикул:
-                            </div>
+                            </div>-->
                             <div class="price">
                                     Цена:
                             </div>
@@ -100,9 +100,9 @@
                                                     <?=$v['original'] ? '<div class="isOriginal">оригинальная запчасть</div>' : ''; ?>
                                             </div>
                                     </div>
-                                    <div class="articul">
-                                            <?=$v['code']; ?>
-                                    </div>
+                                   <!-- <div class="articul">
+                                            <?php // $v['code']; ?>
+                                    </div>-->
                                     <div class="price">
                                             <?=Yii::$app->formatter->asInteger($v['price']); ?>  <span class="ruble">p</span>
                                     </div>

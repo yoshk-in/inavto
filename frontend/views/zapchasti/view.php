@@ -87,9 +87,9 @@
                             <div class="original">
                                     Производитель:
                             </div>
-                            <div class="articul">
+                            <!--<div class="articul">
                                     Артикул:
-                            </div>
+                            </div>-->
                             <div class="amount">
                                     Наличие:
                             </div>
@@ -117,9 +117,9 @@
                                             <?=$v['brand']['title']; ?>
                                             <?=$v['original'] ? '<div class="isOriginal">оригинальная запчасть</div>' : ''; ?>
                                     </div>
-                                    <div class="articul">
-                                            <?=$v['code']; ?>
-                                    </div>
+                                    <!--<div class="articul">
+                                            <?php // $v['code']; ?>
+                                    </div>-->
                                     <div class="amount">
                                         <?php 
                                             $check = '<span class="medium">отсутствует</span>';

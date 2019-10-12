@@ -2214,6 +2214,7 @@ svg.i {
     font-size: 90%;
     color:#777;
     padding: 2px 0 0 0;
+    display:none;
 }
 
 .listWorks .setsOfParts .set .part .partCount {
