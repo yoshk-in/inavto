@@ -13,8 +13,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Баннеры', 'url' => ['index'
 <div class="banners-view">
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
@@ -31,8 +31,24 @@ $this->params['breadcrumbs'][] = ['label' => 'Баннеры', 'url' => ['index'
             'slogan_one',
             'slogan_two',
             'link',
-            'img',
-            'img_thumb',
+            [
+              'attribute' => 'img',
+              'format' => 'html',
+              'value' => function($data){
+                  return '<img src="'. Yii::getAlias('@front_path/upload/banners/prev').'/thumb_'.$data->img .'" alt="" style="max-width:300px;">';
+              }
+            ],
+            [
+                'attribute' => 'articles',
+                'format' => 'html',
+                'value' => function($data){
+                    $html = '';
+                    foreach($data->pages as $key => $value){
+                        $html .= $value->title . '<br />';
+                    }
+                    return $html;
+                }
+            ],
             'sort',
             'created',
             'modified',

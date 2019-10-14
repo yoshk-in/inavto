@@ -49,7 +49,11 @@ class BannersController extends SiteController
         $model = new Banners();
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->img = \yii\web\UploadedFile::getInstance($model, 'img');
+            $model->image = \yii\web\UploadedFile::getInstance($model, 'image');
+            $model->tmp_img = Yii::$app->security->generateRandomString();
+            $model->img = $model->tmp_img . '.' . $model->image->getExtension();
+       //     print_r($model->img);
+       //     exit();
             if($model->save()){
                 Yii::$app->session->setFlash('success', "Баннер добавлен");
                  return $this->redirect(['view', 'id' => $model->id]);
@@ -72,9 +76,18 @@ class BannersController extends SiteController
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', "Баннер изменен");
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->image = \yii\web\UploadedFile::getInstance($model, 'image');
+            if($model->image && !empty($model->image)){
+                unlink(Yii::getAlias('@frontend/web/upload/banners/prev') . '/thumb_' . $model->img);
+                unlink(Yii::getAlias('@frontend/web/upload/banners/original/') . $model->img);
+                $model->tmp_img = Yii::$app->security->generateRandomString();
+                $model->img = $model->tmp_img . '.' . $model->image->getExtension();
+            }
+            if($model->save()){
+                Yii::$app->session->setFlash('success', "Баннер изменен");
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
@@ -91,7 +104,10 @@ class BannersController extends SiteController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        unlink(Yii::getAlias('@frontend/web/upload/banners/prev') . '/thumb_' . $model->img);
+        unlink(Yii::getAlias('@frontend/web/upload/banners/original/') . $model->img);
+        $model->delete();
         Yii::$app->session->setFlash('success', "Баннер удален");
         return $this->redirect(['index']);
     }
