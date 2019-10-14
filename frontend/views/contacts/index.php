@@ -1,3 +1,6 @@
+<?php if($model->banners && !empty($model->banners)): ?>
+<?= \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'banners' => $model->banners, 'cache_time' => 60]); ?>
+<?php endif; ?>
 <section class="content">
 		<div class="row">
     <div class="span8 text">

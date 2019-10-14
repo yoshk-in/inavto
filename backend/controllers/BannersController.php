@@ -79,8 +79,12 @@ class BannersController extends SiteController
         if ($model->load(Yii::$app->request->post())) {
             $model->image = \yii\web\UploadedFile::getInstance($model, 'image');
             if($model->image && !empty($model->image)){
-                unlink(Yii::getAlias('@frontend/web/upload/banners/prev') . '/thumb_' . $model->img);
-                unlink(Yii::getAlias('@frontend/web/upload/banners/original/') . $model->img);
+                if(file_exists(Yii::getAlias('@frontend/web/upload/banners/prev') . '/thumb_' . $model->img)){
+                    unlink(Yii::getAlias('@frontend/web/upload/banners/prev') . '/thumb_' . $model->img);
+                 }
+                 if(file_exists(Yii::getAlias('@frontend/web/upload/banners/original') . $model->img)){
+                     unlink(Yii::getAlias('@frontend/web/upload/banners/original/') . $model->img);
+                 }
                 $model->tmp_img = Yii::$app->security->generateRandomString();
                 $model->img = $model->tmp_img . '.' . $model->image->getExtension();
             }
@@ -105,8 +109,12 @@ class BannersController extends SiteController
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        unlink(Yii::getAlias('@frontend/web/upload/banners/prev') . '/thumb_' . $model->img);
-        unlink(Yii::getAlias('@frontend/web/upload/banners/original/') . $model->img);
+        if(file_exists(Yii::getAlias('@frontend/web/upload/banners/prev') . '/thumb_' . $model->img)){
+           unlink(Yii::getAlias('@frontend/web/upload/banners/prev') . '/thumb_' . $model->img);
+        }
+        if(file_exists(Yii::getAlias('@frontend/web/upload/banners/original') . $model->img)){
+            unlink(Yii::getAlias('@frontend/web/upload/banners/original/') . $model->img);
+        }
         $model->delete();
         Yii::$app->session->setFlash('success', "Баннер удален");
         return $this->redirect(['index']);

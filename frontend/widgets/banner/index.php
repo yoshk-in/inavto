@@ -5,17 +5,17 @@
 			<em>акция действует во всех сервис-центрах до конца года</em>
 		</a>
 	</div>-->
-	<div class="slide s1">
-		<a href="/news/chlenam-kluba-clubvolvo-ru" target="_blank">
-			<strong>Членам клуба clubvolvo.ru скидка на работы 10%</strong>
+        <?php if($banners && !empty($banners)): ?>
+        <?php foreach($banners as $key => $value): ?>
+	<div class="slide s<?=$key+1; ?>">
+            <span style="background-image: url('/upload/banners/prev/thumb_<?=$value->img?>');"></span>
+		<a href="<?=$value->link; ?>" target="_blank">
+			<strong><?=$value->slogan_one?></strong>
+                        <?php if($value->slogan_two && !empty($value->slogan_two)): ?>
+			<em><?=$value->slogan_two; ?></em>
+                        <?php endif; ?>
 		</a>
 	</div>
-	<div class="slide s2">
-		<a href="/news/poluchi-postoyannuyu-skidku-na-rabotu" target="_blank">
-			<strong>Получи постоянную скидку 5% на работу!</strong>
-			<em>За рамки номерного знака с информацией о наших сервис-центрах</em>
-		</a>
-	</div>
+        <?php endforeach; ?>
+        <?php endif; ?>
 </section>
-
-}

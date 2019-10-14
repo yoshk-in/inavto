@@ -2786,14 +2786,14 @@ button.sendData .info {
     animation-fill-mode: forwards;
 }
 
-.topBanner .slide:before {
-    content: '';
+.topBanner .slide span {
     position: absolute;
+    display: block;
     left:0;
     top:0;
     right:0;
     bottom:0;
-    opacity:1;
+    opacity:0;
     background-position: top 100%;
     background-repeat: no-repeat;
     background-size:100% auto;
@@ -2802,6 +2802,9 @@ button.sendData .info {
     animation-fill-mode: forwards;
 }
 
+.topBanner .slide:first-child span {
+    opacity: 1;
+}
 
 .topBanner .slide a {
     position: absolute;
@@ -2841,25 +2844,8 @@ button.sendData .info {
     animation-fill-mode: forwards;
 }
 
-
-
-.topBanner .s1:before {
-    background-image: url('/img/b/img1.jpg');
-}
-
-.topBanner .s2:before {
-    background-image: url('/img/b/img2.jpg');
-    opacity: 0;
-}
-
-.topBanner .s3:before {
-    background-image: url('/img/b/img3.jpg');
-    opacity: 0;
-}
-
-
-.topBanner .s2, .topBanner .s2:before, .topBanner .s2 a strong, .topBanner .s2 a em { animation-delay: 10s; }
-.topBanner .s3, .topBanner .s3:before, .topBanner .s3 a strong, .topBanner .s3 a em { animation-delay: 20s; }
+.topBanner .s2, .topBanner .s2 span, .topBanner .s2 a strong, .topBanner .s2 a em { animation-delay: 10s; }
+.topBanner .s3, .topBanner .s3 span, .topBanner .s3 a strong, .topBanner .s3 a em { animation-delay: 20s; }
 
 
 @keyframes slide {
