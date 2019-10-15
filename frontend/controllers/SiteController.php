@@ -33,7 +33,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'banner'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -50,6 +50,8 @@ class SiteController extends Controller
     
     public function beforeAction($action)
     {
+     //  print_r(Yii::$app->user);
+     //   exit();
         $cookies = Yii::$app->request->cookies;
        if($cookies->getValue('version') && $cookies->getValue('version') == 'mobile'){
            $this->layout = 'mobile';
@@ -513,5 +515,24 @@ class SiteController extends Controller
         $new_job['sets'][1]['parts'][$key1]['vendor'] = $value['brand']['title'];
         $new_job['sets'][1]['parts'][$key1]['totalPrice'] = $value['price'];
         $key1++;
+    }
+    
+    public function actionBanner($id)
+    {
+        if(Yii::$app->user->isGuest){
+            return $this->redirect(['/site/index']);
+        }
+        $model = \common\models\Banners::findOne($id);
+         if($model->load(Yii::$app->request->post())){
+            if($model->save()){
+                Yii::$app->session->setFlash('success_'.$model->id, "Данные сохранены");
+                Yii::$app->session->setFlash('show_'.$model->id, "show");
+                return $this->redirect(Yii::$app->request->referrer);
+            }else{
+                Yii::$app->session->setFlash('error_'.$model->id, "Ошибка отправки");
+                Yii::$app->session->setFlash('show_'.$model->id, "show");
+                return $this->redirect([Yii::$app->request->referrer, 'model' => $model]);
+            }
+        }
     }
 }

@@ -2788,12 +2788,12 @@ button.sendData .info {
 
 .topBanner .slide span {
     position: absolute;
-    display: block;
+    display:block;
     left:0;
     top:0;
     right:0;
     bottom:0;
-    opacity:0;
+    opacity:1;
     background-position: top 100%;
     background-repeat: no-repeat;
     background-size:100% auto;
@@ -2802,8 +2802,10 @@ button.sendData .info {
     animation-fill-mode: forwards;
 }
 
-.topBanner .slide:first-child span {
-    opacity: 1;
+.topBanner .slide i {
+    color:#fff;
+    text-decoration:none;
+    border-bottom:1px solid #fff;
 }
 
 .topBanner .slide a {
@@ -2844,8 +2846,35 @@ button.sendData .info {
     animation-fill-mode: forwards;
 }
 
-.topBanner .s2, .topBanner .s2 span, .topBanner .s2 a strong, .topBanner .s2 a em { animation-delay: 10s; }
-.topBanner .s3, .topBanner .s3 span, .topBanner .s3 a strong, .topBanner .s3 a em { animation-delay: 20s; }
+
+
+.topBanner .s1 span {
+    
+}
+
+.topBanner .s2 span {
+    opacity: 0;
+}
+
+.topBanner .s3 span{
+    opacity: 0;
+}
+
+.topBanner .s1 i {
+    
+}
+
+.topBanner .s2 i {
+    opacity: 0;
+}
+
+.topBanner .s3 i{
+    opacity: 0;
+}
+
+
+.topBanner .s2, .topBanner .s2 .span, topBanner .s2 i, .topBanner .s2 a strong, .topBanner .s2 a em { animation-delay: 10s; }
+.topBanner .s3, .topBanner .s3 .span, topBanner .s3 i, .topBanner .s3 a strong, .topBanner .s3 a em { animation-delay: 20s; }
 
 
 @keyframes slide {
