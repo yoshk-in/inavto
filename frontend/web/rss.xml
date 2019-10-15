@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:yandex="http://news.yandex.ru"
+     xmlns:media="http://search.yahoo.com/mrss/"
+     xmlns:turbo="http://turbo.yandex.ru"
+     version="2.0">
+<channel>
+        <title>Ремонт Volvo (вольво). Инавто+ это качественный ремонт Volvo</title>
+        <link>https://inavtospb.ru</link>
+        <description>Компания ИНАВТО+ предлагает Вам исключительное качество в диагностике, ремонте и обслуживании легковых автомобилей Volvo (вольво) с 1992 года. Турбо версия.</description>
+        <turbo:analytics type="Yandex" id="48430814"></turbo:analytics>
+		    <turbo:analytics type="Google" id="UA-149972174-1"></turbo:analytics>
+    	   <language>ru</language>
+<item turbo="true">
+    <link>https://inavtospb.ru/</link>
+    <category>Официальный сайт Инавто+. Турбо версия.</category>
+		<turbo:content>
+                <![CDATA[
+                    <header>
+                        <h1>Добро пожаловать!</h1>
+                        <h2>Мы - это самый качественный ремонт Volvo в Санкт-Петербурге с 1992 года.</h2>
+                        <figure><img src="https://inavtospb.ru/img/inavto-144.png"></figure>
+                        <menu>
+                            <a href="https://inavtospb.ru/contacts">Контактные данные</a>
+                            <a href="https://inavtospb.ru/inavto">О нас</a>
+							              <a href="https://inavtospb.ru/diagnostika-volvo">Диагностика Volvo</a>
+                            <a href="https://inavtospb.ru/diesel-delphi">Дизельная аппаратура Delphi</a>
+                            <a href="https://inavtospb.ru/diesel-bosch">Дизельная аппаратуры Bosch</a>
+                            <a href="https://inavtospb.ru/vtoraya-pedal">Установка дублирующих педалей</a>
+                            <a href="https://inavtospb.ru/protochka-tormoznih-diskov">Проточка тормозных дисков</a>
+                        </menu>
+                    </header>
+                    <p class="just">На главной странице основного сайта работает онлайн калькулятор стоимости планового обслуживания, Вы сможете подобрать план ТО под Ваш автомобиль и сохранить его себе на электронную почту. Попробуйте, это очень удобно:</p>
+                    <button formaction="https://inavtospb.ru/#calc" data-background-color="#5B97B0" data-color="white" data-primary="true">Калькулятор</button>
+                    <p class="just">Компания ИНАВТО+ создана в 1992 году как техническая площадка совместного советско-шведского предприятия по обслуживанию автомобилей Вольво. Уже много лет мы оказываем качественные услуги по ремонту и техническому обслуживанию автомобилей частных и корпоративных клиентов. В настоящее время это многопрофильный мультибрендовый сервис на двух площадках нашего города: на севере — Екатерининском проспекте д. 5 и на юге — ул. Салова д. 68. Мы всегда рады предложить Вам услуги самого высокого качества.</p>
+                    <p class="cent">Убедитесь в этом сами - позвоните нам!:</p>
+                    <button formaction="tel:9723074" data-background-color="#5B97B0" data-color="white" data-primary="true">Салова 68</button>
+                    <button formaction="tel:9745306" data-background-color="#5B97B0" data-color="white" data-primary="true">Екатерининский 5</button>
+                ]]>
+</turbo:content>
+</item>
+<item turbo="true">
+    <link>https://inavtospb.ru/remont/</link>
+    <category>Ремонт легковых автомобилей Volvo.</category>
+		<turbo:content>
+                <![CDATA[
+                    <header>
+                        <h1>Ремонт легковых автомобилей Volvo</h1>
+                        <menu>
+                            <a href="https://inavtospb.ru/remont/volvo-xc90">Ремонт Volvo XC 90</a>
+                            <a href="https://inavtospb.ru/remont/volvo-xc70">Ремонт Volvo XC 70</a>
+							              <a href="https://inavtospb.ru/remont/volvo-xc60">Ремонт Volvo XC 60</a>
+                            <a href="https://inavtospb.ru/remont/volvo-s80">Ремонт Volvo S80</a>
+                            <a href="https://inavtospb.ru/remont/volvo-s60">Ремонт Volvo S60</a>
+                            <a href="https://inavtospb.ru/remont/volvo-s60">Ремонт Volvo S60</a>
+                            <a href="https://inavtospb.ru/remont/volvo-s40-v40">Ремонт Volvo V40 и V40CC</a>
+                            <a href="https://inavtospb.ru/remont/volvo-v50">Ремонт Volvo S40 и V50</a>
+                            <a href="https://inavtospb.ru/remont/volvo-c30">Ремонт Volvo C30</a>
+                        </menu>
+                    </header>
+                    <p class="just">В меню Вы можете выбрать автомобиль и ознакомиться с предварительными ценами на ремонтные работы.</p>
+                    <p class="cent">Или Вы можете обратиться к нашим мастерам за бесплатной консультацией по телефонам:</p>
+                    <button formaction="tel:9723074" data-background-color="#5B97B0" data-color="white" data-primary="true">Салова 68</button>
+                    <button formaction="tel:9723074" data-background-color="#5B97B0" data-color="white" data-primary="true">Екатерининский 5</button>
+                ]]>
+		</turbo:content>
+</item>
+<item turbo="true">
+    <link>https://inavtospb.ru/obsluzhivanie/</link>
+    <category>Обслуживание легковых автомобилей Volvo.</category>
+		<turbo:content>
+                <![CDATA[
+                    <header>
+                        <h1>Обслуживание легковых автомобилей Volvo</h1>
+                        <menu>
+                            <a href="https://inavtospb.ru/obsluzhivanie/volvo-xc90">Обслуживание Volvo XC 90</a>
+                            <a href="https://inavtospb.ru/obsluzhivanie/volvo-xc70">Обслуживание Volvo XC 70</a>
+							              <a href="https://inavtospb.ru/obsluzhivanie/volvo-xc60">Обслуживание Volvo XC 60</a>
+                            <a href="https://inavtospb.ru/obsluzhivanie/volvo-s80">Обслуживание Volvo S80</a>
+                            <a href="https://inavtospb.ru/obsluzhivanie/volvo-s60">Обслуживание Volvo S60</a>
+                            <a href="https://inavtospb.ru/obsluzhivanie/volvo-s60">Обслуживание Volvo S60</a>
+                            <a href="https://inavtospb.ru/obsluzhivanie/volvo-s40-v40">Обслуживание Volvo V40 и V40CC</a>
+                            <a href="https://inavtospb.ru/obsluzhivanie/volvo-v50">Обслуживание Volvo S40 и V50</a>
+                            <a href="https://inavtospb.ru/obsluzhivanie/volvo-c30">Обслуживание Volvo C30</a>
+                        </menu>
+                    </header>
+                    <p class="just">На главной странице основного сайта работает онлайн калькулятор стоимости планового обслуживания, Вы сможете подобрать план ТО под Ваш автомобиль и сохранить его себе на электронную почту. Попробуйте, это очень удобно:</p>
+                    <button formaction="https://inavtospb.ru/#calc" data-background-color="#5B97B0" data-color="white" data-primary="true">Калькулятор</button>
+                    <p class="just">В меню Вы можете выбрать автомобиль и ознакомиться с предварительными ценами на техническое обслуживание соответствующего автомобиля.</p>
+                    <p class="cent">Или Вы можете обратиться к нашим мастерам за бесплатной консультацией по телефонам:</p>
+                    <button formaction="tel:9723074" data-background-color="#5B97B0" data-color="white" data-primary="true">Салова 68</button>
+                    <button formaction="tel:9723074" data-background-color="#5B97B0" data-color="white" data-primary="true">Екатерининский 5</button>
+                ]]>
+</turbo:content>
+</item>
+<item turbo="true">
+    <link>https://inavtospb.ru/zapchasti/</link>
+    <category>Запасные части для легковых автомобилей Volvo.</category>
+		<turbo:content>
+                <![CDATA[
+                    <header>
+                        <h1>Запчасти для легковых автомобилей Volvo</h1>
+                        <menu>
+                            <a href="https://inavtospb.ru/zapchasti/volvo-xc90">Запчасти Volvo XC 90</a>
+                            <a href="https://inavtospb.ru/zapchasti/volvo-xc70">Запчасти Volvo XC 70</a>
+							              <a href="https://inavtospb.ru/zapchasti/volvo-xc60">Запчасти Volvo XC 60</a>
+                            <a href="https://inavtospb.ru/zapchasti/volvo-s80">Запчасти Volvo S80</a>
+                            <a href="https://inavtospb.ru/zapchasti/volvo-s60">Запчасти Volvo S60</a>
+                            <a href="https://inavtospb.ru/zapchasti/volvo-s60">Запчасти Volvo S60</a>
+                            <a href="https://inavtospb.ru/zapchasti/volvo-s40-v40">Запчасти Volvo V40 и V40CC</a>
+                            <a href="https://inavtospb.ru/zapchasti/volvo-v50">Запчасти Volvo S40 и V50</a>
+                            <a href="https://inavtospb.ru/zapchasti/volvo-c30">Запчасти Volvo C30</a>
+                            <a href="https://inavtospb.ru/bosch_spares_for_sale">Запчасти Bosch для дизельных систем</a>
+                        </menu>
+                    </header>
+                    <p class="just">В меню Вы можете выбрать автомобиль и ознакомиться с предварительными ценами на запчасти соответствующего автомобиля.</p>
+                    <p class="cent">Или Вы можете обратиться к нашим менеджерам зачастей за бесплатной консультацией по телефонам:</p>
+                    <button formaction="tel:+78124068197" data-background-color="#5B97B0" data-color="white" data-primary="true"">Салова 68</button>
+                    <button formaction="tel:+79013055056" data-background-color="#5B97B0" data-color="white" data-primary="true">Екатерининский 5</button>
+                ]]>
+</turbo:content>
+</item>
+</channel>
+</rss>

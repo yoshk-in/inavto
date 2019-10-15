@@ -20,7 +20,7 @@
 						</div>
                                             <?php if(($flag+1)%3 == 0): ?>
                                                     </div>
-                                                <?php endif; ?> 
+                                                <?php endif; ?>
                                                 <?php $flag++ ?>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
@@ -51,10 +51,18 @@
 						</div>
                                                <?php if(($flag+1)%3 == 0 || $flag == 7): ?>
                                                     </div>
-                                                <?php endif; ?> 
+                                                <?php endif; ?>
                                                 <?php $flag++ ?>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
+				</div>
+				<div style="position:absolute;display: block;width: 29.3%;height: 28.7%;left: 66.7%;top: 65.5%;background: #efefef;border-color: #5889c4;max-height: 200px;">
+				<strong class="topic" style="padding:15px 19px 0 0;"><a href="/bosch_spares_for_sale">Запчасти Bosch</strong>
+				<ul>
+							<li style="padding:0 19px 0 0;"><a href="/bosch_spares_for_sale">Компоненты для дизельных</a></li>
+							<li style="padding:0 19px 0 0;"><a href="/bosch_spares_for_sale">систем Bosch</a></li>
+						</ul>
+					<a href="/bosch_spares_for_sale"><img style="width: 110px; padding-right: 67%; position: relative; top: -28px;" src="/upload/upload/bosch_tr.png" border="0"/></a>
 				</div>
 			</div>
 		</li>
@@ -82,7 +90,7 @@
 						</div>
                                                <?php if(($flag+1)%3 == 0 || $flag == 7): ?>
                                                     </div>
-                                                <?php endif; ?> 
+                                                <?php endif; ?>
                                                 <?php $flag++ ?>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
@@ -113,7 +121,7 @@
 						</div>
                                                <?php if(($flag+1)%3 == 0 || $flag == 7): ?>
                                                     </div>
-                                                <?php endif; ?> 
+                                                <?php endif; ?>
                                                 <?php $flag++ ?>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
@@ -168,6 +176,6 @@
 
 			$('nav.menu>ul>li').toggleClass('active',false);
 			popup.toggleClass('show',false);
-		}); 
+		});
     });
 </script>

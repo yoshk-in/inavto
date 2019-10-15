@@ -425,10 +425,10 @@ AppAsset::register($this);
 				</div>
 			</a>
 		</div>
-		<?php 
-                    if ($this->beginCache('ContactsWidget', ['duration' => 60])) { 
-                    echo \frontend\widgets\ContactsWidget::widget(['tpl' => 'index']);     
-                    $this->endCache(); } 
+		<?php
+                    if ($this->beginCache('ContactsWidget', ['duration' => 60])) {
+                    echo \frontend\widgets\ContactsWidget::widget(['tpl' => 'index']);
+                    $this->endCache(); }
                 ?>
 
 		<div class="buttons span2">
@@ -462,7 +462,7 @@ AppAsset::register($this);
 					<ol>
 						<li><a href="/inavto">Наш сервис</a></li>
 						<li><a href="/zapchasti">Запасные части</a></li>
-						<!--<li><a href="/diagnostika-volvo">Диагностика Volvo</a></li>-->
+						<li><a href="/diagnostika-volvo">Диагностика Volvo</a></li>
 						<li><a href="/protochka-tormoznih-diskov">Проточка тормозных дисков</a></li>
 						<li><a href="/vtoraya-pedal">Установка дублирующих педалей</a></li>
 						<li><a href="/diesel-bosch">Дизельная аппаратура Bosch</a></li>
@@ -475,8 +475,8 @@ AppAsset::register($this);
 						<li><a href="/remont/volvo-xc60">Ремонт Volvo XC60</a></li>
 						<li><a href="/remont/volvo-s80">Ремонт Volvo S80</a></li>
 						<li><a href="/remont/volvo-s60">Ремонт Volvo S60</a></li>
-						<li><a href="/remont/volvo-s40-v40">Ремонт Volvo S40 и V40</a></li>
-						<li><a href="/remont/volvo-v50">Ремонт Volvo V50</a></li>
+						<li><a href="/remont/volvo-s40-v40">Ремонт Volvo V40 и V40 CC</a></li>
+						<li><a href="/remont/volvo-v50">Ремонт Volvo S40 и V50</a></li>
 						<li><a href="/remont/volvo-c30">Ремонт Volvo C30</a></li>
 					</ul>
 					<ul>
@@ -486,8 +486,8 @@ AppAsset::register($this);
 						<li><a href="/obsluzhivanie/volvo-xc60">Обслуживание Volvo XC60</a></li>
 						<li><a href="/obsluzhivanie/volvo-s80">Обслуживание Volvo S80</a></li>
 						<li><a href="/obsluzhivanie/volvo-s60">Обслуживание Volvo S60</a></li>
-						<li><a href="/obsluzhivanie/volvo-s40-v40">Обслуживание Volvo S40 и V40</a></li>
-						<li><a href="/obsluzhivanie/volvo-v50">Обслуживание Volvo V50</a></li>
+						<li><a href="/obsluzhivanie/volvo-s40-v40">Обслуживание Volvo V40 и V40 CC</a></li>
+						<li><a href="/obsluzhivanie/volvo-v50">Обслуживание Volvo S40 и V50</a></li>
 						<li><a href="/obsluzhivanie/volvo-c30">Обслуживание Volvo C30</a></li>
 					</ul>
 				</nav>
@@ -546,11 +546,20 @@ AppAsset::register($this);
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/48430814" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-149972174-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-149972174-1');
+</script>
 					&nbsp;
 				</div>
 				<div class="rights span5">
-					Все права защищены. &copy; <br />Дублирование контента разрешается только с прямой ссылкой на источник.
-                                        <noindex><a href="https://adm.inavtospb.ru" target="_blank" rel="nofollow" class="signin">Вход</a></noindex>
+					Все права защищены. &copy; Сайт поддерживается <a href="https://group.am" target="_blank">ИП Михайлов В.С.</a><br />Дублирование контента разрешается только с прямой ссылкой на источник.
+                                    <!-- <noindex><a href="https://adm.inavtospb.ru" target="_blank" rel="nofollow" class="signin">Вход</a></noindex> -->
 				</div>
 				<div class="inavto span2"><a title="сверисное обслуживание и ремонт Volvo в СПб" href="/" class="inavtoPlus">ИНАВТО+</a></div>
 				<div class="volvo span3">

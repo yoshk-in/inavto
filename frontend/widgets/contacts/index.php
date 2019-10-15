@@ -1,6 +1,7 @@
 <div class="service s1 span3" itemscope itemtype="http://schema.org/AutoRepair">
-			<meta itemprop="name" content="ИНАВТО - сервис VOLVO на Салова 68">
-
+			<meta itemprop="name" content="Ремонт Volvo (вольво). Инавто+ это качественный ремонт Volvo на Салова 68">
+			<meta itemprop="image" content="https://inavtospb.ru/img/inavto-144.png" />
+	                <meta itemprop="priceRange" content="300-5000RUB" />
 			<a href="/contacts#salova" class="showContacts" itemprop="address" itemscope="" itemtype="http://schema.org/PostalAddress">
 				<meta itemprop="addressLocality" content="Санкт-Петербург, Россия" />
 				<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#placeholder"></use></svg>
@@ -25,8 +26,9 @@
                         <?php endif; ?>
 		</div>
 		<div class="service s2 span4" itemscope itemtype="http://schema.org/AutoRepair">
-			<meta itemprop="name" content="ИНАВТО - сервис VOLVO на Екатерининском 5А">
-
+			<meta itemprop="name" content="Ремонт Volvo (вольво). Инавто+ это качественный ремонт Volvo на Екатерининском 5А">
+			<meta itemprop="image" content="https://inavtospb.ru/img/inavto-144.png" />
+	                <meta itemprop="priceRange" content="300-5000RUB" />
 			<a href="/contacts#ekat" class="showContacts" itemprop="address" itemscope="" itemtype="http://schema.org/PostalAddress">
 				<meta itemprop="addressLocality" content="Санкт-Петербург, Россия" />
 				<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#placeholder"></use></svg>

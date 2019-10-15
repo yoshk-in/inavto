@@ -4,6 +4,7 @@
          <tr style="background: #f9f9f9;">
             <td colspan="3" style="padding: 8px; border: 1px solid #ddd;"><?= $author; ?></td>
         </tr>
+        <tr>Сохранённая заявка на Техническое обслуживание</tr>
         <?php if($body['jobs'] && !empty($body['jobs'])): ?>
         <tr style="background: #f9f9f9;">
             <td colspan="3" style="padding: 8px; border: 1px solid #ddd;">Работы</td>
