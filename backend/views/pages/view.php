@@ -33,7 +33,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Информационные ст�
             'alias',
             'introtext',
             'body:html',
-            'image',
             [
               'attribute' => 'image',
                 'format' => 'html',

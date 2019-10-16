@@ -40,7 +40,7 @@ mihaildev\elfinder\Assets::noConflict($this);
             'template'      => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
             'options'       => ['class' => 'form-control'],
             'buttonOptions' => ['class' => 'btn btn-default'],
-            'multiple'      => false       // возможность выбора нескольких файлов
+            'multiple'      => false,       // возможность выбора нескольких файлов,
         ]);
     ?>
 
