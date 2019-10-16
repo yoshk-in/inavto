@@ -1,4 +1,6 @@
-<?= \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'cache_time' => 60]); ?>
+<?php if($page->banners && !empty($page->banners)): ?>
+<?= \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'banners' => $page->banners, 'cache_time' => 60]); ?>
+<?php endif; ?>
 <section class="content">
 		<div class="row">
     <div class="span12 text">
@@ -87,9 +89,9 @@
                             <div class="original">
                                     Производитель:
                             </div>
-                            <div class="articul">
+                            <!--<div class="articul">
                                     Артикул:
-                            </div>
+                            </div>-->
                             <div class="amount">
                                     Наличие:
                             </div>
@@ -117,9 +119,9 @@
                                             <?=$v['brand']['title']; ?>
                                             <?=$v['original'] ? '<div class="isOriginal">оригинальная запчасть</div>' : ''; ?>
                                     </div>
-                                    <div class="articul">
-                                            <?=$v['code']; ?>
-                                    </div>
+                                    <!--<div class="articul">
+                                            <?php // $v['code']; ?>
+                                    </div>-->
                                     <div class="amount">
                                         <?php 
                                             $check = '<span class="medium">отсутствует</span>';

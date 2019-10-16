@@ -1,7 +1,9 @@
 <?php
 use yii\widgets\ActiveForm;
 ?>
-<?= \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'cache_time' => 60]); ?>
+<?php if($page->banners && !empty($page->banners)): ?>
+<?= \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'banners' => $page->banners, 'cache_time' => 60]); ?>
+<?php endif; ?>
 <section class="content">
 		<div class="row">
     <div class="span8 rpadd">

@@ -55,7 +55,7 @@ class Jobs_categoriesController extends SiteController
                     $categories = explode(',', $new_val[4]);
                     $new_arr = array();
                     foreach($categories as $k => $v){
-                        if(!$v){
+                        if(!$v || trim($v) == ''){
                             continue;
                         }
                         $new_arr[] = (int) trim($v);
@@ -64,7 +64,7 @@ class Jobs_categoriesController extends SiteController
                     $generations = explode(',', $new_val[6]);
                     $new_arr2 = array();
                     foreach($generations as $k => $v){
-                        if(!$v){
+                        if(!$v || trim($v) == ''){
                             continue;
                         }
                         $new_arr2[] = (int) trim($v);
@@ -73,10 +73,19 @@ class Jobs_categoriesController extends SiteController
                     $engines = explode(',', $new_val[7]);
                     $new_arr3 = array();
                     foreach($engines as $k => $v){
-                        if(!$v){
+                        if(!$v || trim($v) == ''){
                             continue;
                         }
                         $new_arr3[] = (int) trim($v);
+                    }
+                    
+                    $years = explode(',', $new_val[8]);
+                    $new_arr4 = array();
+                    foreach($years as $k => $v){
+                        if(!$v || trim($v) == ''){
+                            continue;
+                        }
+                        $new_arr4[] = (int) trim($v);
                     }
                     
                     $item->title = (string) $new_val[2];
@@ -84,6 +93,8 @@ class Jobs_categoriesController extends SiteController
                     $item->works = $new_arr;
                     $item->generations = $new_arr2;
                     $item->engines = $new_arr3;
+                    $item->years = $new_arr4;
+                    $item->recomended = $new_val[9] == 1 ? (int) $new_val[9] : null;
                     $item->save();
                 }
                 Yii::$app->session->setFlash('success', "Импорт выполнен");

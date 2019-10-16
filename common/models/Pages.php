@@ -82,4 +82,9 @@ class Pages extends \yii\db\ActiveRecord
             'modified' => 'Дата изменения',
         ];
     }
+    
+    public function getBanners()
+    {
+        return $this->hasMany(Banners::className(), ['id' => 'banner_id'])->viaTable('banners_pages', ['page_id' => 'id']);
+    }
 }

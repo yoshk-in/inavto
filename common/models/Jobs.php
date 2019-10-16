@@ -142,7 +142,7 @@ class Jobs extends \yii\db\ActiveRecord
         }
         
          if($this->engines && !empty($this->engines)){
-             $this->unlinkAll('motors', true);
+            $this->unlinkAll('motors', true);
             foreach($this->engines as $value){
                 $item = Engines::findOne($value);
                 $this->link('motors', $item);

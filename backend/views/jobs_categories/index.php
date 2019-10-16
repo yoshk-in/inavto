@@ -77,6 +77,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     return implode(', ', $html);
                 }
             ],
+            [
+                'attribute' => 'years',
+                'format' => 'text',
+                'value' => function($data){
+                    $html = array();
+                    foreach($data->periods as $key => $value){
+                        $html[] = $value->id;
+                    }
+                    return implode(', ', $html);
+                }
+            ],
+            'recomended',
             ['class' => 'yii\grid\ActionColumn'],
         ];
 

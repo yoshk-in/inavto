@@ -94,4 +94,5 @@ class Pages extends \yii\db\ActiveRecord
             'modified' => 'Дата изменения',
         ];
     }
+    
 }

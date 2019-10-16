@@ -23,6 +23,7 @@ class BannerWidget extends Widget{
    public $cache_time;
    public $data;
    public $menuHtml;
+   public $banners;
     
     public function init(){
         parent::init();
@@ -40,19 +41,20 @@ class BannerWidget extends Widget{
         
        $this->menuHtml = $this->getMenuHtml($this->data);
        */
-        $this->menuHtml = $this->getMenuHtml($this->data);
+      
+        $this->menuHtml = $this->getMenuHtml($this->banners);
         return $this->menuHtml;
     }
 
-    protected function getMenuHtml($data){
+    protected function getMenuHtml($banners){
         $str = '';
        // foreach ($data as $brand) {
-            $str .= $this->catToTemplate($data);
+            $str .= $this->catToTemplate($banners);
      //   }
         return $str;
     }
 
-    protected function catToTemplate($data){
+    protected function catToTemplate($banners){
         ob_start();
         include __DIR__ . '/banner/' . $this->tpl;
         return ob_get_clean();

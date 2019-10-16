@@ -28,7 +28,11 @@ class NewsController extends SiteController{
         $news = $query->offset($pages->offset)
                         ->limit($pages->limit)
                         ->all();
-        $page = \backend\models\Pages::find()->where(['alias' => 'news'])->one();
+       $page = Yii::$app->cache->get('page_news');
+       if(!$page){
+           $page = \common\models\Pages::find()->with(['banners'])->where(['alias' => 'news'])->one();
+           Yii::$app->cache->set('page_news', $page, $this->cache_time);
+       }
         $this->setMeta($page->meta_title, $page->keywords, $page->description);
         Yii::$app->view->registerLinkTag(['rel' => 'canonical', 'href' => \yii\helpers\Url::to(['news'], true)]);
         if($this->layout == 'mobile'){
@@ -40,6 +44,7 @@ class NewsController extends SiteController{
     public function actionPage($alias)
     {
         $model = Yii::$app->cache->get('news_'.$alias);
+        
         if(!$model){
             $model = News::find()->where(['alias' => $alias])->one();
             Yii::$app->cache->set('news_'.$alias, $model, $this->cache_time);
@@ -47,10 +52,18 @@ class NewsController extends SiteController{
          if(!$model){
              throw new \yii\web\HttpException(404, 'Такой страницы нет');
         }
+        
        $this->setMeta($model->title, $model->keywords, $model->description);
+       
+       $page = Yii::$app->cache->get('page_news');
+       if(!$page){
+           $page = \common\models\Pages::find()->with(['banners'])->where(['alias' => 'news'])->one();
+           Yii::$app->cache->set('page_news', $page, $this->cache_time);
+       }
+       
        if($this->layout == 'mobile'){
             return $this->render('mobile_page', ['model' => $model]);
         }
-        return $this->render('page', ['model' => $model]);
+        return $this->render('page', ['model' => $model, 'page' => $page]);
     }
 }

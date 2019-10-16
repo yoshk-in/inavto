@@ -27,14 +27,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Категории запчаст�
 
             'id',
             'title',
-           // 'car_id',
-           [
-                'attribute' => 'check',
-                'format' => 'html',
-                'value' => function($data){
-                    return $data->check ? '<span>Да</span>' : '<span>Нет</span>';
-                }
-            ],
+            'oem',
             [
                 'attribute' => 'original',
                 'format' => 'html',

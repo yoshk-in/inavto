@@ -405,7 +405,7 @@ console.log(wd)
                 }
 
                 var nWorkRow = $('<div class="work" id="row_work_'+wd.id_work+'"><div class="row flex"><div class="num">'+t.countWorks+'.</div>' +
-                    '<div class="workCheck"><input id="check_work_'+wd.id_work+'" data-workid="'+wd.id_work+'" type="checkbox" name="mand[]" value="'+wd.id_work+'" checked="checked" disabled="disabled" /></div>' +
+                    '<div class="workCheck"><input id="check_work_'+wd.id_work+'" data-workid="'+wd.id_work+'" type="checkbox" name="mand[]" value="'+wd.id_work+'" checked="checked" /></div>' +
                     '<div class="workName"><label for="check_work_'+wd.id_work+'">'+strName+'</label></div>' +
                     '<div class="workPrice" data-price="'+price+'">'+strPrice+'</div>' +
                     '<div class="partsPrice" data-partsprice="'+minPartsPrice+'" data-workid="'+wd.id_work+'">'+strPartsPrice+'</div>' +

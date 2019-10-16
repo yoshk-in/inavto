@@ -50,6 +50,7 @@
                     ['label' => 'Страницы', 'icon' => 'circle-o', 'url' => ['/pages'],],
                     ['label' => 'Новости', 'icon' => 'circle-o', 'url' => ['/news'],],
                     ['label' => 'Сообщения', 'icon' => 'circle-o', 'url' => ['/messages'],],
+                    ['label' => 'Баннеры', 'icon' => 'circle-o', 'url' => ['/banners'],],
                 ],
             ]
         ) ?>

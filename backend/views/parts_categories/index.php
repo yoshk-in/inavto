@@ -35,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'price',
             'code',
+            'oem',
             [
                 'attribute' => 'check',
                 'format' => 'html',

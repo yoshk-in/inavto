@@ -20,7 +20,12 @@ class ZapchastiController extends SiteController
      */
     public function actionIndex()
     {
-        $page = \backend\models\Pages::find()->where(['alias' => 'zapchasti'])->one();
+       $page = Yii::$app->cache->get('page_zapchasti');
+       if(!$page){
+           $page = \common\models\Pages::find()->with(['banners'])->where(['alias' => 'zapchasti'])->one();
+           Yii::$app->cache->set('page_zapchasti', $page, $this->cache_time);
+       }
+       
         $this->setMeta($page->meta_title, $page->keywords, $page->description);
         if($this->layout == 'mobile'){
            return $this->render('mobile_index', [
@@ -101,6 +106,12 @@ class ZapchastiController extends SiteController
             Yii::$app->cache->set('parents_cats_parts', $parents, $this->cache_time);
         }
         
+       $page = Yii::$app->cache->get('page_zapchasti');
+       if(!$page){
+           $page = \common\models\Pages::find()->with(['banners'])->where(['alias' => 'zapchasti'])->one();
+           Yii::$app->cache->set('page_zapchasti', $page, $this->cache_time);
+       }
+        
         $this->setMeta($model->meta_title, $model->keywords, $model->description);
         Yii::$app->view->registerLinkTag(['rel' => 'canonical', 'href' => \yii\helpers\Url::to(['zapchasti/category', 'alias' => $alias], true)]);
         
@@ -121,7 +132,8 @@ class ZapchastiController extends SiteController
             'parents' => $parents,
             'f_gen' => $f_gen,
             'slug' => $slug,
-            'car' => $car
+            'car' => $car,
+            'page' => $page
         ]);
     }
    

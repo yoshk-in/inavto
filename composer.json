@@ -24,7 +24,9 @@
         "mihaildev/yii2-ckeditor": "*",
         "kartik-v/yii2-widget-typeahead": "*",
         "kartik-v/yii2-export": "@dev",
-        "moonlandsoft/yii2-phpexcel": "*"
+        "moonlandsoft/yii2-phpexcel": "*",
+        "bupy7/yii2-widget-cropbox": "*",
+        "yiisoft/yii2-imagine": "^2.2"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

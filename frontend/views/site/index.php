@@ -1,6 +1,9 @@
 <?php
 use yii\widgets\ActiveForm;
 ?>
+<?php if($main_page->banners && !empty($main_page->banners)): ?>
+<?= \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'banners' => $main_page->banners, 'cache_time' => 60]); ?>
+<?php endif; ?>
 <?php
     if(!isset($model)) $model = new \frontend\models\Orders;
     $form = ActiveForm::begin([

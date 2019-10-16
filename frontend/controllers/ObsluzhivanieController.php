@@ -38,7 +38,12 @@ class ObsluzhivanieController extends SiteController
             Yii::$app->cache->set('obsluzhivanie_jobs', $final_arr, $this->cache_time);
         }
         
-       $page = \backend\models\Pages::find()->where(['alias' => 'obsluzhivanie'])->one();
+       $page = Yii::$app->cache->get('page_obsluzhivanie');
+       if(!$page){
+           $page = \common\models\Pages::find()->with(['banners'])->where(['alias' => 'obsluzhivanie'])->one();
+           Yii::$app->cache->set('page_obsluzhivanie', $page, $this->cache_time);
+       }
+       
        $this->setMeta($page->meta_title, $page->keywords, $page->description);
        
         if($this->layout == 'mobile'){
@@ -132,6 +137,12 @@ class ObsluzhivanieController extends SiteController
             Yii::$app->cache->set('parents_cats_jobs2', $parents, $this->cache_time);
         }
         
+       $page = Yii::$app->cache->get('page_obsluzhivanie');
+       if(!$page){
+           $page = \common\models\Pages::find()->with(['banners'])->where(['alias' => 'obsluzhivanie'])->one();
+           Yii::$app->cache->set('page_obsluzhivanie', $page, $this->cache_time);
+       }
+        
         $this->setMeta($model->title, $model->keywords, $model->description);
         Yii::$app->view->registerLinkTag(['rel' => 'canonical', 'href' => \yii\helpers\Url::to(['obsluzhivanie/category', 'alias' => $alias], true)]);
         
@@ -156,7 +167,8 @@ class ObsluzhivanieController extends SiteController
             'f_motor' => $f_motor,
             'slug' => $slug,
             'current_engines' => $current_engines,
-            'car' => $car
+            'car' => $car,
+            'page' => $page
         ]);
     }
 

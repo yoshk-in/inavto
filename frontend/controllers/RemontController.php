@@ -37,7 +37,11 @@ class RemontController extends SiteController
             Yii::$app->cache->set('all_remont_jobs', $final_arr, $this->cache_time);
         }
         
-        $page = \backend\models\Pages::find()->where(['alias' => 'remont'])->one();
+       $page = Yii::$app->cache->get('page_remont');
+       if(!$page){
+           $page = \common\models\Pages::find()->with(['banners'])->where(['alias' => 'remont'])->one();
+           Yii::$app->cache->set('page_remont', $page, $this->cache_time);
+       }
        
        $this->setMeta($page->meta_title, $page->keywords, $page->description);
        
@@ -135,6 +139,12 @@ class RemontController extends SiteController
             Yii::$app->cache->set('parents_cats_jobs', $parents, $this->cache_time);
         }
         
+       $page = Yii::$app->cache->get('page_remont');
+       if(!$page){
+           $page = \common\models\Pages::find()->with(['banners'])->where(['alias' => 'remont'])->one();
+           Yii::$app->cache->set('page_remont', $page, $this->cache_time);
+       }
+        
         $this->setMeta($model->title, $model->keywords, $model->description);
         Yii::$app->view->registerLinkTag(['rel' => 'canonical', 'href' => \yii\helpers\Url::to(['remont/category', 'alias' => $alias], true)]);
         
@@ -159,7 +169,8 @@ class RemontController extends SiteController
             'f_motor' => $f_motor,
             'slug' => $slug,
             'current_engines' => $current_engines,
-            'car' => $car
+            'car' => $car,
+            'page' => $page
         ]);
     }
 

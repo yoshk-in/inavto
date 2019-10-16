@@ -2214,6 +2214,7 @@ svg.i {
     font-size: 90%;
     color:#777;
     padding: 2px 0 0 0;
+    display:none;
 }
 
 .listWorks .setsOfParts .set .part .partCount {
@@ -2785,9 +2786,9 @@ button.sendData .info {
     animation-fill-mode: forwards;
 }
 
-.topBanner .slide:before {
-    content: '';
+.topBanner .slide span {
     position: absolute;
+    display:block;
     left:0;
     top:0;
     right:0;
@@ -2801,6 +2802,11 @@ button.sendData .info {
     animation-fill-mode: forwards;
 }
 
+.topBanner .slide i {
+    color:#fff;
+    text-decoration:none;
+    border-bottom:1px solid #fff;
+}
 
 .topBanner .slide a {
     position: absolute;
@@ -2842,23 +2848,33 @@ button.sendData .info {
 
 
 
-.topBanner .s1:before {
-    background-image: url('/img/b/img1.jpg');
+.topBanner .s1 span {
+    
 }
 
-.topBanner .s2:before {
-    background-image: url('/img/b/img2.jpg');
+.topBanner .s2 span {
     opacity: 0;
 }
 
-.topBanner .s3:before {
-    background-image: url('/img/b/img3.jpg');
+.topBanner .s3 span{
+    opacity: 0;
+}
+
+.topBanner .s1 i {
+    
+}
+
+.topBanner .s2 i {
+    opacity: 0;
+}
+
+.topBanner .s3 i{
     opacity: 0;
 }
 
 
-.topBanner .s2, .topBanner .s2:before, .topBanner .s2 a strong, .topBanner .s2 a em { animation-delay: 10s; }
-.topBanner .s3, .topBanner .s3:before, .topBanner .s3 a strong, .topBanner .s3 a em { animation-delay: 20s; }
+.topBanner .s2, .topBanner .s2 .span, topBanner .s2 i, .topBanner .s2 a strong, .topBanner .s2 a em { animation-delay: 10s; }
+.topBanner .s3, .topBanner .s3 .span, topBanner .s3 i, .topBanner .s3 a strong, .topBanner .s3 a em { animation-delay: 20s; }
 
 
 @keyframes slide {

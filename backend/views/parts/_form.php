@@ -70,6 +70,8 @@ use kartik\select2\Select2;
     <?= $form->field($model, 'original')->dropDownList([null => 'Нет', '1' => 'Да']) ?>
 
     <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'oem')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>

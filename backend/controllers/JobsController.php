@@ -223,13 +223,13 @@ class JobsController extends Controller
                             $query->select('id, title');
                         },
                         'parts' => function($query){
-                            $query->select('id, title, brand_id, price')->with('brand');
+                            $query->select('id, title, brand_id, price, oem')->with('brand');
                         }
                       ])
                     ->where(['car_id'=>$arr])->asArray()->all();
              foreach($part_cats as $key => $value){
                  foreach($value['parts'] as $k => $v){
-                     $data[$v['id']] = $value['car']['title'] . ' - ' . $v['title'] . ' (' . $v['brand']['title'] . ')' . ' - ' . $v['price'];
+                     $data[$v['id']] = $value['car']['title'] . ' - ' . $v['title'] . ' (' . $v['brand']['title'] . ')' . ' - ' . $v['price'] . ', OEM - ' . $v['oem'];
                  }
              }
              
