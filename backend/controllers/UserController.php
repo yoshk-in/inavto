@@ -3,24 +3,40 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Pages;
+use common\models\User;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 
 /**
- * PagesController implements the CRUD actions for Pages model.
+ * UserController implements the CRUD actions for User model.
  */
-class PagesController extends SiteController
+class UserController extends Controller
 {
-       /**
-     * Lists all Pages models.
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Lists all User models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Pages::find(),
+            'query' => User::find(),
         ]);
 
         return $this->render('index', [
@@ -29,7 +45,7 @@ class PagesController extends SiteController
     }
 
     /**
-     * Displays a single Pages model.
+     * Displays a single User model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -42,29 +58,25 @@ class PagesController extends SiteController
     }
 
     /**
-     * Creates a new Pages model.
+     * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+ /*   public function actionCreate()
     {
-        $model = new Pages();
+        $model = new User();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->image = str_replace(Yii::getAlias('@front_path'), '', $model->image);
-            if($model->save()){
-                Yii::$app->session->setFlash('success', "Страница добавлена");
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
         ]);
-    }
+    }*/
 
     /**
-     * Updates an existing Pages model.
+     * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -75,9 +87,9 @@ class PagesController extends SiteController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->image = str_replace(Yii::getAlias('@front_path'), '', $model->image);
+            $model->setPassword($model->pass);
             if($model->save()){
-                Yii::$app->session->setFlash('success', "Страница изменена");
+                Yii::$app->session->setFlash('success', "Профиль изменен");
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
@@ -88,29 +100,29 @@ class PagesController extends SiteController
     }
 
     /**
-     * Deletes an existing Pages model.
+     * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+   /* public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        Yii::$app->session->setFlash('success', "Страница удалена");
+
         return $this->redirect(['index']);
-    }
+    }*/
 
     /**
-     * Finds the Pages model based on its primary key value.
+     * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Pages the loaded model
+     * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Pages::findOne($id)) !== null) {
+        if (($model = User::findOne($id)) !== null) {
             return $model;
         }
 
