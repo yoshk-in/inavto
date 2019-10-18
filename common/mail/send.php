@@ -1,7 +1,7 @@
 <div class="table-responsive">
     <table style="width: 100%; border: 1px solid #ddd; border-collapse: collapse;">
         <tbody>
-         <tr style="background: #f9f9f9;">
+        <tr style="background: #f9f9f9;">
             <td colspan="3" style="padding: 8px; border: 1px solid #ddd;"><?= $author; ?></td>
         </tr>
        <?php if($body['phone'] && !empty($body['phone'])): ?>
