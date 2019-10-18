@@ -49,11 +49,20 @@
                                                             <?php endif; ?>
 							</ul>
 						</div>
-                                               <?php if(($flag+1)%3 == 0 || $flag == 7): ?>
+                                               <?php if(($flag+1)%3 == 0): ?>
                                                     </div>
-                                                <?php endif; ?> 
+                                                <?php endif; ?>
                                                 <?php $flag++ ?>
                                             <?php endforeach; ?>
+                                        <div class="span4">
+                                                <strong class="topic"><a href="/bosch_spares_for_sale">Запчасти Bosch</a></strong><a href="/bosch_spares_for_sale">
+                                                </a><ul><a href="/bosch_spares_for_sale">
+                                                                        </a><li><a href="/bosch_spares_for_sale"></a><a href="/bosch_spares_for_sale">Компоненты для дизельных</a></li>
+                                                                        <li><a href="/bosch_spares_for_sale">систем Bosch</a></li>
+                                                                </ul>
+                                                        <a href="/bosch_spares_for_sale"><img src="/upload/upload/bosch_tr.png" border="0"></a>
+                                                </div>
+                                                </div>
                                         <?php endif; ?>
 				</div>
 			</div>
