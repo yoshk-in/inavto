@@ -56,22 +56,14 @@
                                             <?php endforeach; ?>
                                         <div class="span4">
                                                 <strong class="topic"><a href="/bosch_spares_for_sale">Запчасти Bosch</a></strong>
-                                                <a href="/bosch_spares_for_sale" style="background-image:url(/upload/upload/bosch_tr.png)" class="volvocar"></a>
                                                 <ul><a href="/bosch_spares_for_sale">
                                                                         </a><li><a href="/bosch_spares_for_sale"></a><a href="/bosch_spares_for_sale">Компоненты для дизельных</a></li>
                                                                         <li><a href="/bosch_spares_for_sale">систем Bosch</a></li>
                                                                 </ul>
+																								<img src="/upload/upload/bosch_menu2.png" alt="Запчасти Bosch" style="float:left;margin-left: 15px;">
                                                 </div>
                                                 </div>
                                         <?php endif; ?>
-				</div>
-				<div style="position:absolute;display: block;width: 29.3%;height: 28.7%;left: 66.7%;top: 65.5%;background: #efefef;border-color: #5889c4;max-height: 200px;">
-				<strong class="topic" style="padding:15px 19px 0 0;"><a href="/bosch_spares_for_sale">Запчасти Bosch</strong>
-				<ul>
-							<li style="padding:0 19px 0 0;"><a href="/bosch_spares_for_sale">Компоненты для дизельных</a></li>
-							<li style="padding:0 19px 0 0;"><a href="/bosch_spares_for_sale">систем Bosch</a></li>
-						</ul>
-					<a href="/bosch_spares_for_sale"><img style="width: 110px; padding-right: 67%; position: relative; top: -28px;" src="/upload/upload/bosch_tr.png" border="0"/></a>
 				</div>
 			</div>
 		</li>

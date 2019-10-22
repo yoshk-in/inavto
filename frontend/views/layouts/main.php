@@ -15,7 +15,6 @@ AppAsset::register($this);
     <meta http-equiv="Last-Modified" content="Thu, 11 Jul 2019 14:45:57 GMT"/>
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
-    <link href="https://inavtospb.ru/" rel="canonical">
     <link href="https://m.inavtospb.ru/" rel="alternate" media="only screen and (max-width: 640px)">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" id="viewport" content="width=device-width, initial-scale=0.75" />
