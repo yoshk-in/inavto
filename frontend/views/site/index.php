@@ -59,7 +59,7 @@ use yii\widgets\ActiveForm;
 <?php ActiveForm::end(); ?>
 <script>
         grecaptcha.ready(function () {
-            grecaptcha.execute('6LcV1r4UAAAAAGiMgPGii144N_WiH7MH6vbnj6fj', { action: 'contact' }).then(function (token) {
+            grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', { action: 'contact' }).then(function (token) {
                 var recaptchaResponse = document.getElementById('recaptchaResponse');
                 recaptchaResponse.value = token;
             });

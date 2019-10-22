@@ -108,7 +108,12 @@ class SiteController extends Controller
         $message = new Messages();
         
         if($message->load(Yii::$app->request->post())){
-            
+            $flag = $this->checkSpam(Yii::$app->request->post('recaptcha_response'));
+            if($flag == 0){
+                Yii::$app->session->setFlash('error'.$message->flag, "Проверка не спам не пройдена");
+                Yii::$app->session->setFlash('show'.$message->flag, "show");
+                return $this->redirect(Yii::$app->request->referrer);
+            }
             if($message->save()){
                 Yii::$app->session->setFlash('success'.$message->flag, "Данные отправлены");
                 Yii::$app->session->setFlash('show'.$message->flag, "show");
@@ -125,6 +130,12 @@ class SiteController extends Controller
     {
         $model = new Orders();
          if($model->load(Yii::$app->request->post())){
+            $flag = $this->checkSpam(Yii::$app->request->post('recaptcha_response'));
+            if($flag == 0){
+                Yii::$app->session->setFlash('error', "Проверка не спам не пройдена");
+                Yii::$app->session->setFlash('show', "show");
+                return $this->redirect(Yii::$app->request->referrer);
+            }
             $model->model = Yii::$app->request->post('model');
             $model->generation_id = Yii::$app->request->post('generation');
             $model->engine_id = Yii::$app->request->post('motor');
@@ -140,6 +151,26 @@ class SiteController extends Controller
                 Yii::$app->session->setFlash('show', "show");
                 return $this->redirect([Yii::$app->request->referrer, 'model' => $model]);
             }
+        }
+    }
+    
+    public function checkSpam($flag = false)
+    {
+        if($flag == false){
+            return 0;
+        }
+
+        $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+        $recaptcha_secret = '6LdA1L4UAAAAABJD-5tVHR_pTsrnweWAX0dOKSct';
+        $recaptcha_response = $flag;
+
+        $recaptcha = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
+        $recaptcha = json_decode($recaptcha);
+
+        if ($recaptcha->score >= 0.5) {
+             return 1;
+        } else {
+            return 0;
         }
     }
     

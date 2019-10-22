@@ -39,7 +39,7 @@ use yii\widgets\ActiveForm;
                                    'inputOptions'=>['placeholder' => 'номера запчастей и дополнительная информация'],
                                    'template'=>"{input}",
                                 ])->textarea(['rows' => 3]); ?>
-
+                        <input type="hidden" name="recaptcha_response" id="recaptchaResponse2">
 			<button type="submit" name="sendPartsOrder" value="1" class="btn success">Отправить заявку</button>
                   <?php ActiveForm::end(); ?>
                         <?php endif;?>
@@ -55,6 +55,14 @@ use yii\widgets\ActiveForm;
                         <?php endif;?>
 </div>
 </div>
+<script>
+        grecaptcha.ready(function () {
+            grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', { action: 'contact' }).then(function (token) {
+                var recaptchaResponse = document.getElementById('recaptchaResponse2');
+                recaptchaResponse.value = token;
+            });
+        });
+    </script>
 <script type="text/javascript">
 
 	function closeAllModals() {

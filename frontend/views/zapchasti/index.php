@@ -32,7 +32,7 @@ use yii\widgets\ActiveForm;
                                     'options'=>['tag' => null],
                                    'template'=>"{input}"
                                 ])->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Services::find()->all(), 'id', 'title'), ['prompt' => 'Выберите  сервисную станцию']) ?>
-
+                        <input type="hidden" name="recaptcha_response" id="recaptchaResponse4">
 			<button type="submit" name="sendPartsOrder" value="1" class="btn success">Записаться на ТО Volvo</button>
                         </div>
                   <?php ActiveForm::end(); ?>
@@ -42,7 +42,14 @@ use yii\widgets\ActiveForm;
          <?= \frontend\widgets\ListWidget::widget(['tpl' => 'index', 'flag' => 'zapchasti', 'cache_time' => 60]); ?>
     </div>
 </div>
-
+<script>
+        grecaptcha.ready(function () {
+            grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', { action: 'contact' }).then(function (token) {
+                var recaptchaResponse = document.getElementById('recaptchaResponse4');
+                recaptchaResponse.value = token;
+            });
+        });
+    </script>
 
 
 <script type="text/javascript">

@@ -39,7 +39,7 @@ use yii\widgets\ActiveForm;
                                    'inputOptions'=>['placeholder' => 'дополнительная информация'],
                                    'template'=>"{input}",
                                 ])->textarea(['rows' => 3]); ?>
-
+                         <input type="hidden" name="recaptcha_response" id="recaptchaResponse3">
 			<button type="submit" name="sendPartsOrder" value="1" class="btn success">Записаться на сервис</button>
                   <?php ActiveForm::end(); ?>
                         <?php endif;?>
@@ -56,6 +56,14 @@ use yii\widgets\ActiveForm;
                         
 </div>
 </div>
+<script>
+        grecaptcha.ready(function () {
+            grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', { action: 'contact' }).then(function (token) {
+                var recaptchaResponse = document.getElementById('recaptchaResponse3');
+                recaptchaResponse.value = token;
+            });
+        });
+    </script>
 <script type="text/javascript">
 
 	function closeAllModals() {
