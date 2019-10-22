@@ -80,7 +80,7 @@
 		</div>
 		<div class="toggle">
 			<label class="btn">
-				<input type="checkbox" <?=$check; ?> value="slide_<?=$v['alias']?>; ?>" name="sys_<?=$v['alias']?>" id="sys_<?=$v['alias']?>">
+				<input type="checkbox" <?=$check; ?> value="slide_<?=$v['alias']?>" name="sys_<?=$v['alias']?>" id="sys_<?=$v['alias']?>">
 				<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#keyboard-down"></use></svg>
 			</label>
 		</div>

@@ -38,6 +38,7 @@ use yii\widgets\ActiveForm;
                                     ],
                                 ]); ?>
 				<input type="hidden" name="type" value="" />
+                                <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
 				<button type="submit" name="sendServiceOrder" value="1" class="btn success">Отправить данные</button>
 			</div>
 			<div class="alert alert-info">
@@ -56,6 +57,14 @@ use yii\widgets\ActiveForm;
 		</div>
 	</div>
 <?php ActiveForm::end(); ?>
+<script>
+        grecaptcha.ready(function () {
+            grecaptcha.execute('6LcV1r4UAAAAAGiMgPGii144N_WiH7MH6vbnj6fj', { action: 'contact' }).then(function (token) {
+                var recaptchaResponse = document.getElementById('recaptchaResponse');
+                recaptchaResponse.value = token;
+            });
+        });
+    </script>
 
 <?php if ($this->beginCache('ScriptsWidget', ['duration' => 60])): ?>
 <script type="text/javascript" src="/js/avtoservice/avtoservice5.js"></script>

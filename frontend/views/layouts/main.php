@@ -36,7 +36,7 @@ AppAsset::register($this);
 	<script type="text/javascript" src="/js/lib/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/js/core3.js"></script>
 	<script type="text/javascript" src="/js/zoomImage.js"></script>
-
+        <script src="https://www.google.com/recaptcha/api.js?render=_reCAPTCHA_site_key"></script>
     <script type="text/javascript">
         var PATH = "/";
         var PATH_CONTENT = "/data/";
