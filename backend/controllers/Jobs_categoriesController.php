@@ -8,10 +8,15 @@ use common\models\Cars;
 use common\models\Jobs;
 use common\models\JobcatsJobs;
 use backend\models\SearchJobsCategories;
+use common\helpers\Calc;
 use common\models\UploadFile;
 use yii\web\UploadedFile;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use common\models\EnginesJobs;
+use common\models\JobsGenerations;
+use common\models\YearsJobs;
+
 
 /**
  * JobsCategoriesController implements the CRUD actions for JobsCategories model.
@@ -23,7 +28,7 @@ class Jobs_categoriesController extends SiteController
      * @return mixed
      */
     public function actionIndex()
-    {
+    {        
         $searchModel = new SearchJobsCategories();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
@@ -108,6 +113,22 @@ class Jobs_categoriesController extends SiteController
             'dataJobs' => $dataJobs,
             'model' => $model
         ]);
+    }
+
+    public function actionCalcPreview()
+    {
+        ini_set('xdebug.var_display_max_depth', 10);
+        ini_set('xdebug.var_display_max_children',256);
+        ini_set('xdebug.var_display_max_data', 1024 );
+        $engineIds = JobcatsJobs::find()->all();
+        $req = [];
+        $req['motorId'] = EnginesJobs::find()->all();
+        $req['genId'] = JobsGenerations::find()->all();
+        $req['range'] = YearsJobs::find()->all();
+        $req['requestId'] = 0;
+        var_dump($req['motorId']); exit;
+        $jobs = Calc::findJobs($req);
+        var_dump(count($jobs['works']['mandatory']), count($jobs['works']['recommended'])); exit;
     }
 
     /**

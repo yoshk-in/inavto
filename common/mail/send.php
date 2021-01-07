@@ -7,25 +7,25 @@
        <?php if($body['phone'] && !empty($body['phone'])): ?>
             <tr>
                 <td colspan="2" style="padding: 8px; border: 1px solid #ddd;">Телефон: </td>
-                <td style="padding: 8px; border: 1px solid #ddd;"><?= $body['phone']; ?> руб.</td>
+                <td style="padding: 8px; border: 1px solid #ddd;"><?= $body['phone']; ?></td>
             </tr>
         <?php endif; ?>
         <?php if($body['email'] && !empty($body['email'])): ?>
             <tr>
                 <td colspan="2" style="padding: 8px; border: 1px solid #ddd;">E-mail: </td>
-                <td style="padding: 8px; border: 1px solid #ddd;"><?= $body['email']; ?> руб.</td>
+                <td style="padding: 8px; border: 1px solid #ddd;"><?= $body['email']; ?></td>
             </tr>
         <?php endif; ?>
         <?php if($body['avto'] && !empty($body['avto'])): ?>
             <tr>
                 <td colspan="2" style="padding: 8px; border: 1px solid #ddd;">Авто: </td>
-                <td style="padding: 8px; border: 1px solid #ddd;"><?= $body['avto']; ?> руб.</td>
+                <td style="padding: 8px; border: 1px solid #ddd;"><?= $body['avto']; ?></td>
             </tr>
         <?php endif; ?>
         <?php if($body['text'] && !empty($body['text'])): ?>
             <tr>
                 <td colspan="2" style="padding: 8px; border: 1px solid #ddd;">Текст сообщения: </td>
-                <td style="padding: 8px; border: 1px solid #ddd;"><?= $body['text']; ?> руб.</td>
+                <td style="padding: 8px; border: 1px solid #ddd;"><?= $body['text']; ?></td>
             </tr>
         <?php endif; ?>
         </tbody>

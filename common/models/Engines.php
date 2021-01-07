@@ -53,7 +53,7 @@ class Engines extends \yii\db\ActiveRecord
             [['title'], 'required'],
             [['generation_id'], 'integer'],
             [['created', 'modified'], 'safe'],
-            [['title', 'alter_title'], 'string', 'max' => 50],
+        [['title', /*'alter_title'*/], 'string', 'max' => 50],
             [['generation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Generations::className(), 'targetAttribute' => ['generation_id' => 'id']],
         ];
     }

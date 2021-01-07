@@ -20,6 +20,10 @@ return [
         ]
     ],
     'components' => [
+        'cacheFrontend' => [
+            'class' => 'yii\caching\FileCache',
+            'cachePath' => Yii::getAlias('@frontend') . '/runtime/cache'
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
@@ -76,6 +80,6 @@ return [
                          'targetMinPixel' => 200         // Target image minimum pixel size
             ]
         ]
-    ],
+    ],    
     'params' => $params,
 ];

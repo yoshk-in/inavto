@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:yandex="http://news.yandex.ru"
+     xmlns:media="http://search.yahoo.com/mrss/"
+     xmlns:turbo="http://turbo.yandex.ru"
+     version="2.0">
+<channel>
+        <title>Купить запчасти Volvo в СПб. Ремонт Volvo (вольво) в автосервисе Инавто+.</title>
+        <link>https://inavtospb.ru/zapchasti</link>
+        <description>КПредлагаем купить у нас оригинальные и неоригинальные запчасти для Volvo всего модельного ряда. Наличие большинства запчастей и цены доступны на сайте. При необходимости Вы можете уточнить у наших замечательных менеджеров запчастей по телефону. Турбо версия.</description>
+        <turbo:analytics type="Yandex" id="48430814"></turbo:analytics>
+		    <turbo:analytics type="Google" id="UA-149972174-1"></turbo:analytics>
+    	   <language>ru</language>
+<item turbo="true">
+    <link>https://inavtospb.ru/zapchasti/</link>
+    <category>Запасные части для легковых автомобилей Volvo.</category>
+		<turbo:content>
+                <![CDATA[
+                    <header>
+                        <h1>Запчасти для легковых автомобилей Volvo</h1>
+                        <menu>
+                            <a href="https://inavtospb.ru/zapchasti/volvo-xc90">Запчасти Volvo XC 90</a>
+                            <a href="https://inavtospb.ru/zapchasti/volvo-xc70">Запчасти Volvo XC 70</a>
+							              <a href="https://inavtospb.ru/zapchasti/volvo-xc60">Запчасти Volvo XC 60</a>
+                            <a href="https://inavtospb.ru/zapchasti/volvo-s80">Запчасти Volvo S80</a>
+                            <a href="https://inavtospb.ru/zapchasti/volvo-s60">Запчасти Volvo S60</a>
+                            <a href="https://inavtospb.ru/zapchasti/volvo-s40-v40">Запчасти Volvo V40 и V40CC</a>
+                            <a href="https://inavtospb.ru/zapchasti/volvo-v50">Запчасти Volvo S40 и V50</a>
+                            <a href="https://inavtospb.ru/zapchasti/volvo-c30">Запчасти Volvo C30</a>
+                            <a href="https://inavtospb.ru/bosch_spares_for_sale">Запчасти Bosch для дизельных систем</a>
+                        </menu>
+                    </header>
+                    <p class="just">В меню Вы можете выбрать автомобиль и ознакомиться с предварительными ценами на запчасти соответствующего автомобиля.</p>
+                    <div data-block="gallery">
+                      <header class="cent">Мы реализуем запчасти для этих моделей Volvo всех годов выпуска</header>
+                      <img alt="XC90" src="https://inavtospb.ru/img/volvo/xc90.png"/>
+                      <img alt="XC70" src="https://inavtospb.ru/img/volvo/xc70.png"/>
+                      <img alt="XC60" src="https://inavtospb.ru/img/volvo/xc60.png"/>
+                      <img alt="S80" src="https://inavtospb.ru/img/volvo/s80.png"/>
+                      <img alt="S60" src="https://inavtospb.ru/img/volvo/s60.png"/>
+                      <img alt="V40 и V40CC" src="https://inavtospb.ru/img/volvo/v40.png"/>
+                      <img alt="S40 и V50" src="https://inavtospb.ru/img/volvo/v50.png"/>
+                      <img alt="C30" src="https://inavtospb.ru/img/volvo/c30.png"/>
+                    </div>
+                    <p class="cent">Также наши мастера с радостью дадут Вам бесплатную консультациию по телефонам:</p>
+                    <button formaction="tel:+78124068197" data-background-color="#5B97B0" data-color="white" data-primary="true"">Салова 68</button>
+                    <button formaction="tel:+79013055056" data-background-color="#5B97B0" data-color="white" data-primary="true">Екатерининский 5</button>
+                ]]>
+</turbo:content>
+</item>
+</channel>
+</rss>

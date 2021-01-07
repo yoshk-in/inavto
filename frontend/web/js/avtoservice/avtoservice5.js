@@ -1,9 +1,19 @@
 
-function avtoservice(idCalc, idWorks, idSendBtn) {
+function avtoservice(idCalc, idWorks, idSendBtn, ajaxHandler) {
     var t = this;
     t.idCalc = idCalc;
     t.idWorks = idWorks;
     t.idSendBtn = idSendBtn;
+    t.ajaxHandler = ajaxHandler;
+    t.sortListIds = [
+        '#slide_mandatory_works',
+        '#slide_recommended_works'
+    ];
+    t.sortOptions = {
+        'listItem' : '.work',
+        'axis' : 'y',
+        'number' : '.work > .row > .num'
+    }
 
     $(document).ready(function(){
         t.init();
@@ -181,6 +191,10 @@ avtoservice.prototype = {
             
             $.ajax({
                 type: "GET",
+                headers: {
+                    "Access-Control-Allow-Origin": true,
+                    "Access-Control-Allow-Credentials": true,
+                },
                 data: t.d,
                 dataType: "json",
                 url: url,
@@ -190,6 +204,7 @@ avtoservice.prototype = {
                         console.log(data.error);
                     } else {
                         t.showResults(data);
+                        t.ajaxHandler(t.sortListIds, t.sortOptions);
                     }
                 }
             });
@@ -689,6 +704,10 @@ console.log(wd)
         t.n.motorSwitch.change(function(){ t.calc() });
 
         t.n.sendBtn.click(function() { t.showForm() });
+
+        // for admin backend extra
+        t.n.cancelSendBtn = t.n.modal.parent.find('.btn.cancelSend');
+        t.n.cancelSendBtn.click(function(e) { e.preventDefault(); t.n.modal.parent.toggleClass('show', false) });
 
         console.log("Range: "+t.d.range);
 

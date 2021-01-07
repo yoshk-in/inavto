@@ -84,7 +84,6 @@ class EnginesController extends Controller
         $model = new Engines();
         
         $generation = Generations::findOne($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Двигатель добавлен");
             return $this->redirect(['view', 'id' => $model->id]);

@@ -12,30 +12,27 @@ AppAsset::register($this);
 <!DOCTYPE html>
 <html lang='ru' xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Last-Modified" content="Thu, 11 Jul 2019 14:45:57 GMT"/>
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
-    <link href="https://m.inavtospb.ru/" rel="alternate" media="only screen and (max-width: 640px)">
+    <link rel="alternate" media="only screen and (max-width: 640px)" href="https://inavtospb.ru/?version=mobile" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" id="viewport" content="width=device-width, initial-scale=0.75" />
+    <meta name="viewport" id="viewport" content="width=device-width" />
     <?php $this->head() ?>
-	<link rel="icon" type="shortcut icon" href="/data/img/favicons/inavtospb.ico?v=2" />
-	<link rel="icon" sizes="256x160" href="/data/img/favicons/inavtospb-256x160.png?v=2" type="image/png" />
-	<link rel="icon" sizes="192x192" href="/data/img/favicons/inavtospb-192x192.png?v=2" type="image/png" />
-	<link rel="icon" sizes="96x96" href="/data/img/favicons/inavtospb-96x96.png?v=2" type="image/png" />
-	<link rel="icon" sizes="32x32" href="/data/img/favicons/inavtospb-32x32.png?v=2" type="image/png" />
-	<link rel="icon" sizes="16x16" href="/data/img/favicons/inavtospb-16x16.png?v=2" type="image/png" />
-
+	<link rel="icon" href="/data/img/favicons/inavtospb.ico" />
+	<link rel="icon" sizes="256x160" href="/data/img/favicons/inavtospb-256x160.png" type="image/png" />
+	<link rel="icon" sizes="192x192" href="/data/img/favicons/inavtospb-192x192.png" type="image/png" />
+	<link rel="icon" sizes="96x96" href="/data/img/favicons/inavtospb-96x96.png" type="image/png" />
+	<link rel="icon" sizes="32x32" href="/data/img/favicons/inavtospb-32x32.png" type="image/png" />
+	<link rel="icon" sizes="16x16" href="/data/img/favicons/inavtospb-16x16.png" type="image/png" />
 	<link type="text/css" rel="Stylesheet" media="screen" href="/css/common.css" />
 	<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100|Roboto:300,400,500" rel="stylesheet" />
 	<link rel="stylesheet" type="text/css" href="/css/zoomImage.css?14064" media="screen" />
-
 	<script type="text/javascript" src="/js/lib/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript" src="/js/lib/jquery.cookie.js"></script>
 	<script type="text/javascript" src="/js/lib/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/js/core3.js"></script>
 	<script type="text/javascript" src="/js/zoomImage.js"></script>
-        <script src="https://www.google.com/recaptcha/api.js?render=_reCAPTCHA_site_key"></script>
+        <script src="https://www.google.com/recaptcha/api.js?render=6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb"></script>
     <script type="text/javascript">
         var PATH = "/";
         var PATH_CONTENT = "/data/";
@@ -417,7 +414,7 @@ AppAsset::register($this);
 	<div class="row">
 		<div class="logo span3">
 			<a href="/" class="row inavto" title="ИНАВТО+ - сервис и ремонт Volvo c 1992 года">
-				<img src="/img/inavto-144.png" class="inavtospb-logo" alt="ИНАВТО+" />
+				<img src="/img/inavto-144.png" class="inavtospb-logo" alt="Логотип Инавто+" />
 				<div>
 					<strong>ИНАВТО+</strong>
 					<em>ремонт volvo в спб с 1992 года</em>
@@ -557,7 +554,7 @@ AppAsset::register($this);
 					&nbsp;
 				</div>
 				<div class="rights span5">
-					Все права защищены. &copy; Сайт поддерживается <a href="https://group.am" target="_blank">ИП Михайлов В.С.</a><br />Дублирование контента разрешается только с прямой ссылкой на источник.
+					Все права защищены. &copy; Сайт поддерживается <a href="https://groupvm.ru" target="_blank">ВМ Групп Санкт-Петербург</a><br />Дублирование контента разрешается только с прямой ссылкой на источник.
                                     <!-- <noindex><a href="https://adm.inavtospb.ru" target="_blank" rel="nofollow" class="signin">Вход</a></noindex> -->
 				</div>
 				<div class="inavto span2"><a title="сверисное обслуживание и ремонт Volvo в СПб" href="/" class="inavtoPlus">ИНАВТО+</a></div>

@@ -39,7 +39,7 @@ if (Yii::$app->controller->action->id === 'login') {
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
     <?php $this->beginBody() ?>
-    <div class="wrapper">
+    <div class="wrapper" style="padding-bottom: 0">
 
         <?= $this->render(
             'header.php',
@@ -60,6 +60,7 @@ if (Yii::$app->controller->action->id === 'login') {
     </div>
 
     <?php $this->endBody() ?>
+    <?php //var_dump($this); ?>
       <script type="text/javascript" >
         $(document).ready(function(){
           if(readyjs)

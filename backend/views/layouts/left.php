@@ -52,6 +52,7 @@
                     ['label' => 'Сообщения', 'icon' => 'circle-o', 'url' => ['/messages'],],
                     ['label' => 'Баннеры', 'icon' => 'circle-o', 'url' => ['/banners'],],
                     ['label' => 'Профиль', 'icon' => 'circle-o', 'url' => ['/user'],],
+                    ['label' => 'Превью калькулятора', 'icon' => 'circle-o', 'url' => ['/calc-preview'],],
                 ],
             ]
         ) ?>

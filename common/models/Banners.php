@@ -104,6 +104,11 @@ class Banners extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Pages::className(), ['id' => 'page_id'])->viaTable('banners_pages', ['banner_id' => 'id']);
     }
+
+    public function getMainPage()
+    {
+        return $this->hasOne(MainPage::class, ['id' => 'banner_id']);
+    }
     
     public function afterSave($insert, $changedAttributes)
     {

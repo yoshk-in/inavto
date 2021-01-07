@@ -35,7 +35,7 @@ use dmstr\widgets\Alert;
     </section>
 </div>
 
-<footer class="main-footer">
+<footer class="main-footer" style="margin-top: auto; height: auto;">
     <div class="pull-right hidden-xs">
         <b>Version</b> 2.0
     </div>

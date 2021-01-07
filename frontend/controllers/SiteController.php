@@ -1,4 +1,5 @@
 <?php
+
 namespace frontend\controllers;
 
 use Yii;
@@ -6,10 +7,15 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\filters\HttpCache;
 use frontend\models\ContactForm;
 use frontend\models\Orders;
 use common\models\Pages;
 use common\models\Messages;
+use yii\filters\Cors;
+use common\helpers\CalcPageStrategy;
+use common\models\JobsRank;
+use yii\helpers\VarDumper;
 
 /**
  * Site controller
@@ -22,7 +28,23 @@ class SiteController extends Controller
      */
     public function behaviors()
     {
+        $admin_panel = class_exists(CalcPageStrategy::class)? CalcPageStrategy::$admin : '';
         return [
+            /*'HttpCache' => [
+	'class' => 'yii\filters\HttpCache',
+            'lastModified' => function ($action, $params) {
+		$q = new \yii\db\Query();
+		return $q->from('pages')->max('modified');
+		 },
+	], */
+            /*[
+             'class' => 'yii\filters\HttpCache',
+             'only' => ['index'],
+             'lastModified' => function ($action, $params) {
+                 $q = new \yii\db\Query();
+                 return $q->from('pages')->max('modified');
+             },
+         ], */
             'access' => [
                 'class' => AccessControl::className(),
                 'only' => ['logout', 'signup'],
@@ -45,18 +67,40 @@ class SiteController extends Controller
                     'logout' => ['post'],
                 ],
             ],
+            'corsFilter' => [
+                'class' => Cors::class,
+                'cors' => [
+                    'Origin'                           => ['*'],
+                    'Access-Control-Request-Method'    => ['GET'],
+                    'Access-Control-Request-Headers' => ['Access-control-allow-credentials', 'Access-control-allow-origin'],
+                    // 'Access-Control-Max-Age'           => 3600,                 // Cache (seconds),
+                    'Access-Control-Expose-Headers' => ["Access-Control-Allow-Origin:$admin_panel"]
+                ],
+            ]
         ];
     }
-    
+
+
     public function beforeAction($action)
     {
-     //  print_r(Yii::$app->user);
-     //   exit();
+        //  print_r(Yii::$app->user);
+        //   exit();
         $cookies = Yii::$app->request->cookies;
-       if($cookies->getValue('version') && $cookies->getValue('version') == 'mobile'){
-           $this->layout = 'mobile';
-       }
+        $this->setLayout($cookies->getValue('version'));
+
         return parent::beforeAction($action);
+    }
+
+    protected function setLayout($manualSelectSiteVersion)
+    {
+        switch (true) {
+            case (bool) $manualSelectSiteVersion:
+                $manualSelectSiteVersion != 'mobile' ?: $this->layout = 'mobile';
+                break;
+            case (Yii::$app->deviceDetect->isMobile()):
+                $this->layout = 'mobile';
+                break;
+        }
     }
 
     /**
@@ -83,16 +127,15 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $cars = \common\models\Cars::find()->all();
-     
+
         $main_page = Yii::$app->cache->get('main_page');
-        if(!$main_page){
+        if (!$main_page) {
             $main_page = Pages::find()->where(['main' => 1])->one();
             Yii::$app->cache->set('main_page', $main_page, $this->cache_time);
         }
-        
         $this->setMeta($main_page->meta_title, $main_page->keywords, $main_page->description);
-        
-        if($this->layout == 'mobile'){
+
+        if ($this->layout == 'mobile') {
             return $this->render('mobile', [
                 'main_page' => $main_page,
             ]);
@@ -102,57 +145,88 @@ class SiteController extends Controller
             'cars' => $cars,
         ]);
     }
-    
+
     public function actionMessage()
     {
         $message = new Messages();
-        
-        if($message->load(Yii::$app->request->post())){
-            
-            if($message->save()){
-                Yii::$app->session->setFlash('success'.$message->flag, "Данные отправлены");
-                Yii::$app->session->setFlash('show'.$message->flag, "show");
+
+        if ($message->load(Yii::$app->request->post())) {
+            $flag = $this->checkSpam(Yii::$app->request->post('recaptcha_response'));
+            if ($flag == 0) {
+                Yii::$app->session->setFlash('error' . $message->flag, "Проверка не спам не пройдена");
+                Yii::$app->session->setFlash('show' . $message->flag, "show");
                 return $this->redirect(Yii::$app->request->referrer);
-            }else{
-                Yii::$app->session->setFlash('error'.$message->flag, "Ошибка отправки");
-                Yii::$app->session->setFlash('show'.$message->flag, "show");
+            }
+            if ($message->save()) {
+                Yii::$app->session->setFlash('success' . $message->flag, "Данные отправлены");
+                Yii::$app->session->setFlash('show' . $message->flag, "show");
+                return $this->redirect(Yii::$app->request->referrer);
+            } else {
+                Yii::$app->session->setFlash('error' . $message->flag, "Ошибка отправки");
+                Yii::$app->session->setFlash('show' . $message->flag, "show");
                 return $this->redirect([Yii::$app->request->referrer, 'message' => $message]);
             }
         }
     }
-    
+
     public function actionOrder()
     {
         $model = new Orders();
-         if($model->load(Yii::$app->request->post())){
+        if ($model->load(Yii::$app->request->post())) {
+            $flag = $this->checkSpam(Yii::$app->request->post('recaptcha_response'));
+            if ($flag == 0) {
+                Yii::$app->session->setFlash('error', "Проверка не спам не пройдена");
+                Yii::$app->session->setFlash('show', "show");
+                return $this->redirect(Yii::$app->request->referrer);
+            }
             $model->model = Yii::$app->request->post('model');
             $model->generation_id = Yii::$app->request->post('generation');
             $model->engine_id = Yii::$app->request->post('motor');
             $model->year = Yii::$app->request->post('range');
             $model->works = Yii::$app->request->post('rec');
             $model->sets = Yii::$app->request->post('set');
-            if($model->save()){
+            if ($model->save()) {
                 Yii::$app->session->setFlash('success', "Данные отправлены");
                 Yii::$app->session->setFlash('show', "show");
                 return $this->redirect(Yii::$app->request->referrer);
-            }else{
+            } else {
                 Yii::$app->session->setFlash('error', "Ошибка отправки");
                 Yii::$app->session->setFlash('show', "show");
                 return $this->redirect([Yii::$app->request->referrer, 'model' => $model]);
             }
         }
     }
-    
+
+    public function checkSpam($flag = false)
+    {
+        if ($flag == false) {
+            return 0;
+        }
+
+        $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+        $recaptcha_secret = '6LdA1L4UAAAAABJD-5tVHR_pTsrnweWAX0dOKSct';
+        $recaptcha_response = $flag;
+
+        $recaptcha = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
+        $recaptcha = json_decode($recaptcha);
+
+        if (isset($recaptcha->score) && $recaptcha->score >= 0.5) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     public function actionVersion()
     {
-        if(Yii::$app->request->get()){
+        if (Yii::$app->request->get()) {
             $cookies = Yii::$app->response->cookies;
-            if(Yii::$app->request->get('version') == 'desktop'){
+            if (Yii::$app->request->get('version') == 'desktop') {
                 $cookies->add(new \yii\web\Cookie([
                     'name' => 'version',
                     'value' => 'desktop',
                 ]));
-            }else{
+            } else {
                 $cookies->add(new \yii\web\Cookie([
                     'name' => 'version',
                     'value' => 'mobile',
@@ -161,7 +235,7 @@ class SiteController extends Controller
             return $this->redirect(Yii::$app->request->referrer);
         }
     }
-    
+
 
     /**
      * Logs in a user.
@@ -207,7 +281,7 @@ class SiteController extends Controller
     {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
+            if ($model->    Email(Yii::$app->params['adminEmail'])) {
                 Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
             } else {
                 Yii::$app->session->setFlash('error', 'There was an error sending your message.');
@@ -220,24 +294,24 @@ class SiteController extends Controller
             ]);
         }
     }*/
-    
+
     public function actionPage($alias)
     {
-        $model = Yii::$app->cache->get('page_'.$alias);
-        if(!$model){
+        $model = Yii::$app->cache->get('page_' . $alias);
+        if (!$model) {
             $model = Pages::find()->where(['alias' => $alias])->one();
-            Yii::$app->cache->set('page_'.$alias, $model, $this->cache_time);
+            Yii::$app->cache->set('page_' . $alias, $model, $this->cache_time);
         }
-        
-        if(!$model){
-             throw new \yii\web\HttpException(404, 'Такой страницы нет');
+
+        if (!$model) {
+            throw new \yii\web\HttpException(404, 'Такой страницы нет');
         }
-        
+
         $this->setMeta($model->meta_title, $model->keywords, $model->description);
-        
+
         return $this->render('page', ['model' => $model]);
     }
-    
+
     protected function setMeta($title = null, $keywords = null, $description = null)
     {
         $this->view->title = $title;
@@ -367,40 +441,45 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }*/
-    
+
     public function actionCalculator()
     {
         $req = Yii::$app->request->get();
-        if($req){
-            
+        if ($req) {
+
             $engine_id = $req['motorId'];
             $generation_id = $req['genId'];
             $year_id = $req['range'];
-            
-            $responce = Yii::$app->cache->get(str_replace(' ', '', $req['modelName']) . 'calculation' . $engine_id . $generation_id . $year_id);
-            if(!$responce){
+
+            $cache_key = str_replace(' ', '', $req['modelName']) . 'calculation' . $engine_id . $generation_id . $year_id;
+
+            $responce = Yii::$app->cache->get($cache_key);
+            if (!$responce) {
                 $categories_links = \yii\helpers\ArrayHelper::map(\common\models\JobcatsJobs::find()->where(['job_category_id' => \yii\helpers\ArrayHelper::map(\common\models\JobsCategories::find()->where(['service' => 1])->all(), 'id', 'id')])->all(), 'id', 'job_id');
                 $engine_links = \yii\helpers\ArrayHelper::map(\common\models\EnginesJobs::find()->where(['engine_id' => $engine_id])->all(), 'id', 'job_id');
                 $generations_links = \yii\helpers\ArrayHelper::map(\common\models\JobsGenerations::find()->where(['generation_id' => $generation_id])->all(), 'id', 'job_id');
                 $years_links = \yii\helpers\ArrayHelper::map(\common\models\YearsJobs::find()->where(['year_id' => $year_id])->all(), 'id', 'job_id');
                 $jobs_arr = array_intersect($engine_links, $generations_links, $years_links, $categories_links);
-                $jobs = \common\models\Jobs::find()->where(['id' => $jobs_arr, ])
-                        ->with([
-                            'parts' => function($query){
-                                return $query->with('brand');
-                            }
-                         ])
-                        ->asArray()
-                        ->all();
-
+                $jobs = \common\models\Jobs::find()->where(['id' => $jobs_arr,])
+                    ->with([
+                        'parts' => function ($query) {
+                            return $query->with('brand');
+                        }
+                    ])
+                    ->asArray()
+                    ->all();
+                
+                $jobs = \common\helpers\Calc::sortByRank($jobs_arr, $jobs); 
+                // return json_encode($jobs);     
                 $responce = $this->getJobs($jobs, $req['requestId']);
-                Yii::$app->cache->set(str_replace(' ', '', $req['modelName']) . 'calculation' . $engine_id . $generation_id . $year_id, $responce, $this->cache_time);
+                
+                Yii::$app->cache->set($cache_key, $responce, $this->cache_time);
             }
-            
+
             return json_encode($responce);
         }
     }
-    
+
     public function getJobs($arr = array(), $req)
     {
         $responce = array();
@@ -411,22 +490,22 @@ class SiteController extends Controller
         $responce['recommendedPartsMin'] = 0;
         $k1 = 0;
         $k2 = 0;
-        foreach($arr as $key => $value){
-            if(@$value['recomended']){
+        foreach ($arr as $key => $value) {
+            if (@$value['recomended']) {
                 $responce['works']['recommended'][$k1] = $this->getJob($value);
-                if(@$responce['works']['recommended'][$k1]['price']){
+                if (@$responce['works']['recommended'][$k1]['price']) {
                     $responce['recommendedWorksPrice'] += $responce['works']['recommended'][$k1]['price'];
                 }
-                if(@$responce['works']['recommended'][$k1]['minPartsPrice']){
+                if (@$responce['works']['recommended'][$k1]['minPartsPrice']) {
                     $responce['recommendedPartsMin'] += $responce['works']['recommended'][$k1]['minPartsPrice'];
                 }
                 $k1++;
-            }else{
+            } else {
                 $responce['works']['mandatory'][$k2] = $this->getJob($value);
-                if(@$responce['works']['mandatory'][$k2]['price']){
+                if (@$responce['works']['mandatory'][$k2]['price']) {
                     $responce['mandatoryWorksPrice'] += $responce['works']['mandatory'][$k2]['price'];
                 }
-                if(@$responce['works']['mandatory'][$k2]['minPartsPrice']){
+                if (@$responce['works']['mandatory'][$k2]['minPartsPrice']) {
                     $responce['mandatoryPartsMin'] += $responce['works']['mandatory'][$k2]['minPartsPrice'];
                 }
                 $k2++;
@@ -435,28 +514,28 @@ class SiteController extends Controller
         $responce['totalPrice'] = $responce['mandatoryWorksPrice'] + $responce['mandatoryPartsMin'] + $responce['recommendedWorksPrice'] + $responce['recommendedPartsMin'];
         return $responce;
     }
-    
+
     public function getJob($job = null)
     {
-       $new_job = array();
-       $new_job['id_work'] = $job['id'];
-       $new_job['name'] = $job['title'];
-       $new_job['type'] = 'service';
-       $new_job['price'] = $job['price'];
-       $new_job['minPartsPrice'] = 0;
-       $new_job['maxPartsPrice'] = 0;
-       $new_job['sets'] = array();
-       if($job['parts'] && !empty($job['parts'])){
-           $original_count_price = 0;
-           $analog_count_price = 0;
-           $flag = 0;
-           $key1 = 0;
-           $key2 = 0;
-           $prices = array();
-           $original_prices = array();
-           $analog_prices = array();
-            foreach($job['parts'] as $key => $value){
-                if($value['original']){
+        $new_job = array();
+        $new_job['id_work'] = $job['id'];
+        $new_job['name'] = $job['title'];
+        $new_job['type'] = 'service';
+        $new_job['price'] = $job['price'];
+        $new_job['minPartsPrice'] = 0;
+        $new_job['maxPartsPrice'] = 0;
+        $new_job['sets'] = array();
+        if ($job['parts'] && !empty($job['parts'])) {
+            $original_count_price = 0;
+            $analog_count_price = 0;
+            $flag = 0;
+            $key1 = 0;
+            $key2 = 0;
+            $prices = array();
+            $original_prices = array();
+            $analog_prices = array();
+            foreach ($job['parts'] as $key => $value) {
+                if ($value['original']) {
                     $original_count_price += $value['price'];
                     $new_job['sets'][0]['id_set'] = 'original_' . $flag;
                     $new_job['sets'][0]['setName'] = 'Оригинал';
@@ -472,7 +551,7 @@ class SiteController extends Controller
                     $new_job['sets'][0]['parts'][$key1]['vendor'] = $value['brand']['title'];
                     $new_job['sets'][0]['parts'][$key1]['totalPrice'] = $value['price'];
                     $key1++;
-                }else{
+                } else {
                     $analog_count_price += $value['price'];
                     $new_job['sets'][1]['id_set'] = 'analog_' . $flag;
                     $new_job['sets'][1]['setName'] = 'Аналог';
@@ -494,14 +573,14 @@ class SiteController extends Controller
             $new_job['sets'] = array_values($new_job['sets']);
             $new_job['minPartsPrice'] = min($prices);
             $new_job['maxPartsPrice'] = max($prices);
-       }
-       return $new_job;
+        }
+        return $new_job;
     }
-    
+
     public function getSet()
     {
         $original_count_price += $value['price'];
-        $new_job['sets'][1]['id_set'] = $flag+1;
+        $new_job['sets'][1]['id_set'] = $flag + 1;
         $new_job['sets'][1]['setName'] = 'Оригинал';
         $new_job['sets'][1]['price'] = $original_count_price;
         $prices[1] = $original_count_price;
@@ -516,21 +595,21 @@ class SiteController extends Controller
         $new_job['sets'][1]['parts'][$key1]['totalPrice'] = $value['price'];
         $key1++;
     }
-    
+
     public function actionBanner($id)
     {
-        if(Yii::$app->user->isGuest){
+        if (Yii::$app->user->isGuest) {
             return $this->redirect(['/site/index']);
         }
         $model = \common\models\Banners::findOne($id);
-         if($model->load(Yii::$app->request->post())){
-            if($model->save()){
-                Yii::$app->session->setFlash('success_'.$model->id, "Данные сохранены");
-                Yii::$app->session->setFlash('show_'.$model->id, "show");
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success_' . $model->id, "Данные сохранены");
+                Yii::$app->session->setFlash('show_' . $model->id, "show");
                 return $this->redirect(Yii::$app->request->referrer);
-            }else{
-                Yii::$app->session->setFlash('error_'.$model->id, "Ошибка отправки");
-                Yii::$app->session->setFlash('show_'.$model->id, "show");
+            } else {
+                Yii::$app->session->setFlash('error_' . $model->id, "Ошибка отправки");
+                Yii::$app->session->setFlash('show_' . $model->id, "show");
                 return $this->redirect([Yii::$app->request->referrer, 'model' => $model]);
             }
         }

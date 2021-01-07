@@ -15,8 +15,7 @@ AppAsset::register($this);
     <meta http-equiv="Last-Modified" content="Thu, 11 Jul 2019 14:45:57 GMT"/>
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
-    <link href="https://inavtospb.ru/" rel="canonical"></link>
-    <link href="https://m.inavtospb.ru/" rel="alternate" media="only screen and (max-width: 640px)"></link>
+    <link rel="canonical" href="https://inavtospb.ru" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1, maximum-scale=1;" />
     <?php $this->head() ?>
@@ -44,7 +43,8 @@ AppAsset::register($this);
         var PATH_STYLES = "/css/";
         var PATH_IMAGES = "/img/";
         var PATH_JS = "/js/";
-    </script>
+	</script>
+	<script src="https://www.google.com/recaptcha/api.js?render=6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb"></script>
 </head>
 <body>
      <?php $this->beginBody() ?>
@@ -444,6 +444,7 @@ AppAsset::register($this);
 	
 
 	<?=$content; ?>
+	
 
 	<footer>
 	<div class="in">

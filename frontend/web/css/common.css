@@ -7,6 +7,7 @@
     url("/fonts/inavtospbb/webfont.svg#clear_sans_thinregular") format("svg");
     font-weight:normal;
     font-style:normal
+    font-display: swap; /*burner*/
 }
 
 @font-face{
@@ -15,6 +16,7 @@
     src:url('/fonts/rubl/Rouble.eot');
     src:url('/fonts/rubl/Rouble.eot?#iefix') format('embedded-opentype'),
     url('/fonts/rubl/Rouble.woff') format('woff')
+    font-display: swap; /*burner*/
 }
 
 body, html {
@@ -960,9 +962,9 @@ nav.menu .popup .volvocar {
     left:-2%;
     top:12%;
     background-repeat:no-repeat;
-    background-size:400%;
-    background-position: -10000px;
-    background-image:url('/img/volvocars.png?t=3');
+    background-size:90%;
+    /* background-position: -10000px; */
+    /* background-image:url('/img/volvocars.png?t=3');?\ */
     -moz-transform: scaleX(-1);
     -webkit-transform: scaleX(-1);
     -o-transform: scaleX(-1);
@@ -991,14 +993,14 @@ nav.menu .popup .volvocar {
 }
 
 
-nav.menu .popup .volvocar.xc90 {  background-position: left top }
-nav.menu .popup .volvocar.xc70 {  background-position: -220px top }
-nav.menu .popup .volvocar.xc60 {  background-position: -440px top }
-nav.menu .popup .volvocar.s80 {  background-position: -660px top }
-nav.menu .popup .volvocar.s60 {  background-position: left -110px }
-nav.menu .popup .volvocar.s40-v40 {  background-position: -220px -110px }
-nav.menu .popup .volvocar.v50 {  background-position: -440px -110px }
-nav.menu .popup .volvocar.c30 {  background-position: -660px -110px }
+nav.menu .popup .volvocar.xc90 {  background-image: url("/img/volvo/xc90.png" ) }
+nav.menu .popup .volvocar.xc70 {  background-image: url("/img/volvo/xc70.png" ) }
+nav.menu .popup .volvocar.xc60 {  background-image: url("/img/volvo/xc60.png" ) }
+nav.menu .popup .volvocar.s80 {  background-image: url("/img/volvo/s80.png" ) }
+nav.menu .popup .volvocar.s60 {  background-image: url("/img/volvo/s60.png" ) }
+nav.menu .popup .volvocar.s40-v40 {  background-image: url("/img/volvo/v40.png" ) }
+nav.menu .popup .volvocar.v50 {  background-image: url("/img/volvo/v50.png" ) }
+nav.menu .popup .volvocar.c30 {  background-image:  url("/img/volvo/c30.png" ) }
 
 nav.menu .popup ul {
     padding: 0;
@@ -1103,9 +1105,9 @@ nav.menu .popup ul a:hover {
     width:320px;
     height:160px;
     margin-top:10px;
-    background-image:url('/img/volvocars.png?r=2');
+    /* background-image:url('/img/volvocars.png?r=2'); */
     background-repeat: no-repeat;
-    background-size:400%;
+    background-size:90%;
     /*
     -moz-transform: scaleX(-1);
     -webkit-transform: scaleX(-1);
@@ -1116,15 +1118,15 @@ nav.menu .popup ul a:hover {
     */
 }
 
-.serviceCalc .volvo.xc90 { background-position: left top }
-.serviceCalc .volvo.xc70 { background-position: 33.333% top }
-.serviceCalc .volvo.xc60 { background-position: 66.666% top }
-.serviceCalc .volvo.s80 { background-position: 100% top }
-.serviceCalc .volvo.s60 { background-position: left 46% }
-.serviceCalc .volvo.s40, .serviceCalc .volvo.cc{ background-position: 33.333% 46% }
-.serviceCalc .volvo.v40 { background-position: 33.333% 46% }
-.serviceCalc .volvo.v50,  .serviceCalc .volvo { background-position: 66.666% 46% }
-.serviceCalc .volvo.c30 { background-position: 100% 46% }
+.serviceCalc .volvo.xc90 { background-image: url('/img/volvo/xc90.png') }
+.serviceCalc .volvo.xc70 { background-image: url('/img/volvo/xc70.png') }
+.serviceCalc .volvo.xc60 { background-image: url('/img/volvo/xc60.png') }
+.serviceCalc .volvo.s80 { background-image: url('/img/volvo/s80.png')  }
+.serviceCalc .volvo.s60 { background-image: url('/img/volvo/s60.png')}
+.serviceCalc .volvo.s40,  .serviceCalc  .volvo.cc{ background-image: url('/img/volvo/v40.png')  }
+.serviceCalc .volvo.v40 { background-image: url('/img/volvo/v40.png')}
+.serviceCalc .volvo.v50,   .serviceCalc .volvo { background-image: url('/img/volvo/v50.png')  }
+.serviceCalc .volvo.c30 { background-image: url('/img/volvo/c30.png')  }
 
 .works .warning {
     padding: 8px 0 4px 0;
@@ -2730,9 +2732,9 @@ button.sendData .info {
     display: block;
 
     background-repeat: no-repeat;
-    background-size: 400%;
-    background-position: -10000px;
-    background-image: url(/img/volvocars.png?r=2);
+    background-size: 90%;
+    /* background-position: -10000px; */
+    /* background-image: url(/img/volvocars.png?r=2); */
 
     content: '';
     margin: 0 auto;
@@ -2740,7 +2742,15 @@ button.sendData .info {
     height: 68px;
 }
 
-
+.listCars li a.xc70:before {  background-image: url("/img/volvo/xc70.png" ) }
+.listCars li a.xc60:before {  background-image: url("/img/volvo/xc60.png" ) }
+.listCars li a.s80::before {  background-image: url("/img/volvo/s80.png" ) }
+.listCars li a.xc90:before {  background-image: url("/img/volvo/xc90.png" ) }
+.listCars li a.s60:before {  background-image: url("/img/volvo/s60.png" ) }
+.listCars li a.s40-v40:before {  background-image: url("/img/volvo/v40.png" ) }
+.listCars li a.v50:before {  background-image: url("/img/volvo/v50.png" ) }
+.listCars li a.c30:before {  background-image:  url("/img/volvo/c30.png" ) }
+/* 
 .listCars li a.xc90:before { background-position: 0 -10px }
 .listCars li a.xc70:before { background-position: -160px -10px }
 .listCars li a.xc60:before { background-position: -320px -10px }
@@ -2749,7 +2759,7 @@ button.sendData .info {
 .listCars li a.s60:before { background-position: 0 -88px }
 .listCars li a.s40-v40:before { background-position: -160px -88px }
 .listCars li a.v50:before { background-position: -320px -88px }
-.listCars li a.c30:before { background-position: -480px -88px }
+.listCars li a.c30:before { background-position: -480px -88px } */
 
 
 .fastOrder {
@@ -2785,6 +2795,10 @@ button.sendData .info {
     -webkit-animation: slide 30s 0s ease-out infinite;
     animation: slide 30s 0s ease-out infinite;
     animation-fill-mode: forwards;
+}
+
+.topBanner .bannerDisable {
+    opacity: 0;
 }
 
 .topBanner .slide span {
@@ -2849,8 +2863,8 @@ button.sendData .info {
 
 
 
-.topBanner .s1 span {
-    
+/* .topBanner .s1 span {
+
 }
 
 .topBanner .s2 span {
@@ -2862,7 +2876,7 @@ button.sendData .info {
 }
 
 .topBanner .s1 i {
-    
+
 }
 
 .topBanner .s2 i {
@@ -2875,7 +2889,7 @@ button.sendData .info {
 
 
 .topBanner .s2, .topBanner .s2 .span, topBanner .s2 i, .topBanner .s2 a strong, .topBanner .s2 a em { animation-delay: 10s; }
-.topBanner .s3, .topBanner .s3 .span, topBanner .s3 i, .topBanner .s3 a strong, .topBanner .s3 a em { animation-delay: 20s; }
+.topBanner .s3, .topBanner .s3 .span, topBanner .s3 i, .topBanner .s3 a strong, .topBanner .s3 a em { animation-delay: 20s; } */
 
 
 @keyframes slide {
