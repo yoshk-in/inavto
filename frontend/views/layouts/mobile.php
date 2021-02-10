@@ -2,6 +2,7 @@
 
 /* @var $this \yii\web\View */
 /* @var $content string */
+// @changed 10.02.2021
 
 use frontend\assets\AppAsset;
 use yii\helpers\Html;
@@ -45,6 +46,31 @@ AppAsset::register($this);
         var PATH_JS = "/js/";
 	</script>
 	<script src="https://www.google.com/recaptcha/api.js?render=6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb"></script>
+	<script>
+	const googleCaptcha = {
+        'domElms': [],
+        registerForm(btnId, putToInputId) {
+            googleCaptcha.domElms.push({
+                'btnId': btnId,
+                'putToInputId': putToInputId
+            });
+        },
+        executeCheck() {
+            if ('undefined' == typeof grecaptcha) return;
+            googleCaptcha.domElms.forEach(element => {
+                $(element.btnId).click((e) => googleCaptcha.validate(element.putToInputId));
+            });
+        },
+        validate(putToInputId) {
+            grecaptcha.ready(function () {
+                    grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', { action: 'contact' }).then(function (token) {
+                    var recaptchaResponse = document.getElementById(putToInputId);
+                    recaptchaResponse.value = token;                 
+                });
+            });
+        }
+    };
+	</script>
 </head>
 <body>
      <?php $this->beginBody() ?>
@@ -413,6 +439,7 @@ AppAsset::register($this);
 	</symbol>
 </svg>
 
+
 <div class="wrapper">
 
 	<header>
@@ -445,6 +472,10 @@ AppAsset::register($this);
 
 	<?=$content; ?>
 	
+
+<script>
+	$(document).ready(googleCaptcha.executeCheck);
+</script>
 
 	<footer>
 	<div class="in">

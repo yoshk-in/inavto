@@ -57,7 +57,7 @@ class Orders extends \yii\db\ActiveRecord implements Format
     public function rules()
     {
         return [
-            [['phone'], 'required'],
+            [['phone', 'email'], 'required'],
             [['email'], 'email'],
             [['phone'], 'match', 'pattern' => self::PHONE_PATTERN],
             [['model'], 'required'],
@@ -163,7 +163,8 @@ class Orders extends \yii\db\ActiveRecord implements Format
 
     public function afterSave($insert, $changedAttributes)
     {
-        
+        // @test
+        // exit('send');
         $jobs_arr = array();
         $parts_arr = array();
         $recommend_jobs = array();

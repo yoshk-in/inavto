@@ -1,6 +1,7 @@
 <?php
 // @changed 8.02.2021
 // @changed 9.02.2021
+// @changed 10.02.2021
 use common\helpers\Format;
 use common\models\Messages;
 use yii\widgets\ActiveForm;
@@ -81,19 +82,8 @@ state.watch.forEach((el) => {
 
 </script>
 <script>
-        const googleCaptcha = function (jqueryElm) {
-            grecaptcha.ready(function () {
-            grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', { action: 'contact' }).then(function (token) {
-                var recaptchaResponse = document.getElementById('recaptchaResponse2');
-                recaptchaResponse.value = token;                 
-            });
-        });
-    };
-        
-    if ('undefined'!= typeof grecaptcha) {
-        $('button[name="sendMessageAction"]').click(() => googleCaptcha($(this)));
-    }
-    
+
+    googleCaptcha.registerForm('button[name="sendMessageAction"]', 'recaptchaResponse2');
 </script>
 <script type="text/javascript">
 

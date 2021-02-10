@@ -1,6 +1,7 @@
 <?php
 // @changed 8.02.2021
 // @changed 9.02.2021
+// @changed 10.02.2021
 namespace common\helpers;
 
 use yii\widgets\ActiveForm;
@@ -108,6 +109,7 @@ state3.watch.forEach((el) => {
 
 </script>
 
+
     <?php return ob_get_clean();
     }
 
@@ -116,19 +118,8 @@ state3.watch.forEach((el) => {
         ob_start();
     ?>
     <script>
-        const googleCaptcha = function (jqueryElm) {
-            grecaptcha.ready(function () {
-            grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', { action: 'contact' }).then(function (token) {
-                var recaptchaResponse = document.getElementById('recaptchaResponse');
-                recaptchaResponse.value = token;                 
-            });
-        });
-    };
-        
-    if ('undefined'!= typeof grecaptcha) {
-        $('button[name="sendServiceOrder"]').click(() => googleCaptcha($(this)));
-    }
     
+    googleCaptcha.registerForm('button[name="sendServiceOrder"]', 'recaptchaResponse');
     </script>
         <script>
             // @change on new recaptcha

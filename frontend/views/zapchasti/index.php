@@ -1,6 +1,7 @@
 <?php
 // @changed 8.02.2021
 // @changed 9.02.2021
+// @changed 10.02.2021
 use yii\widgets\ActiveForm;
 ?>
 <?php if($page->banners && !empty($page->banners)): ?>
@@ -45,19 +46,8 @@ use yii\widgets\ActiveForm;
     </div>
 </div>
 <script>
-        const googleCaptcha = function (jqueryElm) {
-            grecaptcha.ready(function () {
-            grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', { action: 'contact' }).then(function (token) {
-                var recaptchaResponse = document.getElementById('recaptchaResponse6');
-                recaptchaResponse.value = token;                 
-            });
-        });
-    };
-        
-    if ('undefined'!= typeof grecaptcha) {
-        $('button[name="sendZapchastiOrder"]').click(() => googleCaptcha($(this)));
-    }
-    
+
+	googleCaptcha.registerForm('button[name="sendZapchastiOrder"]', 'recaptchaResponse6');   
 </script>
 <script>
 		// change on new recaptcha

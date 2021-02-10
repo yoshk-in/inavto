@@ -54,7 +54,7 @@ class Messages extends \yii\db\ActiveRecord implements Format
     public function rules()
     {
         return [
-            [['phone'], 'required'],
+            [['phone', 'email'], 'required'],
             [['service_id', 'flag'], 'integer'],
             [['created', 'modified'], 'safe'],
             [['email'], 'email'],

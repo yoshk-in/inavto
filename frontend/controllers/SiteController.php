@@ -174,6 +174,8 @@ class SiteController extends Controller
         ]);
     }
 
+
+
     public function actionMessage()
     {
         $message = new Messages();
@@ -222,7 +224,7 @@ class SiteController extends Controller
             $model->year = Yii::$app->request->post('range');
             $model->works = Yii::$app->request->post('rec');
             $model->sets = Yii::$app->request->post('set');
-            if ($model->save()) {
+            if ($model->save(true)) {
                 Yii::$app->session->setFlash('success', "Данные отправлены");
                 Yii::$app->session->setFlash('show', "show");
                 return $this->redirect(Yii::$app->request->referrer);
@@ -237,7 +239,8 @@ class SiteController extends Controller
     public function checkSpam($flag = false)
     {
         // @test
-        return 1;
+        // var_dump($flag); exit;
+        // return 1;
         if ($flag == false) {
             return 0;
         }

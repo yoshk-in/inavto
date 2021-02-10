@@ -1,6 +1,7 @@
 <?php 
 // @changed 8.02.2021
 // @changed 9.02.2021
+// @changed 10.02.2021
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\widgets\MaskedInput;
@@ -207,19 +208,8 @@ endif
 // 
 ?>
 <script> // captcha
-        const googleCaptcha = function (jqueryElm) {
-            grecaptcha.ready(function () {
-            grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', { action: 'contact' }).then(function (token) {
-                var recaptchaResponse = document.getElementById('recaptchaResponse');
-                recaptchaResponse.value = token;                 
-            });
-        });
-    };
-        
-    if ('undefined'!= typeof grecaptcha) {
-        $('button[name="sendServiceOrder"]').click(() => googleCaptcha($(this)));
-    }
-    
+
+    googleCaptcha.registerForm('button[name="sendServiceOrder"]', 'recaptchaResponse');   
 </script>
 
 <div class="content">

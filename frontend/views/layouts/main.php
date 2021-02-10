@@ -2,6 +2,7 @@
 
 /* @var $this \yii\web\View */
 /* @var $content string */
+// @checked 10.02.2021
 
 use common\models\Services;
 use frontend\assets\AppAsset;
@@ -34,6 +35,31 @@ AppAsset::register($this);
 	<script type="text/javascript" src="/js/core3.js"></script>
 	<script type="text/javascript" src="/js/zoomImage.js"></script>
         <script src="https://www.google.com/recaptcha/api.js?render=6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb"></script>
+		<script>
+	const googleCaptcha = {
+        domElms: [],
+        registerForm(btnId, putToInputId) {
+            googleCaptcha.domElms.push({
+                'btnId': btnId,
+                'putToInputId': putToInputId
+            });
+        },
+        executeCheck() {           
+            googleCaptcha.domElms.forEach(element => {
+                $(element.btnId).click((e) => googleCaptcha.validate(element.putToInputId));
+            });
+        },
+        validate(putToInputId) {
+			if ('undefined' == typeof grecaptcha) return;
+            grecaptcha.ready(function () {
+                    grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', { action: 'contact' }).then(function (token) {
+                    var recaptchaResponse = document.getElementById(putToInputId);
+                    recaptchaResponse.value = token;                 
+                });
+            });
+        }
+    };
+	</script>
     <script type="text/javascript">
         var PATH = "/";
         var PATH_CONTENT = "/data/";
@@ -451,6 +477,9 @@ AppAsset::register($this);
 	<a name="calc"></a>
 <?=$content; ?>
 </div>
+<script>
+	$(document).ready(googleCaptcha.executeCheck);
+</script>
 <footer>
 	<div class="in">
 		<div class="row">
