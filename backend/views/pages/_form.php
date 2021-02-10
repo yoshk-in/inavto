@@ -1,5 +1,6 @@
 <?php
-
+// @changed 8.02.2021
+use backend\models\Pages;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use mihaildev\ckeditor\CKEditor;
@@ -51,6 +52,8 @@ mihaildev\elfinder\Assets::noConflict($this);
     <?= $form->field($model, 'main')->dropDownList(['0' => 'Нет', '1' => 'Да', '2' => 'Страница контактов']) ?>
     
     <?= $form->field($model, 'menu')->checkbox(['0', '1']) ?>
+
+    <input disabled type="checkbox" name='<?= Pages::TABLE_NAME_PROP?>' <?= Pages::isMobile() ? 'checked' : '' ?> >Мобильная версия</br>
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>

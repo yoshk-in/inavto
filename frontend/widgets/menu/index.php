@@ -1,3 +1,4 @@
+<!-- // @changed 8.02.2021 -->
 <nav class="menu">
 	<ul class="row">
 		<li class="l1">
@@ -5,8 +6,10 @@
 			<div class="popup standart">
 				<div class="in">
 					<div class="close"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#clear"></use></svg></div>
+					
                                         <?php if(@$pages): ?>
-                                        <?php $flag = 0; ?>
+										<?php $flag = 0; ?>
+										
                                             <?php foreach($pages as $key => $value): ?>
                                             <?php if($flag%3 == 0): ?>
                                                 <div class="row">
@@ -134,6 +137,7 @@
 </nav>
 <script>
     $(document).ready(function(){
+		
        $('nav.menu>ul>li>a').click(function(){
 
 			var mode='opening';

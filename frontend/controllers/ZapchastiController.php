@@ -1,5 +1,5 @@
 <?php
-
+// @changed 8.02.2021
 namespace frontend\controllers;
 
 use Yii;
@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
  */
 class ZapchastiController extends SiteController
 {
+    use MobileService;
     /**
      * Lists all PartsCategories models.
      * @return mixed
@@ -28,9 +29,10 @@ class ZapchastiController extends SiteController
        
         $this->setMeta($page->meta_title, $page->keywords, $page->description);
         if($this->layout == 'mobile'){
-           return $this->render('mobile_index', [
-                'page' => $page,
-            ]); 
+        //    return $this->render('mobile_index', [
+        //         'page' => $page,
+        //     ]); 
+            return $this->loadServiceModels($page, $renderEngint = false);
         }
         return $this->render('index', ['page' => $page]);
     }

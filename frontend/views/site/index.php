@@ -13,10 +13,8 @@ $cacl_page->model = $model ?? new Orders;
 $cacl_page->cars = $cars;
 $cacl_page->main_page = $main_page ?? null;
 $cacl_page->yiiView = $this;
-$cacl_page->banners();
-$cacl_page->formBegin();
 
-// var_dump(Yii::$app->cache->exists('CalculatorWidget')); exit;
+$cacl_page->formBegin();
 
 if ($this->beginCache('CalculatorWidget', ['duration' => 60, //'dependency' => [
     // 'class' => 'system.caching.dependencies.CDbCacheDependency',
@@ -28,6 +26,7 @@ if ($this->beginCache('CalculatorWidget', ['duration' => 60, //'dependency' => [
 
 echo $cacl_page->modalWindow();
 $cacl_page->formEnd();
+$cacl_page->banners();
 
 if ($this->beginCache('ScriptsWidget', ['duration' => 60])) :
     echo $cacl_page->jsScripts($this), $cacl_page->calcScripts();

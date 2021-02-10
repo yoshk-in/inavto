@@ -1,7 +1,9 @@
 <?php
-
+// @changed 8.02.2021
 namespace backend\models;
 
+use common\helpers\traits\DoubleTableModel;
+use common\helpers\traits\EscapeEmojiTrait;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
@@ -27,6 +29,16 @@ use yii\helpers\Inflector;
  */
 class Pages extends \yii\db\ActiveRecord
 {
+    use DoubleTableModel {
+        save as saveTwoTable;
+    }
+    // use EscapeEmojiTrait;
+    const TABLE_NAME_PROP = 'tableName';
+    const DESKTOP = 'pages';
+    const MOBILE = 'pages_mobile';
+    
+
+
     public function behaviors()
     {
         return [
@@ -51,13 +63,14 @@ class Pages extends \yii\db\ActiveRecord
             ],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
+
+    public function save($validation = true, $attrNames = null)
     {
-        return 'pages';
+        return $this->saveTwoTable($validation, $attrNames);
     }
+
+
+
 
     /**
      * {@inheritdoc}
@@ -94,5 +107,14 @@ class Pages extends \yii\db\ActiveRecord
             'modified' => 'Дата изменения',
         ];
     }
+
+    // public function escapingAttributes()
+    // {
+    //     return [
+    //         'title',
+    //         'meta_title',
+    //         'description'
+    //     ];
+    // }
     
 }

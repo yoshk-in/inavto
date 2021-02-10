@@ -1,5 +1,6 @@
 <?php
-
+// @changed 8.02.2021
+use backend\models\Pages;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -13,15 +14,22 @@ $this->params['breadcrumbs'][] = ['label' => 'Информационные ст�
 <div class="pages-view">
 
     <p>
-        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
+        <?= Html::a('Изменить', ['update', 'id' => $model->id, Pages::TABLE_NAME_PROP => Pages::$tableName], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete', 'id' => $model->id, Pages::TABLE_NAME_PROP => Pages::$tableName], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a('Добавить', ['create', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('Добавить', ['create', 'id' => $model->id, Pages::TABLE_NAME_PROP => Pages::$tableName], ['class' => 'btn btn-warning']) ?>
+        <?php if (Pages::isMobile()) : ?>
+        <?= Html::a('Мобильная версия', ['view', 'id' => $model->id, Pages::TABLE_NAME_PROP => Pages::MOBILE], ['class' => 'btn btn-default']) ?>
+        <?= Html::a('Десктопная версия', ['view', 'id' => $model->id, Pages::TABLE_NAME_PROP => Pages::DESKTOP], ['class' => 'btn']) ?>
+        <?php else : ?>
+        <?= Html::a('Мобильная версия', ['view', 'id' => $model->id, Pages::TABLE_NAME_PROP => Pages::MOBILE], ['class' => 'btn']) ?>
+        <?= Html::a('Десктопная версия', ['view', 'id' => $model->id, Pages::TABLE_NAME_PROP => Pages::DESKTOP], ['class' => 'btn btn-default']) ?>
+        <?php endif ?>
     </p>
 
     <?= DetailView::widget([

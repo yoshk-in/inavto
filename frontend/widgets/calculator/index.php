@@ -16,7 +16,7 @@
 							<?php
 
 							use common\helpers\CalcPreview;
-
+							
 							foreach ($cars as $key => $value) : ?>
 								<option data-carid="<?= $value->id ?>" value="<?= str_replace('Volvo ', '', $value->title) ?>" <?= $curent_car->id == $value->id ? 'selected="selected"' : ''; ?>><?= $value->title ?></option>
 							<?php endforeach; ?>

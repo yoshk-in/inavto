@@ -1,5 +1,5 @@
 <?php
-
+// @changed 8.02.2021
 namespace frontend\controllers;
 
 use Yii;
@@ -13,6 +13,8 @@ use yii\web\NotFoundHttpException;
  */
 class RemontController extends SiteController
 {
+    use MobileService;
+
     public function actionIndex()
     {
         $final_arr = Yii::$app->cache->get('all_remont_jobs');
@@ -46,10 +48,11 @@ class RemontController extends SiteController
        $this->setMeta($page->meta_title, $page->keywords, $page->description);
        
         if($this->layout == 'mobile'){
-           return $this->render('mobile_index', [
-               'jobs' => $final_arr,
-                'page' => $page,
-            ]); 
+        //    return $this->render('mobile_index', [
+        //        'jobs' => $final_arr,
+        //         'page' => $page,
+        //     ]); 
+            return $this->loadServiceModels($page);
         }
         
        return $this->render('index',[

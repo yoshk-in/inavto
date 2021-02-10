@@ -1,5 +1,5 @@
 <?php
-
+// @changed 8.02.2021
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -24,11 +24,19 @@ class BannerWidget extends Widget{
    public $data;
    public $menuHtml;
    public $banners;
+   /** on mobile no background image */
+   public $styleFnc;
     
     public function init(){
         parent::init();
       //  $this->tpl = 'index';
         $this->tpl .= '.php';
+
+        if (Yii::$app->deviceDetect->isMobileLayout()) $this->styleFnc = function () { return '';};
+
+        else $this->styleFnc = function ($value) {
+            return 'background-image: url(\'/upload/banners/prev/thumb_' . $value . '\');';
+        };
     }
 
     public function run(){
@@ -48,6 +56,7 @@ class BannerWidget extends Widget{
 
     protected function getMenuHtml($banners){
         $str = '';
+        // var_dump($banners, Yii::$app->deviceDetect->isMobile()); exit;
        // foreach ($data as $brand) {
             $str .= $this->catToTemplate($banners);
      //   }
@@ -55,6 +64,7 @@ class BannerWidget extends Widget{
     }
 
     protected function catToTemplate($banners){
+        $styleBackgroundImage = $this->styleFnc;
         ob_start();
         include __DIR__ . '/banner/' . $this->tpl;
         return ob_get_clean();

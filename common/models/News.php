@@ -1,8 +1,8 @@
 <?php
-
+// @changed 8.02.2021
 namespace common\models;
 
-use Yii;
+use common\helpers\traits\EscapeEmojiTrait;
 
 /**
  * This is the model class for table "news".
@@ -21,6 +21,7 @@ use Yii;
  */
 class News extends \yii\db\ActiveRecord
 {
+    // use EscapeEmojiTrait;
     /**
      * {@inheritdoc}
      */
@@ -63,4 +64,19 @@ class News extends \yii\db\ActiveRecord
             'publish' => 'Опубликовано'
         ];
     }
+
+    public static function getPublished($sortBy = 'modified', $limit = 4, $order = SORT_DESC)  
+    {
+        return self::find()->where(['publish' => '1'])->orderBy([$sortBy => $order])->limit($limit)->all();
+    }
+
+    
+    // public function escapingAttributes()
+    // {
+    //     return [
+    //         'title',
+    //         'meta_title',
+    //         'description'
+    //     ];
+    // }
 }

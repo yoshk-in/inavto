@@ -1,7 +1,7 @@
 <?php
 
 namespace frontend\controllers;
-
+// @changed 8.02.2021
 use Yii;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -15,7 +15,8 @@ use common\models\Messages;
 use yii\filters\Cors;
 use common\helpers\CalcPageStrategy;
 use common\models\JobsRank;
-use yii\helpers\VarDumper;
+use DateTime;
+use yii\helpers\Url;
 
 /**
  * Site controller
@@ -23,6 +24,8 @@ use yii\helpers\VarDumper;
 class SiteController extends Controller
 {
     public $cache_time = 60;
+    // public $manualSelectLayout = false;
+
     /**
      * {@inheritdoc}
      */
@@ -35,16 +38,33 @@ class SiteController extends Controller
             'lastModified' => function ($action, $params) {
 		$q = new \yii\db\Query();
 		return $q->from('pages')->max('modified');
-		 },
-	], */
-            /*[
-             'class' => 'yii\filters\HttpCache',
-             'only' => ['index'],
-             'lastModified' => function ($action, $params) {
-                 $q = new \yii\db\Query();
-                 return $q->from('pages')->max('modified');
-             },
-         ], */
+		},
+	], */ 
+        //     [
+        //     'class' => 'yii\filters\HttpCache',
+        //      'only' => ['index'],
+        //      'lastModified' => function ($action, $params) {
+        //          $q = new \yii\db\Query();
+        //          $modified = $q->from('pages')->max('modified');
+        //          $modified = (new DateTime($modified));
+        //         if (
+        //             Yii::$app->request->cookies->getValue('version') ||
+        //             Yii::$app->session->hasFlash('success') ||
+        //             Yii::$app->session->hasFlash('error')                     
+        //             ) return (new DateTime('now'))->getTimestamp();
+
+        //          return $modified->getTimestamp();
+        //      },
+        //     'etagSeed' => function ($action, $params) {
+        //         // var_dump($action); exit;
+        //         $q = new \yii\db\Query();
+        //         $modified = $q->from('pages')->max('modified') . (Yii::$app->request->cookies->getValue('version') ?? '');
+        //         // var_dump($modified); exit;
+        //         return serialize($modified) . Yii::$app->session->hasFlash('success') . Yii::$app->session->hasFlash('error');
+        //     },
+        //     'cacheControlHeader' => 'must-revalidate, no-cache',
+        //     'except' => ['version', 'category', 'message', 'order']
+        // ], 
             'access' => [
                 'class' => AccessControl::className(),
                 'only' => ['logout', 'signup'],
@@ -83,22 +103,29 @@ class SiteController extends Controller
 
     public function beforeAction($action)
     {
+        // var_dump('prevent'); 
         //  print_r(Yii::$app->user);
         //   exit();
+        // var_dump(Yii::$app->request->cookies->getValue('version')); exit;
+        $resHeaders = Yii::$app->response->headers;
+        // $resHeaders->set('Pragma', 'no-cache');
+        // $resHeaders->set('Vary', 'User-Agent, Cookie');
         $cookies = Yii::$app->request->cookies;
         $this->setLayout($cookies->getValue('version'));
-
+        // var_dump('preventCache'); exit;
         return parent::beforeAction($action);
     }
 
-    protected function setLayout($manualSelectSiteVersion)
+    protected function setLayout($manualSelect)
     {
+        // $this->manualSelectLayout = (bool) $manualSelect;
+        $deviceHeler = Yii::$app->deviceDetect;
         switch (true) {
-            case (bool) $manualSelectSiteVersion:
-                $manualSelectSiteVersion != 'mobile' ?: $this->layout = 'mobile';
+            case (bool) $manualSelect:
+                $manualSelect != 'mobile' ?: $this->layout = $deviceHeler->setMobileLayout('mobile');
                 break;
-            case (Yii::$app->deviceDetect->isMobile()):
-                $this->layout = 'mobile';
+            case ($deviceHeler->isMobile()):
+                $this->layout = $deviceHeler->setMobileLayout('mobile');
                 break;
         }
     }
@@ -130,17 +157,18 @@ class SiteController extends Controller
 
         $main_page = Yii::$app->cache->get('main_page');
         if (!$main_page) {
-            $main_page = Pages::find()->where(['main' => 1])->one();
+            $main_page = Pages::find()->with(['banners'])->where(['main' => 1])->one();
             Yii::$app->cache->set('main_page', $main_page, $this->cache_time);
         }
         $this->setMeta($main_page->meta_title, $main_page->keywords, $main_page->description);
 
-        if ($this->layout == 'mobile') {
-            return $this->render('mobile', [
-                'main_page' => $main_page,
-            ]);
-        }
-        return $this->render('index', [
+        // if ($this->layout == 'mobile') {
+        //     return $this->render('mobile', [
+        //         'main_page' => $main_page,
+        //         'cars' => $cars
+        //     ]);
+        // }
+        return $this->render($this->layout == 'mobile'? 'mobile' : 'index', [
             'main_page' => $main_page,
             'cars' => $cars,
         ]);
@@ -171,14 +199,23 @@ class SiteController extends Controller
 
     public function actionOrder()
     {
+        $data = Yii::$app->request->post();
+        //cleaning mobile version data
+        if (isset($data['engineSet'])) {
+            ($data['motor'] = $data['engineSet']); unset($data['engineSet']);
+        }            
+        if (isset($data['distance'])) unset($data['distance']);
+        if (isset($data['partsSet'])) unset($data['partsSet']);
+
         $model = new Orders();
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load($data)) {
             $flag = $this->checkSpam(Yii::$app->request->post('recaptcha_response'));
+            // var_dump($flag); exit;
             if ($flag == 0) {
                 Yii::$app->session->setFlash('error', "Проверка не спам не пройдена");
                 Yii::$app->session->setFlash('show', "show");
                 return $this->redirect(Yii::$app->request->referrer);
-            }
+            }           
             $model->model = Yii::$app->request->post('model');
             $model->generation_id = Yii::$app->request->post('generation');
             $model->engine_id = Yii::$app->request->post('motor');
@@ -199,6 +236,8 @@ class SiteController extends Controller
 
     public function checkSpam($flag = false)
     {
+        // @test
+        return 1;
         if ($flag == false) {
             return 0;
         }
@@ -209,7 +248,7 @@ class SiteController extends Controller
 
         $recaptcha = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
         $recaptcha = json_decode($recaptcha);
-
+        // var_dump($flag, $recaptcha->score); exit;
         if (isset($recaptcha->score) && $recaptcha->score >= 0.5) {
             return 1;
         } else {
@@ -219,6 +258,8 @@ class SiteController extends Controller
 
     public function actionVersion()
     {
+        Yii::$app->response->headers->add('Clear-Site-Data', '"cache", "cookies", "storage", "executionContext"');
+        YII::$app->response->headers->remove('Last-Modified');
         if (Yii::$app->request->get()) {
             $cookies = Yii::$app->response->cookies;
             if (Yii::$app->request->get('version') == 'desktop') {
@@ -297,7 +338,12 @@ class SiteController extends Controller
 
     public function actionPage($alias)
     {
-        $model = Yii::$app->cache->get('page_' . $alias);
+        $advancedCacheId = '';
+        if ($this->layout == 'mobile') {
+            Pages::$tableName = Pages::MOBILE;
+            $advancedCacheId = 'mobile';
+        }
+        $model = Yii::$app->cache->get('page_' . $alias . $advancedCacheId);
         if (!$model) {
             $model = Pages::find()->where(['alias' => $alias])->one();
             Yii::$app->cache->set('page_' . $alias, $model, $this->cache_time);

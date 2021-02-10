@@ -23,14 +23,15 @@ class ContactsWidget extends Widget{
    public $data;
    public $menuHtml;
     
-    public function init(){
+    public function init()
+    {   
         parent::init();
       //  $this->tpl = 'index';
         $this->tpl .= '.php';
     }
 
     public function run()
-    {
+    {        
         $services = Services::find()->with(['contacts'])->all();
         $arr = array(0 => 'Нет', 1 => 'Мастер', 2 => 'Запчасти', 3 => 'Факс');
         $this->menuHtml = $this->getMenuHtml($services, $arr);

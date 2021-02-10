@@ -9,5 +9,8 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        // 'emojiParser' => [
+        //     'class' => 'common\components\emoji\EmojiParser'
+        // ]
     ],
 ];

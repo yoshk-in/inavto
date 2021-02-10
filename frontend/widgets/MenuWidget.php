@@ -55,7 +55,6 @@ class MenuWidget extends Widget{
             $pages = Pages::find()->select(['id', 'title', 'alias', 'introtext', 'image'])->where(['menu' => 1])->all();
             Yii::$app->cache->set('pages_list', $pages, $this->cache_time);
         }
-        
         $this->menuHtml = $this->getMenuHtml($this->getTree($services_cats), $this->getTree($repairs_cats), $this->getTree($parts_cats), $pages);
         
         return $this->menuHtml;

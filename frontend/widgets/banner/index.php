@@ -1,4 +1,5 @@
 <?php
+// @changed 8.02.2021
 use yii\widgets\ActiveForm;
 
 ?>
@@ -11,62 +12,57 @@ use yii\widgets\ActiveForm;
 		</a>
 	</div>-->
         <?php if ($banners && !empty($banners)): ?>
-                <?php 
-                $delay = 10;
-                $css = function ($factor) use ($delay) {
-                        return "animation-delay:" . $factor * $delay . 's;';
-                };
-                $style = function ($fator) use ($delay) {
-                        return "style='animation-delay:" . $fator * $delay . "s;'";
-                };
-                ?>
                 <script type="text/javascript">
-                
-                        // function banners() {
-                        //         let banSelector = '.bannerDisable';
-                        //         let banners = $(banSelector);
-                        //         let interval = 15000;
-                        //         let counter = 0;
-                        //         let currentBanner = banners[counter];
-                        //         let animationClass = 'slide';
-                        //         let disAnimClass = 'bannerDisable';
-                        //         nextBanner(currentBanner, counter);
-                        
-                        //         function nextBanner(currentBanner, counter) {
-                        //                 console.log(counter);
-                        //                 if (counter === banners.length - 1) {
-                        //                         counter = -1;
-                        //                         currentBanner = banners[counter];
-                        //                 }
-                        //                 currentBanner = toggleBunner(currentBanner, banners[++counter]);
-                        //                 setTimeout(function () {
-                        //                         nextBanner(currentBanner, counter);
-                        //                 }, interval);
-                        //         };
-                        //         function toggleBunner(from, to) {
-                        //                 $(from).removeClass(animationClass);
-                        //                 $(from).addClass(disAnimClass);
-                        //                 $(to).removeClass(disAnimClass);
-                        //                 $(to).addClass(animationClass);
-                        //                 return to;
-                        //         };
-                        // }
-                        // $(document).ready(banners);
+                const bannerState = {
+                        'banners': null,
+                        'period': 10000,
+                        'current': 0,
+                        'next': null,
+                        init() {
+                                this.banners = $('.topBanner').children('.slide-banner');
+                                this.next = this.banners[this.current];
+                                this.toggle();
+                                setInterval(() => this.nextSlide(), this.period);
+                        },
+                        toggle() {
+                                $(this.next).toggleClass('bannerDisable');
+                                $(this.next).toggleClass('slide');
+                        },
+                        nextSlide() {
+                                console.log('next slide');
+                                this.toggle();
+                                this.next = this.banners[++this.current];
+                                if (this.next === undefined) this.next = this.banners[this.current = 0];
+                                this.toggle();
+                        }
+                };
+                $(document).ready(() => {
+                    bannerState.init();
+                });
+                       
                 </script>
+        
+                
+                                <?php// var_dump($banners); exit; ?>
         <?php foreach ($banners as $key => $value): ?>
-	<div class="slide s<?=$key + 1; ?>" <?=$style($key);?> >
-            <span style="background-image: url('/upload/banners/prev/thumb_<?=$value->img?>');<?=$css($key);?>" ></span>
-		<a href="<?=$value->link; ?>" target="_blank">
-			<strong <?= $style($key) ?> ><?=$value->slogan_one?></strong>
+        <?php $key = $key + 1; ?>
+        <div class="slide-banner bannerDisable s<?= $key ?>" >  
+        <!-- <div class="slide">   -->
+        
+                <span style="<?= $styleBackgroundImage($value->img) ?>" ></span>
+		<a href="<?=$value->link; ?>" target="_blank" >
+			<strong><?=$value->slogan_one?></strong>
                         <?php if ($value->slogan_two && !empty($value->slogan_two)): ?>
-			<em <?= $style($key); ?> ><?=$value->slogan_two; ?></em>
+			<em><?=$value->slogan_two; ?></em>
                         <?php endif; ?>
                         <?php if (!Yii::$app->user->isGuest): ?>
-                        <i <?= $style($key); ?> class="update-link" id="update-link_<?=$value->id; ?>">Редактировать ссылку</i>
+                        <i class="update-link" id="update-link_<?=$value->id; ?>">Редактировать ссылку</i>
                         <?php endif; ?>
 		</a>
 	</div>
+
         <?php if (!Yii::$app->user->isGuest): ?>
+
         <div class="modal partsModal <?=Yii::$app->session->hasFlash('show_'.$value->id) ? Yii::$app->session->getFlash('show_'.$value->id) : ''; ?>" id="banner-link_<?=$value->id; ?>">
             <span class="close close-btn"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#clear"></use></svg></span>
             <div class="modal-header">

@@ -1,5 +1,11 @@
 <?php
+// @changed 8.02.2021
+// @changed 9.02.2021
+use common\helpers\Format;
+use common\models\Messages;
 use yii\widgets\ActiveForm;
+use yii\widgets\MaskedInput;
+
 ?>
 <div class="modal repairModal <?=Yii::$app->session->hasFlash('show'.$flag) ? Yii::$app->session->getFlash('show'.$flag) : ''; ?>">
 	<span class="close close-btn"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#clear"></use></svg></span>
@@ -9,15 +15,15 @@ use yii\widgets\ActiveForm;
 	<div class="modal-body text-center">
             <?php if(!Yii::$app->session->hasFlash('success2') ): ?>
             <?php
-                if(!isset($message)) $message = new \common\models\Messages;
+                if(!isset($message)) $message = new \common\models\ExtendedMessages;
                 $form = ActiveForm::begin([
                     'action'=>\yii\helpers\Url::to(['site/message']),
                 ]); 
             ?>
-                            <?= $form->field($message, 'phone', [
-                                   'inputOptions'=>['placeholder' => '+7 ( ___ ) ___ - __ - __'],
+                             <?= $form->field($message, 'phone', [
+                                   'inputOptions'=> ['placeholder' => '+7 ( ___ ) ___ - __ - __', 'type' => 'tel'],
                                    'template'=>"{input}",
-                                ]); ?>
+                                ])->widget(MaskedInput::className(), ['mask' => Messages::PHONE_MASK]); ?>
 			<div>
                             <?=$form->field($message, 'flag', ['template' => "{input}"])->hiddenInput(['value' => $flag]) ?>
                             
@@ -28,7 +34,7 @@ use yii\widgets\ActiveForm;
 				
 			</div>
 			<?= $form->field($message, 'email', [
-                                   'inputOptions'=>['placeholder' => 'e-mail'],
+                                   'inputOptions'=>['placeholder' => 'e-mail', 'type' => 'email'],
                                    'template'=>"{input}",
                                 ])->textInput() ?>
 			<?= $form->field($message, 'avto', [
@@ -40,7 +46,7 @@ use yii\widgets\ActiveForm;
                                    'template'=>"{input}",
                                 ])->textarea(['rows' => 3]); ?>
                          <input type="hidden" name="recaptcha_response" id="recaptchaResponse3">
-			<button type="submit" name="sendPartsOrder" value="1" class="btn success">Записаться на сервис</button>
+			<button type="submit" name="sendExtendedMessageAction" value="1" class="btn success">Записаться на сервис</button>
                   <?php ActiveForm::end(); ?>
                         <?php endif;?>
                         <?php if( Yii::$app->session->hasFlash('success2') ): ?>
@@ -57,12 +63,45 @@ use yii\widgets\ActiveForm;
 </div>
 </div>
 <script>
-        grecaptcha.ready(function () {
+const state2 = {
+    'watch': ['#extendedmessages-phone', '#extendedmessages-email'],
+};
+
+state2.watch.forEach((el) => {
+    let prevColor = $(el).css('border-color');
+    $(el).parent().on('focusout', (e) => {
+        
+        setTimeout( () => {        
+        if ($(e.target).parent().hasClass('has-error')) $(e.target).css('border-color', 'red');
+        else $(e.target).css('border-color', prevColor);
+        }, 300);
+    });
+})
+
+</script>
+<script>
+        const googleCaptcha = function (jqueryElm) {
+            grecaptcha.ready(function () {
             grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', { action: 'contact' }).then(function (token) {
                 var recaptchaResponse = document.getElementById('recaptchaResponse3');
-                recaptchaResponse.value = token;
+                recaptchaResponse.value = token;                 
             });
         });
+    };
+        
+    if ('undefined'!= typeof grecaptcha) {
+        $('button[name="sendExtendedMessageAction"]').click(() => googleCaptcha($(this)));
+    }
+    
+</script>
+<script>
+        // @change on new recaptcha
+        // grecaptcha.ready(function () {
+        //     grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', { action: 'contact' }).then(function (token) {
+        //         var recaptchaResponse = document.getElementById('recaptchaResponse3');
+        //         recaptchaResponse.value = token;
+        //     });
+        // });
     </script>
 <script type="text/javascript">
 

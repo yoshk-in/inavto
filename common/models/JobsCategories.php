@@ -1,4 +1,5 @@
-<?php
+<?php 
+// @changed 8.02.2021
 
 namespace common\models;
 
@@ -109,5 +110,25 @@ class JobsCategories extends \yii\db\ActiveRecord
     public function getCar()
     {
         return $this->hasOne(Cars::className(), ['id' => 'car_id']);
+    }
+
+    public static function getServiceWithoutParents()
+    {
+        return self::find()->where(['is', 'parent', null])->andWhere(['service' => 1])->all();
+    }
+
+    public static function serviceWithoutParentsQuery()
+    {
+        return self::find()->where(['is', 'parent', null])->andWhere(['service' => 1]);
+    }
+
+    public static function serviceWithoutParentsByOrderQuery($by, $order)
+    {
+        return JobsCategories::find()->where(['service' => 1])->andWhere(['is', 'parent', null])->orderBy([$by => $order]);
+    }
+
+    public static function getServiceByAlias( $alias)
+    {
+        return  JobsCategories::find()->where(['alias' => $alias, 'service' => 1])->one();
     }
 }

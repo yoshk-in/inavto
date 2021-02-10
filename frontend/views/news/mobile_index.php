@@ -1,3 +1,4 @@
+<!-- // @changed 8.02.2021 -->
 <section class="content">
 		<h1><?=$page->title; ?></h1>
 <nav class="pagination nav">
@@ -7,6 +8,10 @@
         ]);
     ?>
 </nav>
+
+<?php if(isset($page) && $page->banners && !empty($page->banners)): ?>
+<?= \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'banners' => $page->banners, 'cache_time' => 60]); ?>
+<?php endif; ?>
 
 <ul class="listNews">
     <?php if(@$news): ?>

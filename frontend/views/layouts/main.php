@@ -3,6 +3,7 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use common\models\Services;
 use frontend\assets\AppAsset;
 use yii\helpers\Html;
 
@@ -505,7 +506,8 @@ AppAsset::register($this);
 					<a href="https://vk.com/inavtospbru"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#vk"></use></svg></a>
 					<!--<a href="http://facebook.com/inavtospb"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#facebook"></use></svg></a>-->
 				</div>
-                            <noindex><a rel="nofollow" href="<?= \yii\helpers\Url::to(['site/version', 'version' => 'mobile']); ?>" class="btn mobile"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#iphone"></use></svg>Мобильная версия</a></noindex>
+					<!-- rel="nofollow" -->
+                            <noindex><a rel="nofollow"  href="<?= \yii\helpers\Url::to(['site/version', 'version' => 'mobile']) ?>" class="btn mobile"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#iphone"></use></svg>Мобильная версия</a></noindex>
 			</div>
 		</div>
 	</div>

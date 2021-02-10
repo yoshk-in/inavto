@@ -1,5 +1,5 @@
 <?php
-
+// @changed 8.02.2021
 namespace common\helpers;
 
 abstract class CalcPageStrategy
@@ -38,7 +38,13 @@ abstract class CalcPageStrategy
     }
 
 
-    abstract function banners();
+    
+    public function banners()
+    {
+        if ($this->main_page->banners && !empty($this->main_page->banners))
+            echo \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'banners' => $this->main_page->banners, 'cache_time' => 60]);
+    }
+
     abstract function formBegin();
     abstract function formEnd();
     abstract function modalWindow();

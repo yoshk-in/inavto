@@ -1,5 +1,5 @@
 <?php
-
+// @changed 8.02.2021
 namespace frontend\components;
 
 use Yii;
@@ -19,6 +19,12 @@ class DeviceDetect extends \yii\base\Component {
 	// Automatically set alias parameters based on device type
 	public $setAlias = true;
 
+	private $isMobile = false;
+
+	private $isMobileLayout = false;
+
+	
+
 	public function __call($name, $parameters) {
 		return call_user_func_array(
 			array($this->_mobileDetect, $name),
@@ -33,31 +39,24 @@ class DeviceDetect extends \yii\base\Component {
 	public function init() {
 		$this->_mobileDetect = new MobileDetect();
 		$this->_userAgent = Yii::$app->request->headers->get('user-agent');
+		$this->isMobile = $this->_mobileDetect->isMobile($this->_userAgent);
         parent::init();
-        
-    /** turn off auto detecting; it'll be working by methods on this object in project  */
 
-	// 	if ($this->setParams) {
-	// 		\Yii::$app->params['devicedetect'] = [
-	// 			'isMobile' => $this->_mobileDetect->isMobile() && !$this->_mobileDetect->isTablet(),
-	// 			'isTablet' => $this->_mobileDetect->isTablet() && !$this->_mobileDetect->isMobile(),
-	// 			'isDesktop' => !$this->_mobileDetect->isTablet() && !$this->_mobileDetect->isMobile(),
-	// 		];
-	// 	}
-
-	// 	if ($this->setAlias) {
-	// 		if ($this->_mobileDetect->isMobile()) {
-	// 			\Yii::setAlias('@device', 'mobile');
-	// 		} else if ($this->_mobileDetect->isTablet()) {
-	// 			\Yii::setAlias('@device', 'tablet');
-	// 		} else {
-	// 			\Yii::setAlias('@device', 'desktop');
-	// 		}
-	// 	}
-    // }
     }
     
     public function isMobile() {
-		return $this->_mobileDetect->isMobile($this->_userAgent);
-    }
+		return $this->isMobile;
+	}
+
+	public function setMobileLayout($layout)
+	{
+		$this->isMobileLayout = true;
+		return $layout;
+	}
+	
+
+	public function isMobileLayout()
+	{
+		return $this->isMobileLayout;
+	}
 }

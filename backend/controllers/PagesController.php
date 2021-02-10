@@ -1,5 +1,5 @@
 <?php
-
+// @changed 8.02.2021
 namespace backend\controllers;
 
 use Yii;
@@ -34,10 +34,10 @@ class PagesController extends SiteController
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id, $tableName = null)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($id, $tableName),
         ]);
     }
 
@@ -54,7 +54,7 @@ class PagesController extends SiteController
             $model->image = str_replace(Yii::getAlias('@front_path'), '', $model->image);
             if($model->save()){
                 Yii::$app->session->setFlash('success', "Страница добавлена");
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $model->id, Pages::TABLE_NAME_PROP => Pages::$tableName]);
             }
         }
 
@@ -70,15 +70,15 @@ class PagesController extends SiteController
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $tableName = null)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($id, $tableName);
 
         if ($model->load(Yii::$app->request->post())) {
             $model->image = str_replace(Yii::getAlias('@front_path'), '', $model->image);
-            if($model->save()){
+            if($model->updateOneTable()){
                 Yii::$app->session->setFlash('success', "Страница изменена");
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $model->id, Pages::TABLE_NAME_PROP => Pages::$tableName]);
             }
         }
 
@@ -95,7 +95,7 @@ class PagesController extends SiteController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
+    {        
         $this->findModel($id)->delete();
         Yii::$app->session->setFlash('success', "Страница удалена");
         return $this->redirect(['index']);
@@ -108,11 +108,14 @@ class PagesController extends SiteController
      * @return Pages the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id, $tableName = null)
     {
+        if (!is_null($tableName)) Pages::$tableName = $tableName;
         if (($model = Pages::findOne($id)) !== null) {
+
             return $model;
         }
+        
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }

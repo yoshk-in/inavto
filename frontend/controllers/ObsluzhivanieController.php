@@ -1,11 +1,13 @@
 <?php
-
+// @changed 8.02.2021
 namespace frontend\controllers;
 
+use common\models\Cars;
+use common\models\Engines;
+use common\models\Generations;
 use Yii;
 use common\models\JobsCategories;
 use common\models\Jobs;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -13,46 +15,47 @@ use yii\web\NotFoundHttpException;
  */
 class ObsluzhivanieController extends SiteController
 {
+    use MobileService;
+
     public function actionIndex()
     {
+        $page = Yii::$app->cache->get('page_obsluzhivanie');
+        if (!$page) {
+            $page = \common\models\Pages::find()->with(['banners'])->where(['alias' => 'obsluzhivanie'])->one();
+            Yii::$app->cache->set('page_obsluzhivanie', $page, $this->cache_time);
+        }
+       
+        $this->setMeta($page->meta_title, $page->keywords, $page->description);
+       
+        if ($this->layout == 'mobile') {
+            return $this->loadServiceModels($page);            
+        }
+
         $links = \yii\helpers\ArrayHelper::map(\common\models\JobcatsJobs::find()
                 ->where([
                     'job_category_id' => \yii\helpers\ArrayHelper::map(JobsCategories::find()->where(['service' => 1])->all(), 'id', 'id')
                 ])->all(), 'id', 'job_id');
         
         $final_arr = Yii::$app->cache->get('obsluzhivanie_jobs');
-        if(!$final_arr){
+        if (!$final_arr) {
             $jobs = Jobs::find()->where(['id' => $links])->with([
-                'cats' => function($query){
+                'cats' => function ($query) {
                     return $query->where('service = 1');
                 },
-                'motors' => function($query){
+                'motors' => function ($query) {
                     return $query->select('id, title, generation_id')->orderBy('title')->with('generation');
                 },
-                'parts' => function($query){
+                'parts' => function ($query) {
                     return $query->select('id, price');
                 }
             ])->asArray()->all();
             $remont_parents = JobsCategories::find()->where(['is', 'parent', null])->andWhere(['service' => 1])->with(['car'])->asArray()->all();
             $final_arr = $this->finalArr($remont_parents, $this->getTree($jobs));
             Yii::$app->cache->set('obsluzhivanie_jobs', $final_arr, $this->cache_time);
-        }
+        }        
         
-       $page = Yii::$app->cache->get('page_obsluzhivanie');
-       if(!$page){
-           $page = \common\models\Pages::find()->with(['banners'])->where(['alias' => 'obsluzhivanie'])->one();
-           Yii::$app->cache->set('page_obsluzhivanie', $page, $this->cache_time);
-       }
-       
-       $this->setMeta($page->meta_title, $page->keywords, $page->description);
-       
-        if($this->layout == 'mobile'){
-           return $this->render('mobile_index', [
-                'page' => $page,
-            ]); 
-        }
    
-       return $this->render('index',[
+        return $this->render('index', [
            'jobs' => $final_arr,
            'page' => $page
        ]);
@@ -66,20 +69,21 @@ class ObsluzhivanieController extends SiteController
      */
     public function actionCategory($alias)
     {
-        $model = JobsCategories::find()->where(['alias' => $alias, 'service' => 1])->one();
+        // $model = JobsCategories::find()->where(['alias' => $alias, 'service' => 1])->one();
+        $model = JobsCategories::getServiceByAlias($alias);
        
-        if(!$model){
-             throw new \yii\web\HttpException(404, 'Такой страницы нет');
+        if (!$model) {
+            throw new \yii\web\HttpException(404, 'Такой страницы нет');
         }
         
-        if(@$_COOKIE['fModel'] && $_COOKIE['fModel'] != $model->id){
+        if (@$_COOKIE['fModel'] && $_COOKIE['fModel'] != $model->id) {
             setcookie('fModel', $model->id, 0, '/');
             setcookie('fGen', '', time() - 100, '/');
             setcookie('fMotor', '', time() - 100, '/');
         }
         
         $slug = '';
-        if(Yii::$app->request->get('s')){
+        if (Yii::$app->request->get('s')) {
             $slug = Yii::$app->request->get('s');
         }
         
@@ -108,22 +112,22 @@ class ObsluzhivanieController extends SiteController
         }
         
         $final_arr = Yii::$app->cache->get('obsluzhivanie_jobs_'.$alias.'_'.$f_gen.$f_motor);
-        if(!$final_arr){
+        if (!$final_arr) {
             $links = \yii\helpers\ArrayHelper::map(\common\models\JobcatsJobs::find()
                 ->where([
                     'job_category_id' => \yii\helpers\ArrayHelper::map(JobsCategories::find()->where(['parent' => $model->id])->andWhere(['service' => 1])->all(), 'id', 'id')
                 ])->all(), 'id', 'job_id');
             $jobs = Jobs::find()->where(['id' => $links])->andWhere($gen_links)->andWhere($gen_motors)->with([
-                'cats' => function($query){
+                'cats' => function ($query) {
                     return $query->where('service = 1');
                 },
-                'motors' => function($query) use($f_gen){
-                    if($f_gen){
+                'motors' => function ($query) use ($f_gen) {
+                    if ($f_gen) {
                         $query->where('generation_id = '.$f_gen);
                     }
                     return $query->select('id, title, generation_id')->with('generation');
                 },
-                'parts' => function($query){
+                'parts' => function ($query) {
                     return $query->select('id, price');
                 }
             ])->asArray()->all();
@@ -131,23 +135,27 @@ class ObsluzhivanieController extends SiteController
             Yii::$app->cache->set('obsluzhivanie_jobs_'.$alias.'_'.$f_gen.$f_motor, $final_arr, $this->cache_time);
         }
         
-        $parents = Yii::$app->cache->get('parents_cats_jobs2');
-        if(!$parents){
-            $parents = JobsCategories::find()->where(['is', 'parent', null])->andWhere(['service' => 1])->all();
-            Yii::$app->cache->set('parents_cats_jobs2', $parents, $this->cache_time);
-        }
+        // $parents = Yii::$app->cache->get('parents_cats_jobs2');
+        // if(!$parents){
+        //     // $parents = JobsCategories::find()->where(['is', 'parent', null])->andWhere(['service' => 1])->all();
+        //     $parents = JobsCategories::getParents();
+        //     Yii::$app->cache->set('parents_cats_jobs2', $parents, $this->cache_time);
+        // }
+        $parents = $this->fromCacheOr('parents_cats_jobs2', function () {
+            return JobsCategories::getServiceWithoutParents();
+        });
         
-       $page = Yii::$app->cache->get('page_obsluzhivanie');
-       if(!$page){
-           $page = \common\models\Pages::find()->with(['banners'])->where(['alias' => 'obsluzhivanie'])->one();
-           Yii::$app->cache->set('page_obsluzhivanie', $page, $this->cache_time);
-       }
+        $page = Yii::$app->cache->get('page_obsluzhivanie');
+        if (!$page) {
+            $page = \common\models\Pages::find()->with(['banners'])->where(['alias' => 'obsluzhivanie'])->one();
+            Yii::$app->cache->set('page_obsluzhivanie', $page, $this->cache_time);
+        }
         
         $this->setMeta($model->title, $model->keywords, $model->description);
         Yii::$app->view->registerLinkTag(['rel' => 'canonical', 'href' => \yii\helpers\Url::to(['obsluzhivanie/category', 'alias' => $alias], true)]);
         
-        if($this->layout == 'mobile'){
-           return $this->render('mobile_view', [
+        if ($this->layout == 'mobile') {
+            return $this->render('mobile_view', [
                 'jobs' => $final_arr,
                 'model' => $model,
                 'parents' => $parents,
@@ -172,6 +180,7 @@ class ObsluzhivanieController extends SiteController
         ]);
     }
 
+
     protected function findModel($id)
     {
         if (($model = JobsCategories::findOne($id)) !== null) {
@@ -181,42 +190,42 @@ class ObsluzhivanieController extends SiteController
         throw new NotFoundHttpException('The requested page does not exist.');
     }
     
-    protected function getTree($arr )
+    protected function getTree($arr)
     {
-        if(!$arr){
+        if (!$arr) {
             return false;
         }
         $new_arr = array();
         $cats = array();
-        foreach($arr as $key => $value){
+        foreach ($arr as $key => $value) {
             $cats[$value['cats'][0]['id']]['title'] = $value['cats'][0]['title'];
             $cats[$value['cats'][0]['id']]['alias'] = $value['cats'][0]['alias'];
             $cats[$value['cats'][0]['id']]['parent'] = $value['cats'][0]['parent'];
             $cats[$value['cats'][0]['id']]['jobs'] = array();
         }
-        foreach($cats as $key => $value){
+        foreach ($cats as $key => $value) {
             $cat_jobs = array();
-            foreach($arr as $k => $v){
-              if($v['cats'][0]['id'] == $key){
-                  if(in_array($v['title'], $cat_jobs)){
-                   //   unset($v);
-                      $new_arr[$key]['jobs'][array_search($v['title'], $cat_jobs)]['info'][$v['id']]['engines'] = $v['motors'];
-                      $new_arr[$key]['jobs'][array_search($v['title'], $cat_jobs)]['info'][$v['id']]['price'] = $v['price'];
-                      $new_arr[$key]['jobs'][array_search($v['title'], $cat_jobs)]['info'][$v['id']]['parts'] = $v['parts'];
-                      continue;
-                  }
-                  $cat_jobs[$v['id']] = $v['title'];
-                  $new_arr[$key]['title'] = $value['title'];
-                  $new_arr[$key]['alias'] = $value['alias'];
-                  $new_arr[$key]['parent'] = $value['parent'];
-                  $new_arr[$key]['jobs'][$v['id']] = $v;
-                  unset($new_arr[$key]['jobs'][$v['id']]['cats']);
-                  $new_arr[$key]['jobs'][$v['id']]['info'][$v['id']]['engines'] = $v['motors'];
-                  $new_arr[$key]['jobs'][$v['id']]['info'][$v['id']]['price'] = $v['price'];
-                  $new_arr[$key]['jobs'][$v['id']]['info'][$v['id']]['parts'] = $v['parts'];
-                  unset($new_arr[$key]['jobs'][$v['id']]['motors']);
-                  unset($new_arr[$key]['jobs'][$v['id']]['parts']);
-              }
+            foreach ($arr as $k => $v) {
+                if ($v['cats'][0]['id'] == $key) {
+                    if (in_array($v['title'], $cat_jobs)) {
+                        //   unset($v);
+                        $new_arr[$key]['jobs'][array_search($v['title'], $cat_jobs)]['info'][$v['id']]['engines'] = $v['motors'];
+                        $new_arr[$key]['jobs'][array_search($v['title'], $cat_jobs)]['info'][$v['id']]['price'] = $v['price'];
+                        $new_arr[$key]['jobs'][array_search($v['title'], $cat_jobs)]['info'][$v['id']]['parts'] = $v['parts'];
+                        continue;
+                    }
+                    $cat_jobs[$v['id']] = $v['title'];
+                    $new_arr[$key]['title'] = $value['title'];
+                    $new_arr[$key]['alias'] = $value['alias'];
+                    $new_arr[$key]['parent'] = $value['parent'];
+                    $new_arr[$key]['jobs'][$v['id']] = $v;
+                    unset($new_arr[$key]['jobs'][$v['id']]['cats']);
+                    $new_arr[$key]['jobs'][$v['id']]['info'][$v['id']]['engines'] = $v['motors'];
+                    $new_arr[$key]['jobs'][$v['id']]['info'][$v['id']]['price'] = $v['price'];
+                    $new_arr[$key]['jobs'][$v['id']]['info'][$v['id']]['parts'] = $v['parts'];
+                    unset($new_arr[$key]['jobs'][$v['id']]['motors']);
+                    unset($new_arr[$key]['jobs'][$v['id']]['parts']);
+                }
             }
         }
         return $new_arr;
@@ -224,19 +233,18 @@ class ObsluzhivanieController extends SiteController
     
     protected function finalArr($cats, $jobs)
     {
-        if(!$cats || !$jobs){
+        if (!$cats || !$jobs) {
             return false;
         }
         $new_arr = array();
-        foreach($cats as $key => $value){
-            foreach($jobs as $k => $v){
-                if($v['parent'] == $value['id']){
+        foreach ($cats as $key => $value) {
+            foreach ($jobs as $k => $v) {
+                if ($v['parent'] == $value['id']) {
                     $new_arr[$key]['id'] = $value['id'];
                     $new_arr[$key]['title'] = $value['title'];
                     $new_arr[$key]['alias'] = $value['alias'];
                     $new_arr[$key]['car'] = $value['car'];
                     $new_arr[$key]['jobs'][$k] = $v;
-                    
                 }
             }
         }

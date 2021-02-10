@@ -12,12 +12,12 @@ AppAsset::register($this);
 <!DOCTYPE html>
 <html lang='ru' xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Last-Modified" content="Thu, 11 Jul 2019 14:45:57 GMT"/>
+    <!-- <meta http-equiv="Last-Modified" content="Thu, 11 Jul 2019 14:45:57 GMT"/> -->
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <link rel="canonical" href="https://inavtospb.ru" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1, maximum-scale=1;" />
+    <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <?php $this->head() ?>
 	<link rel="icon" type="shortcut icon" href="/data/img/favicons/inavtospb.ico?v=2" />
 	<link rel="icon" sizes="256x160" href="/data/img/favicons/inavtospb-256x160.png?v=2" type="image/png" />
@@ -448,7 +448,7 @@ AppAsset::register($this);
 
 	<footer>
 	<div class="in">
-            <a href="<?= \yii\helpers\Url::to(['site/version', 'version' => 'desktop']); ?>" class="btn desktop"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#desktop"></use></svg>Полная версия сайта</a>
+            <a href="<?= \yii\helpers\Url::to(['site/version', 'version' => 'desktop']) ?>" class="btn desktop"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#desktop"></use></svg>Полная версия сайта</a>
 	</div>
 	<div class="copyright">
 		<div class="rights">

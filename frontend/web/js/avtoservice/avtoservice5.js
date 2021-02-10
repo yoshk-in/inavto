@@ -132,19 +132,23 @@ avtoservice.prototype = {
         t.d.shortModel=t.n.modelSwitch.val().toLowerCase();
         t.d.genId=parseInt(t.n.generationSwitch.val());
         t.d.motorId=parseInt(t.n.motorSwitch.val());
+        // t.d.generation=t.n.generationSwitch.children("[selected='selected']").text();
 
         t.n.inputRange.val(t.d.range);
 
         // reset results
         t.n.worksDest.html('<div class="spinner"></div>');
 
-        // switch image
-        t.n.carImage.attr('class','volvo').toggleClass(t.d.shortModel,true);
+        
 
         // show model and motor name
         t.d.modelName=t.n.modelSwitch.find('option:selected').text();
         t.d.generationName=t.n.generationSwitch.find('option:selected').text();
         t.d.motorName=t.n.motorSwitch.find('option:selected').text();
+        // switch image
+        t.d.fullImageClass = (t.d.shortModel+t.d.generationName).replaceAll(' ','').replaceAll('(','').replaceAll(')', '').replaceAll('/','');
+        t.n.carImage.attr('class','volvo').toggleClass(t.d.fullImageClass,true);
+
 
         var rangeKm = t.d.range*20000;
 

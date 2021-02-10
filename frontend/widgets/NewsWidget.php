@@ -1,5 +1,5 @@
 <?php
-
+// @changed 8.02.2021
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -22,6 +22,7 @@ class NewsWidget extends Widget{
    public $cache_time;
    public $data;
    public $menuHtml;
+   public $sort = 'modified';
     
     public function init(){
         parent::init();
@@ -30,13 +31,14 @@ class NewsWidget extends Widget{
     }
 
     public function run()
-    {
-        $last_news = Yii::$app->cache->get('last_news');
+    {        
+        
+        $last_news =  Yii::$app->cache->get('last_news');
         if(!$last_news){
-            $last_news = News::find()->where(['publish' => '1'])->asArray()->orderBy(['created' => SORT_DESC])->limit(4)->all();
+            $last_news = News::getPublished('modified', 4);
             Yii::$app->cache->set('last_news', $last_news, $this->cache_time);
         }
-        
+
         $this->menuHtml = $this->getMenuHtml($last_news);
        
         return $this->menuHtml;

@@ -1,8 +1,8 @@
 <?php
-
+// @changed 8.02.2021
 namespace backend\models;
 
-use Yii;
+use common\helpers\traits\EscapeEmojiTrait;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\SluggableBehavior;
@@ -26,6 +26,9 @@ use yii\helpers\Inflector;
  */
 class News extends \yii\db\ActiveRecord
 {
+    // use EscapeEmojiTrait;
+    
+
     public function behaviors()
     {
         return [
@@ -92,4 +95,14 @@ class News extends \yii\db\ActiveRecord
             'publish' => 'Опубликовано'
         ];
     }
+    
+    // public function escapingAttributes()
+    // {
+    //     return [
+    //         'title',
+    //         'meta_title',
+    //         'description'
+    //     ];
+    // }
+
 }

@@ -1,4 +1,4 @@
-<?php
+<?php // @changed 8.02.2021
 
 namespace common\models;
 
@@ -6,6 +6,7 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
+use common\helpers\Format;
 
 /**
  * This is the model class for table "messages".
@@ -21,8 +22,10 @@ use yii\db\Expression;
  *
  * @property Services $service
  */
-class Messages extends \yii\db\ActiveRecord
+class Messages extends \yii\db\ActiveRecord implements Format
 {
+    
+
     public function behaviors()
     {
         return [
@@ -54,8 +57,9 @@ class Messages extends \yii\db\ActiveRecord
             [['phone'], 'required'],
             [['service_id', 'flag'], 'integer'],
             [['created', 'modified'], 'safe'],
-            [['phone'], 'string', 'max' => 50],
-            [['email', 'avto'], 'string', 'max' => 100],
+            [['email'], 'email'],
+            [['phone'], 'match', 'pattern' => self::PHONE_PATTERN],
+            [['avto'], 'string', 'max' => 100],
             [['message'], 'string', 'max' => 255],
             [['service_id'], 'exist', 'skipOnError' => true, 'targetClass' => Services::className(), 'targetAttribute' => ['service_id' => 'id']],
         ];

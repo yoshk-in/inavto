@@ -1,4 +1,5 @@
-<?php if($page->banners && !empty($page->banners)): ?>
+<!-- // @changed 8.02.2021 -->
+<?php if(isset($page) && $page->banners && !empty($page->banners)): ?>
 <?= \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'banners' => $page->banners, 'cache_time' => 60]); ?>
 <?php endif; ?>
 <section class="content">
@@ -16,7 +17,7 @@
     <?php foreach($news as $key => $value): ?>
     <article>
         <time pubdate="" datetime="<?=Yii::$app->formatter->asDate($value->created, 'yyyy-MM-dd'); ?>"><?=Yii::$app->formatter->asDate($value->created, 'dd.MM.yyyy'); ?></time>
-        <h3><a href="<?= \yii\helpers\Url::to(['news/page', 'alias' => $value->alias]); ?>"><?=$value->title;?>!</a></h3>
+        <h3><a href="<?= \yii\helpers\Url::to(['news/page', 'alias' => $value->alias]); ?>"><?= $value->title;?>!</a></h3>
         <p><?=$value->introtext;?></p>
     </article>
     <?php endforeach; ?>

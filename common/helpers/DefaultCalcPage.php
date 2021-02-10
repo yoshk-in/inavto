@@ -1,10 +1,13 @@
 <?php
-
+// @changed 8.02.2021
+// @changed 9.02.2021
 namespace common\helpers;
 
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use Yii;
+use yii\widgets\MaskedInput;
+use common\helpers\Format;
 
 class DefaultCalcPage extends CalcPageStrategy
 {
@@ -21,11 +24,11 @@ class DefaultCalcPage extends CalcPageStrategy
 
     
 
-    public function banners()
-    {
-        if ($this->main_page->banners && !empty($this->main_page->banners))
-            return \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'banners' => $this->main_page->banners, 'cache_time' => 60]);
-    }
+    // public function banners()
+    // {
+    //     if ($this->main_page->banners && !empty($this->main_page->banners))
+    //         echo \frontend\widgets\BannerWidget::widget(['tpl' => 'index', 'banners' => $this->main_page->banners, 'cache_time' => 60]);
+    // }
 
     public function formBegin()
     {
@@ -59,12 +62,12 @@ class DefaultCalcPage extends CalcPageStrategy
                         ],
                     ])->textInput() ?>
                     <?= $this->form->field($this->model, 'phone', [
-                        'inputOptions' => ['placeholder' => '+7 ( ___ ) ___ - __ - __'],
+                        'inputOptions' => ['placeholder' => '+7 ( ___ ) ___ - __ - __', 'type' => 'tel'],
                         'template' => "{input}",
                         'options' => [
                             'tag' => null
                         ],
-                    ]); ?>
+                    ])->widget(MaskedInput::className(), ['mask' => Format::PHONE_MASK]); ?>
                     <input type="hidden" name="type" value="" />
                     <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
                     <button type="submit" name="sendServiceOrder" value="1" class="btn success">Отправить данные</button>
@@ -85,6 +88,26 @@ class DefaultCalcPage extends CalcPageStrategy
             </div>
         </div>
 
+        <script>
+const state3 = {
+    'watch': ['#orders-phone', '#orders-email'],
+};
+
+state3.watch.forEach((el) => {
+    let prevColor = $(el).css('border-color');
+    $(el).on('focusout', (e) => {
+        // console.log($(e.target).attr('aria-invalid'));
+        
+        setTimeout( () => {      
+            console.log(el, $(el).attr('aria-invalid'));  
+            if ($(e.target).attr('aria-invalid') === 'true') $(e.target).css('border-color', 'red');
+        else $(e.target).css('border-color', prevColor);
+        }, 300);
+    });
+})
+
+</script>
+
     <?php return ob_get_clean();
     }
 
@@ -92,15 +115,31 @@ class DefaultCalcPage extends CalcPageStrategy
     {
         ob_start();
     ?>
-        <script>
-            ('undefined' != typeof grecaptcha) && grecaptcha.ready(function() {
-                grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', {
-                    action: 'contact'
-                }).then(function(token) {
-                    var recaptchaResponse = document.getElementById('recaptchaResponse');
-                    recaptchaResponse.value = token;
-                });
+    <script>
+        const googleCaptcha = function (jqueryElm) {
+            grecaptcha.ready(function () {
+            grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', { action: 'contact' }).then(function (token) {
+                var recaptchaResponse = document.getElementById('recaptchaResponse');
+                recaptchaResponse.value = token;                 
             });
+        });
+    };
+        
+    if ('undefined'!= typeof grecaptcha) {
+        $('button[name="sendServiceOrder"]').click(() => googleCaptcha($(this)));
+    }
+    
+    </script>
+        <script>
+            // @change on new recaptcha
+            // ('undefined' != typeof grecaptcha) && grecaptcha.ready(function() {
+            //     grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', {
+            //         action: 'contact'
+            //     }).then(function(token) {
+            //         var recaptchaResponse = document.getElementById('recaptchaResponse');
+            //         recaptchaResponse.value = token;
+            //     });
+            // });
         </script>;
     <?php return ob_get_clean();
     }

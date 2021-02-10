@@ -1,3 +1,4 @@
+/* // @changed 8.02.2021 */
 @font-face{
     font-family:'volvo';
     src:url("/fonts/inavtospbb/webfont.eot");
@@ -1149,3 +1150,1431 @@ footer .counters {
     padding: 8px 6px;
     text-align: center;
 }
+
+/* banner */
+.topBanner {
+    width:100%;
+    height:100px;
+    display: block;
+    background: #f4f4f4;
+    position: relative;
+}
+
+.topBanner .slide {
+    display: block;
+    position:absolute;
+    width:100%;
+    height:100%;
+    overflow: hidden;
+    left:0;
+    top:0;
+    z-index: 0;
+    -webkit-animation: slide 30s 0s ease-out infinite;
+    animation: slide 30s 0s ease-out infinite;
+    animation-fill-mode: forwards;
+}
+
+.topBanner .bannerDisable {
+    display: none;
+}
+
+.topBanner .slide span {
+    position: absolute;
+    display:block;
+    left:0;
+    top:0;
+    right:0;
+    bottom:0;
+    opacity:1;
+    background-position: top 100%;
+    background-repeat: no-repeat;
+    background-size:100% auto;
+    -webkit-animation: bg 30s 0s ease-out infinite;
+    animation: bg 30s 0s ease-out infinite;
+    animation-fill-mode: forwards;
+}
+
+.topBanner .slide i {
+    color:#fff;
+    text-decoration:none;
+    border-bottom:1px solid #fff;
+}
+
+.topBanner .slide a {
+    position: absolute;
+    display: block;
+    left:0;
+    top:0;
+    text-decoration: none;
+    width:100%;
+    height:100%;
+}
+
+.topBanner .slide a strong, .topBanner .slide a em {
+    position: absolute;
+    white-space: nowrap;
+    display: block;
+    opacity: 0;
+    color:white;
+    font-family: inavtob, Roboto, Arial, sans-serif;
+    text-transform: uppercase;
+    text-shadow: 0 2px 5px rgba(0,0,0,.6);
+}
+
+.topBanner .slide a em {
+    top:70%;
+    margin-top: -14px;
+    -webkit-animation: comm 30s 0s ease-out infinite;
+    animation: comm 30s 0s ease-out infinite;
+    animation-fill-mode: forwards;
+}
+
+.topBanner .slide a strong {
+    top:44%;
+    margin-top: -30px;
+    font-size: 150%;
+    -webkit-animation: txt 30s 0s ease-out infinite;
+    animation: txt 30s 0s ease-out infinite;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slide {
+    0% {
+        z-index: 0;
+    }
+    6% {
+        z-index: 3;
+    }
+    32% {
+        z-index: 0;
+    }
+    40% {
+        display: none;
+    }
+}
+
+
+
+@keyframes txt {
+    0% {
+        opacity: 0;
+        left:-5%;
+    }
+    12% {
+        opacity: 1;
+        left:13%;
+    }
+    34% {
+        opacity: 1;
+        left:13%;
+    }
+    40% {
+        opacity: 0;
+        left:50%;
+    }
+}
+
+
+@keyframes comm {
+    0% {
+        opacity: 0;
+        left:60%;
+    }
+    12% {
+        opacity: 1;
+    }
+    32% {
+        opacity: 1;
+        left:50%;
+    }
+    40% {
+        opacity: 0;
+        left:12%;
+    }
+}
+
+
+
+@keyframes bg {
+    0% {
+        opacity: 0;
+        -webkit-filter: blur(0px);
+        -moz-filter: blur(0px);
+        -o-filter: blur(0px);
+        -ms-filter: blur(0px);
+        filter: blur(0px);
+    }
+    8% {
+        opacity: 1;
+    }
+    13% {
+        -webkit-filter: blur(5px);
+        -moz-filter: blur(5px);
+        -o-filter: blur(5px);
+        -ms-filter: blur(5px);
+        filter: blur(5px);
+    }
+    30% {
+        -webkit-filter: blur(0.5px);
+        -moz-filter: blur(0.5px);
+        -o-filter: blur(0.5px);
+        -ms-filter: blur(0.5px);
+        filter: blur(0.5px);
+    }
+    40% {
+        /* opacity: 1; */
+        display: none;
+        opacity: 0;
+    }
+    50% {
+        
+    }
+}
+
+/* mobile calculator */
+svg.i {
+    width: 16px;
+    height: 16px;
+    background: inherit;
+    display: inline-table;
+    vertical-align: middle;
+    color: inherit;
+}
+
+.spinner {
+    border-radius: 100%;
+    margin: 8px;
+    border: 3px solid #7badd6;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    height: 22px;
+    width: 22px;
+    background: 0 0!important;
+    display: inline-block;
+    -webkit-animation: loading .85s 0s linear infinite;
+    animation: loading .85s 0s linear infinite;
+}
+
+
+@-webkit-keyframes sk-scaleout {
+    0% { -webkit-transform: scale(0) }
+    100% {
+        -webkit-transform: scale(1.0);
+        opacity: 0;
+    }
+}
+
+@keyframes sk-scaleout {
+    0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    } 100% {
+          -webkit-transform: scale(1.0);
+          transform: scale(1.0);
+          opacity: 0;
+      }
+}
+
+
+
+@keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+    }
+    50% {
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.descParts {
+    width:70%;
+    padding: 4px 0 20px 0;
+}
+
+.orderParts {
+    width:30%;
+    text-align: right;
+    padding: 10px 0 20px 0;
+}
+
+.orderParts .btn:not(:last-of-type) {
+    display: inline-block;
+    white-space: nowrap;
+    margin-bottom: 8px;
+}
+
+.table.carParts .row.part>div {
+    min-height: 57px;
+}
+
+
+.table.carParts, .table.carWorks {
+    margin: 0 0 20px 0;
+}
+
+.table.carParts .compatibleGenerations {
+    font-family: "Roboto", Arial, sans-serif;
+    color: #777;
+    padding: 3px 0;
+    font-size: 85%;
+    white-space: nowrap;
+    overflow: hidden;
+    width:100%;
+}
+
+.table.carParts .num, .table.carWorks .num {
+    width:6%;
+    text-align: center;
+}
+
+.table.carParts .part>.num, .table.carWorks .work>.num {
+    color:#999;
+}
+
+.table.carParts .partName {
+    width:41%;
+}
+
+.table.carParts .original {
+    width:14%;
+}
+
+.table.carParts .original .isOriginal {
+    color:#0b6d0b;
+    font-size: 90%;
+    font-family: "Roboto Condensed", Arial, sans-serif;
+}
+
+.table.carParts .articul {
+    width:15%;
+}
+
+.table.carParts .articul .vendorArt {
+    padding: 4px 0 0 0;
+    font-size: 85%;
+}
+
+.table.carParts .articul .vendorArt span {
+    color:black;
+}
+
+.table.carParts .part>.articul {
+    font-family: "Roboto", Arial, sans-serif;
+    color:#777;
+}
+
+.table.carParts .amount {
+    width:11%;
+    text-align: right;
+}
+
+.table.carParts .price {
+    width:13%;
+    text-align: right;
+}
+
+/* Car works */
+
+.table.carWorks .workName {
+    width:26%;
+
+}
+
+.table.carWorks .row.work>div.workName {
+    border-right: none;
+}
+
+.table.carWorks .header .params > .row > div {
+    padding: 12px 10px;
+}
+
+.table.carWorks .params .carModel {
+    width:52%;
+    border-right:1px solid #fff;
+}
+
+.table.carWorks .params .partsPrice {
+    width:24%;
+    text-align: right;
+    white-space: nowrap;
+    border-right:1px solid #fff;
+}
+
+.table.carWorks .params .workPrice {
+    width:24%;
+    text-align: right;
+    white-space: nowrap;
+
+}
+
+.table.carWorks .params {
+    padding:0 !important;
+    width:58%;
+}
+
+
+.table.carWorks .params .priceGroup .row .carModel {
+    line-height: normal;
+}
+
+.table.carWorks .params .priceGroup .row .carModel em {
+    font-style: normal;
+    white-space: nowrap;
+    -webkit-transition: color .3s ease;
+    transition: color .3s ease;
+}
+
+.table.carWorks .params .priceGroup .row .carModel em:hover {
+    color:black;
+}
+
+.table.carWorks .params .priceGroup .cars {
+    color:#555;
+    font-size: 90%;
+}
+
+
+
+.table.carWorks .params .priceGroup .cars .car:not(:last-of-type) {
+    border-bottom-style: solid;
+    border-width: 1px;
+    border-color: #c9c9c9;
+}
+
+.table.carWorks .params .priceGroup .car > div {
+    padding: 6px 8px;
+    color:#777;
+}
+
+.table.carWorks .params .priceGroup .car > div > span {
+    color:black;
+}
+
+
+/*
+.table.carWorks .partsPrice {
+    width:24%;
+    text-align: right;
+}
+
+
+.table.carWorks .work .partsPrice {
+    color: #888;
+}
+
+.table.carWorks .work .partsPrice span {
+    color:black;
+}
+*/
+
+.table.carWorks .workTime {
+    width:10%;
+    text-align: right;
+
+}
+
+.table.carWorks .row.work .workTime {
+    color: #999;
+}
+
+
+
+.lot {
+    color:#00a400;
+}
+
+.medium {
+    color: #78c059;
+}
+
+.few {
+    color: #c0614f;
+}
+
+.table {
+    width:100%;
+}
+
+.table .topic h2 {
+    display: inline-block;
+    line-height: 36px;
+    vertical-align: middle;
+}
+
+.table .topic input[type="checkbox"] {
+    display: none;
+}
+
+.table .topic label {
+    cursor: pointer;
+}
+
+.table .topic > label {
+    float:right;
+    color:#ad2c2c;
+    padding: 18px 0 0 0;
+    line-height: 16px;
+    border-bottom: 1px dotted #ad2c2c;
+}
+
+.topic > label:hover {
+    border-bottom: none;
+}
+
+
+.table>.row.subtopic {
+    text-align: left;
+    /*border-left: 1px solid #c9c9c9;*/
+    border-radius: 3px 0 0 0;
+}
+
+.table>.row.subtopic:last-of-type {
+    border-bottom:1px solid #c9c9c9 !important;
+}
+
+.table>.row.subtopic:before {
+    content: ' ';
+    position: relative;
+    width:calc(100% - 3px);
+    height:1px;
+    top:0;
+    left:0;
+    background:#c9c9c9;
+}
+
+.table>.row.subtopic:last-of-type {
+    border-bottom:1px solid #c9c9c9;
+}
+
+.table>.row.subtopic .icon {
+    width:3%;
+    text-align: center;
+    padding: 8px;
+}
+
+.table>.row.subtopic .icon svg {
+    width:20px;
+    height:20px;
+    color:#999;
+    margin: -2px 0 0 0;
+}
+
+
+.table>.row.subtopic .name {
+    width:41%;
+    padding: 0 8px;
+}
+
+.table.carParts>.row.subtopic .name, .table.carWorks>.row.subtopic .name {
+    width:96%;
+}
+
+
+
+.table>.row.subtopic .workPrice, .table>.row.subtopic .partsPrice, .table>.row.subtopic .resultPrice {
+    text-align: right;
+    padding: 0 8px;
+    font-weight: normal;
+    line-height: 35px;
+    vertical-align: middle;
+    font-size: 120%;
+    font-family: "Roboto", Arial, sans-serif;
+}
+
+
+.table>.row.subtopic .workPrice, .table>.row.subtopic .partsPrice, .table>.row.subtopic .resultPrice {
+
+}
+
+.table>.row.subtopic .workPrice {
+    width:16%;
+}
+
+.table>.row.subtopic .partsPrice {
+    width:20%;
+}
+
+.table>.row.subtopic .resultPrice {
+    width:16%;
+    padding-right: 14px;
+}
+
+
+
+.table>.row.subtopic span.type {
+    color:#777;
+    font-size: 80%;
+    margin: 0 4px 0 0;
+}
+
+.table>.row.subtopic h3 {
+    text-transform: uppercase;
+    font-family: "Roboto Condensed", Arial, sans-serif;
+
+    font-weight: 200;
+    color:#555;
+
+    font-size: 120%;
+    margin: 0;
+    padding: 0;
+    line-height: 36px;
+    vertical-align: middle;
+}
+
+.table>.row.subtopic.active h3 {
+    font-weight: 500;
+    color:black;
+}
+
+.table>.row.subtopic .toggle {
+    width:4%;
+    text-align: right;
+}
+
+.table>.row.subtopic .toggle .btn {
+    background: none;
+    position: absolute;
+    display: block;
+    font-size: 200%;
+    border-radius: 0 3px 0 0;
+    height:38px;
+    padding: 0 12px;
+    font-weight: 300;
+    font-family: "Roboto", Arial, sans-serif;
+    line-height: 35px;
+    top:-1px;
+    right:0;
+    border:1px solid #c9c9c9;
+}
+
+.table>.row.subtopic label {
+    cursor: pointer;
+    display: block;
+}
+
+
+.table>.row.subtopic .toggle {
+    position: relative;
+}
+
+.table>.row.subtopic .toggle .btn svg.i {
+    margin: 0;
+    width:26px;
+    height:26px;
+}
+
+.table>.row.subtopic .toggle .btn input {
+    display: none;
+}
+
+.table>.row.subtopic .toggle .btn input + svg {
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+}
+
+.table>.row.subtopic .toggle .btn input:checked + svg {
+    transform: rotate(-180deg);
+}
+
+.table>.row.subtopic .toggle .btn input + svg {
+    color:#7badd6;
+}
+
+.table>.row.subtopic .toggle .btn input:checked + svg {
+    color:#ad2c2c;
+}
+
+
+.row.signatures {
+    display: flex;
+}
+
+.row.signatures .num {
+    width:3%;
+}
+
+.row.signatures .workCheck {
+    display: none;
+    width:5%;
+    text-align: center;
+    padding: 2px 8px 10px 8px;
+}
+
+.row.signatures .workName {
+    width:45%;
+    padding: 2px 8px 10px 8px;
+}
+
+.row.signatures .workPrice {
+    width:26%;
+    text-align: right;
+    padding: 2px 8px 10px 8px;
+}
+
+.row.signatures .partsPrice {
+    width:26%;
+    text-align: right;
+    padding: 2px 8px 10px 8px;
+}
+
+.row.signatures .lastEmpty {
+    width:0%;
+    display: none;
+}
+
+.listWorks .work:nth-child(even) {
+    background: #f5f5f5;
+}
+
+.listWorks .work>.row>div {
+    line-height: 38px;
+    vertical-align: middle;
+}
+
+.listWorks .row.signatures .num, .listWorks .work>.row .num {
+    width:3%;
+    color:#999;
+    text-align: center;
+}
+
+.listWorks .work>.row .workCheck {
+    display: none;
+    width: 5%;
+    text-align: center;
+}
+
+.listWorks .work>.row .workName {
+    width:45%;
+    text-align: left;
+    padding-left: 8px;
+}
+
+.listWorks .work>.row .workName label {
+    cursor: pointer;
+}
+
+.listWorks .work>.row .workPrice {
+    width:26%;
+    text-align: right;
+    padding: 0 8px;
+}
+
+.listWorks .work>.row .partsPrice {
+    width:26%;
+    padding: 0 8px;
+    text-align: right;
+}
+
+.listWorks .work>.row .workPrice span.type, .listWorks .work>.row .partsPrice span.type {
+    color:#777;
+    margin: 0 4px 0 0;
+}
+
+
+.listWorks .work>.row .selectParts {
+    display: none   ;
+    padding: 3px 4px !important;
+    width:16%;
+    margin-right: 4%;
+    line-height: normal;
+    text-align:right;
+}
+
+.listWorks .work .selectParts .btn input[type="checkbox"] {
+    display: none;
+}
+
+.listWorks .setsOfParts  {
+    display: none;
+    padding: 12px 0;
+    box-shadow: inset 0 3px 10px rgba(0,0,0,.11), inset 0 -2px 4px rgba(0,0,0,.1);
+}
+
+.listWorks .setsOfParts.open  {
+    display: block;
+
+}
+
+.listWorks .setsOfParts .set:not(:first-child)>.row:first-child>div {
+    border-top:1px dashed #ccc;
+}
+
+.listWorks .setsOfParts .set .select {
+    margin-left: 8%;
+    width:5%;
+    padding: 13px 0 4px 0;
+    text-align: center;
+}
+
+.listWorks .setsOfParts .set .row.part:nth-child(odd)>div {
+    background: #f7f7f7;
+    min-height: 41px;
+}
+
+.listWorks .setsOfParts .set .select input {
+    width:21px;
+    height:21px;
+}
+
+.listWorks .setsOfParts .set .name {
+    width:51%;
+    padding: 7px 0;
+}
+
+.listWorks .setsOfParts .set .name label {
+    cursor: pointer;
+}
+
+.listWorks .setsOfParts .set .info {
+    font-family: "Roboto Condensed", Arial, sans-serif;
+    font-weight: 300;
+    line-height: 16px;
+    color: gray;
+}
+
+.listWorks .setsOfParts .set .name strong {
+    display: block;
+    font-size: 125%;
+    font-weight: normal;
+    font-family: "Roboto", Arial, sans-serif;
+}
+
+.listWorks .setsOfParts .set .setPrice {
+    width:21%;
+    text-align: right;
+    vertical-align: middle;
+    padding: 5px 8px 4px 0;
+}
+
+.listWorks .setsOfParts .set .arrow {
+    width:4%;
+    text-align: left;
+    line-height: 20px;
+    padding: 3px 0 0 0;
+    color: gray;
+    vertical-align: middle;
+}
+
+.listWorks .setsOfParts .set .arrow svg {
+    width:20px;
+    height:24px;
+}
+
+.listWorks .setsOfParts .set .setPrice strong {
+    font-weight: normal;
+    font-size: 125%;
+    font-family: "Roboto", Arial, sans-serif;
+}
+
+.listWorks .setsOfParts .set .part > div {
+    padding: 4px 0;
+}
+
+.listWorks .setsOfParts .set .part .num {
+    margin-left: 9%;
+    color:#aaa;
+    width:4%;
+    text-align: center;
+}
+
+
+.listWorks .setsOfParts .set .part .partName {
+    width:32%;
+}
+
+.listWorks .setsOfParts .set .part .partName .articul {
+    font-family: "Roboto Condensed", Arial;
+    font-size: 90%;
+    color:#777;
+    padding: 2px 0 0 0;
+    display:none;
+}
+
+.listWorks .setsOfParts .set .part .partCount {
+    width:7%;
+    text-align: center;
+    color:#666
+}
+
+.listWorks .setsOfParts .set .part .partPrice {
+    width:11%;
+    text-align: right;
+}
+
+.listWorks .setsOfParts .set .part .partPrice .desc {
+    font-family: "Roboto Condensed", Arial;
+    font-size: 90%;
+    color:#aaa;
+}
+
+.listWorks .setsOfParts .set .part .partTotalPrice {
+    width:calc(21% + 12px);
+    padding-right: 8px;
+    text-align: right;
+}
+
+.listWorks .setsOfParts .set .part .arrow {
+    width:4%;
+}
+
+
+.table>.slide {
+    display: none;
+}
+
+.table>.slide.open {
+    display: block;
+}
+
+.table.carWorks .workPrice .priceGroup .cars .car:not(:last-of-type), .table.carWorks .workPrice .priceGroup .price, .table.carWorks .workPrice .priceGroup .cars, .table.bordered>.row>div:not(:last-of-type), .table.bordered .row.work>div:not(:last-of-type), .table.bordered:not(.listWorks) .row.part>div:not(:last-of-type), .table.bordered .work>.row>div:not(:last-of-type), .table.bordered .row.header>div:not(:last-of-type) {
+
+}
+
+.table.bordered>.slide>.row:not(:last-of-type)>div, .table.bordered>.slide>.work:not(:last-of-type)>.row>div,
+.table.bordered>.row:not(.subtopic):not(:last-of-type),
+.table.bordered>.row.active {
+    border-bottom-width:1px;
+    border-bottom-style:solid;
+    border-color:#fff;
+}
+
+
+.table.bordered>.row:not(.subtopic)>div:not(:last-of-type), .table.bordered .row.work>div:not(:last-of-type), .table.bordered:not(.listWorks) .row.part>div:not(:last-of-type), .table.bordered .work>.row>div:not(:last-of-type), .table.bordered .row.header>div:not(:last-of-type) {
+    border-right-width:1px;
+    border-right-style:solid;
+    border-right-color:#fff;
+}
+
+.table.bordered>.slide>.row:not(:last-of-type)>div {
+    border-bottom-width:1px;
+    border-bottom-style:solid;
+}
+
+.table>.slide>.row.header {
+    background: #e2e2e2;
+    color:#555;
+    font-family: "Roboto Condensed", Arial, sans-serif;
+    font-weight: 400;
+    font-size: 90%;
+}
+
+.table>.slide>.row.header>div {
+    padding: 12px 10px;
+}
+
+.table>.slide>.row.header>div:last-of-type {
+    border-right: 0;
+}
+
+.table>.slide>.row:not(.header):not(.signatures):not(.subtopic)>div{
+    padding: 8px;
+}
+
+.table>.slide>.row:not(.header):not(.signatures):nth-child(even) {
+    background: #f4f4f4;
+}
+
+/* calculator header */
+.listWorks {
+    font-size:95%;
+}
+
+.listWorks .slide {
+    font-size: 90%;
+}
+
+.listWorks .row.work>div:last-of-type {
+}
+
+.listWorks .row.work>div:first-of-type {
+}
+
+
+
+button.sendData {
+    margin: 0 auto;
+    padding: 8px 22px 12px 22px;
+    border-radius: 4px;
+    background: #6cb575;
+    border:none;
+    outline: none;
+    border:1px solid #6cb575;
+    cursor: pointer;
+    font-family: "Roboto Condensed", Arial, sans-serif;
+}
+
+button.sendData:focus {
+    border-color:#00a400;
+}
+
+button.sendData:active {
+    background: #51955a;
+}
+
+button.sendData strong {
+    display: block;
+    font-size: 160%;
+    text-transform: uppercase;
+    color:white;
+}
+
+button.sendData .info {
+    color: #dafbdd;
+    font-size: 140%;
+}
+
+.serviceResults {
+    margin-top: 12px !important;
+    margin-bottom: 6px !important;
+}
+
+.serviceResults .firstCol {
+    width:50%;
+}
+
+.serviceResults .firstCol button {
+
+}
+
+.serviceResults .secondCol {
+    width:46%;
+    margin-right: 4%;
+    padding-right: 6px;
+    text-align: right;
+    line-height:50px;
+    vertical-align: middle;
+    font-size: 120%;
+    font-family: "Roboto", Arial, sans-serif;
+}
+
+.serviceResults .secondCol strong {
+    font-size: 120%;
+    font-weight: 700;
+    font-family: "Roboto", Arial, sans-serif;
+}
+
+.serviceResults .secondCol .txt {
+    font-size: 90%;
+    color:#777;
+}
+
+.modal.serviceModal .alert.s5s {
+    position: absolute;
+    left:0;
+    top:0;
+    right:0;
+    bottom:0;
+    z-index: 10;
+    opacity: 1;
+    animation: hide 1s 8s 1 linear;
+    animation-fill-mode: forwards;
+    -webkit-animation: hide 1s 8s 1 linear;
+    -webkit-animation-fill-mode: forwards;
+}
+
+.modal.serviceModal .alert.s5s:before {
+    content: '';
+    display: block;
+    width:100%;
+    height:3px;
+    background: #0ead61;
+    position: absolute;
+    left:0;
+    top:0;
+    animation: progress-hide 8s 1 linear;
+    animation-fill-mode: forwards;
+    -webkit-animation: progress-hide 8s 1 linear;
+    -webkit-animation-fill-mode: forwards;
+}
+
+@keyframes hide {
+    from { opacity: 1; visibility: visible }
+    to { opacity: 0; visibility: hidden }
+}
+
+@keyframes progress-hide {
+    from { width:100%; }
+    to { width:0; }
+}
+
+.modal.serviceModal .btnGroup input[name="email"], .modal.serviceModal .btnGroup input[name="Orders[email]"] {
+    width:34%;
+}
+
+.modal.serviceModal .btnGroup input[name="phone"], .modal.serviceModal .btnGroup input[name="Orders[phone]"] {
+    width:33%;
+}
+
+.modal.serviceModal .btnGroup button[type="submit"] {
+    width:33%;
+}
+
+.modal.serviceModal .btnGroup {
+    width:90%;
+    margin: 0 auto;
+}
+
+/* Service calculator: */
+.calc_banner {
+    width:100%;
+    height:240px;
+    background: #f9f9f9;
+}
+
+.calc_banner>.in {
+    text-align: center;
+}
+
+.calc_banner>.in .tmp {
+    font-family: inavtob, Arial, sans-serif;
+    font-size: 320%;
+    line-height: 160pt;
+    vertical-align: middle;
+    font-weight: normal;
+    color:#ececec;
+}
+
+.serviceCalc {
+    background: #f4f4f4;
+    padding: 0 0 20px 0;
+    font-size: 90%;
+}
+
+.serviceCalc .params {
+    padding: 26px 0 0 24px;
+}
+
+.serviceCalc .param {
+    margin: 4px 0 8px 0;
+}
+
+.serviceCalc .nameField {
+    line-height: 22pt;
+    vertical-align: middle;
+}
+
+.serviceCalc .inputField {
+    vertical-align: middle;
+    padding: 4px 0;
+}
+
+.serviceCalc .selectedParams {
+    text-align: right;
+    padding: 26px 40px 0 0;
+}
+
+.serviceCalc .generation {
+    font-family: "Roboto Condensed", Arial, sans-serif;
+    font-weight: 500;
+    display: block;
+    font-size: 120%;
+    margin: 0 0 4px 0;
+}
+
+.serviceCalc .mileage, .serviceCalc .motor {
+    font-family: "Roboto Condensed", Arial, sans-serif;
+    font-weight: 300;
+    display: block;
+    color:gray;
+    font-size: 110%;
+    margin: 0 0 2px 0;
+}
+
+.serviceCalc .model {
+    font-weight: normal;
+    font-size: 220%;
+    text-transform: uppercase;
+    height:47px;
+    display: block;
+    color:black;
+    font-family: inavtob, Arial, sans-serif;
+}
+
+.serviceCalc .volvo {
+    width:320px;
+    height:160px;
+    margin-top:10px;
+    /* background-image:url('/img/volvocars.png?r=2'); */
+    background-repeat: no-repeat;
+    background-size:90%;
+    /*
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    -ms-filter: fliph;
+    filter: fliph;
+    */
+}
+
+.serviceCalc .volvo.xc90I2002-2006 { background-image: url('/img/volvo/xc90I.png') }
+.serviceCalc .volvo.xc90II2007-2014 { background-image: url('/img/volvo/xc90II.png') }
+.serviceCalc .volvo.xc90New2015--- { background-image: url('/img/volvo/xc90III.png') }
+.serviceCalc .volvo.xc70I2001-2007 { background-image: url('/img/volvo/xc70I.png') }
+.serviceCalc .volvo.xc70II2008-2015 { background-image: url('/img/volvo/xc70II.png') }
+.serviceCalc .volvo.xc60I2009-2017 { background-image: url('/img/volvo/xc60I.png') }
+.serviceCalc .volvo.s80I2000-2006 { background-image: url('/img/volvo/s80I.png')  }
+.serviceCalc .volvo.s80II2007-2014 { background-image: url('/img/volvo/s80II.png')  }
+.serviceCalc .volvo.s60I2001-2009 { background-image: url('/img/volvo/s60I.png')}
+.serviceCalc .volvo.s60II2011-2015 { background-image: url('/img/volvo/s60II.png')}
+.serviceCalc .volvo.s40v50II2004-2012{ background-image: url('/img/volvo/v50.png')  }
+.serviceCalc .volvo.v40v40ccII2013-2016 { background-image: url('/img/volvo/v40.png')}
+/* .serviceCalc .volvo.v50,   .serviceCalc .volvo { background-image: url('/img/volvo/v50.png')  } */
+.serviceCalc .volvo.c30I2007-2013 { background-image: url('/img/volvo/c30.png')  }
+
+.works .warning {
+    padding: 8px 0 4px 0;
+    color: #df8b3e;
+    display: block;
+    overflow: hidden;
+}
+
+.works.subtopic {
+    line-height: 32px;
+}
+
+.works .spinner {
+    display: none;
+    margin: 6px auto;
+}
+
+.works.loading .spinner {
+    display: block;
+}
+
+.serviceCalc .rule {
+    margin: 20px 0 10px 0;
+    padding: 30px 26px;
+    position: relative;
+
+}
+
+.serviceCalc .rule .val .miles, .serviceCalc .rule .val .age {
+    position: absolute;
+    width:80px;
+    white-space: nowrap;
+    font-family: "Roboto Condensed", Arial, sans-serif;
+    color:#898989;
+    padding: 0 0 0 6px;
+    margin-left:-40px;
+    text-align: center;
+}
+
+.serviceCalc .rule .val .miles:after, .serviceCalc .rule .val .age:after {
+    display: block;
+    content: '';
+    height:6px;
+    background: #aaa;
+    width:1px;
+    position: absolute;
+    left:42px;
+}
+
+.serviceCalc .val.p12 .miles, .serviceCalc .val.p12 .age  {
+    margin-left:-46px;
+}
+
+.serviceCalc .val:first-of-type .miles, .serviceCalc .rule .val:first-of-type .age {
+    left:2px;
+}
+
+
+
+.serviceCalc .rule .val .miles:after {
+    bottom:-7px;
+}
+
+.serviceCalc .rule .val .age:after {
+    top:-6px;
+}
+
+.serviceCalc .rule .val .miles { top:-28px }
+.serviceCalc .rule .val .age { bottom:-28px }
+
+.serviceCalc .rule .val.p2 { margin-left:9.09% }
+.serviceCalc .rule .val.p3 { margin-left:18.18% }
+.serviceCalc .rule .val.p4 { margin-left:27.27% }
+.serviceCalc .rule .val.p5 { margin-left:36.36% }
+.serviceCalc .rule .val.p6 { margin-left:45.45% }
+.serviceCalc .rule .val.p7 { margin-left:54.5455% }
+.serviceCalc .rule .val.p8 { margin-left:63.6364% }
+.serviceCalc .rule .val.p9 { margin-left:72.7273% }
+.serviceCalc .rule .val.p10 { margin-left:81.8182% }
+.serviceCalc .rule .val.p11 { margin-left:90.9011% }
+.serviceCalc .rule .val.p12 { margin-left:100% }
+
+.ui-slider {
+    position: relative;
+    text-align: left;
+}
+
+.ui-slider.ui-slider-horizontal {
+    height: 14px;
+    border: none;
+    border-radius: 7px;
+    background: #dfdfdf;
+}
+
+.ui-slider-range {
+    background-color: #7badd6;
+}
+
+.ui-slider-horizontal .ui-slider-range-min {
+    left: 0;
+}
+
+.ui-slider-horizontal .ui-slider-range {
+    top: 0;
+    height: 100%;
+    border-radius: 6px;
+}
+
+.ui-slider .ui-slider-range {
+    position: absolute;
+    z-index: 1;
+    font-size: .7em;
+    display: block;
+    border: 0;
+    background-position: 0 0;
+}
+
+
+.ui-slider>.ui-slider-handle {
+    width: 24px;
+    height: 24px;
+    border: 6px solid white;
+    border-radius: 16px;
+    box-shadow: 0 0 1px rgba(0,0,0,.5);
+    background: #7badd6;
+    box-sizing: border-box;
+    padding: 3px 0 0 0;
+    text-align: center;
+    outline: 0;
+    top: -4px;
+    z-index: 2;
+    position: absolute;
+
+    -ms-touch-action: none;
+    touch-action: none;
+    cursor: ew-resize;
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+    margin-left: -.6em;
+}
+
+.ui-slider .ui-slider-handle {
+
+}
+
+/* @test */
+
+input.slide_check {
+    display: none;
+}
+
+input.slide_check + label svg.i {
+    color: #7badd6;
+    width:20px;
+    height:20px;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+}
+
+input.slide_check:checked + label {
+    border-color:#ad2c2c;
+    color:#ad2c2c
+}
+
+input.slide_check:checked + label svg {
+    color: #ad2c2c;
+}
+
+input.slide_check:checked + label svg {
+    transform: rotate(-180deg);
+}
+
+/* @test */
+
+/* customizing mobile calc buttons */
+#serviceCalc .selectBtn {
+    display: inline-block;
+    margin: 6px -2px;
+}
+
+
+
+#serviceCalc .selectBtn input{
+    display: none;
+}
+
+
+#serviceCalc .selectBtn input + label{
+    border: 1px solid #c9d3d6;
+    background: #d0cece;
+    padding: 5px 10px;    
+    transition: all 0.2s linear;
+}
+
+#serviceCalc .selectBtn input:not(:checked) + label:hover {
+    box-shadow: 0px 1px 3px;
+    cursor: pointer;
+    background: #f4f4f4;
+    transition: all 0.2s linear;  
+}
+
+
+#serviceCalc .selectBtn input + label:active,
+#serviceCalc .selectBtn input:checked + label {
+    box-shadow: 0px 1px 3px;
+    background: white;    
+}
+
+
+/* 
+#motorSwitch option {
+    display: inline-flex;
+    margin: 0px;    
+    padding: 5px 10px;      
+    -webkit-appearance: none;
+    background: white;
+    box-shadow: 0px 1px 3px;    
+    outline: none;  
+}
+
+#motorSwitch option:not(:checked) {
+    box-shadow: none;
+    cursor: pointer;
+    transition: all 0.2s linear;  
+    border: 1px solid #c9d3d6;
+    background: #d0cece;
+    transition: all 0.2s linear;
+}
+
+#motorSwitch, #motorSwitch:focus {
+   height: 38px;
+   border: 0px;
+   appearance: none;
+   -webkit-appearance: none;
+   padding: 5px;
+   background-image: none;
+   overflow: hidden;
+   outline: none;
+}
+
+
+
+#motorSwitch option:active, #motorSwitch option:checked,  #motorSwitch option:focus, #motorSwitch option:hover {
+    background: white !important;
+    box-shadow: 0px 1px 3px; 
+    outline: none;
+} */
+
+

@@ -1,4 +1,5 @@
 <?php
+// @changed 8.02.2021
 use yii\widgets\ActiveForm;
 ?>
 <?php if($page->banners && !empty($page->banners)): ?>
@@ -30,7 +31,7 @@ use yii\widgets\ActiveForm;
                                     'options'=>['tag' => null],
                                    'template'=>"{input}"
                                 ])->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Services::find()->all(), 'id', 'title'), ['prompt' => 'Выберите  сервисную станцию']) ?>
-                         <input type="hidden" name="recaptcha_response" id="recaptchaResponse4">
+                         <input type="hidden" name="recaptcha_response" id="recaptchaResponse5">
 			<button type="submit" name="sendPartsOrder" value="1" class="btn success">Записаться на ТО Volvo</button>
                         </div>
                   <?php ActiveForm::end(); ?>
@@ -41,12 +42,27 @@ use yii\widgets\ActiveForm;
     </div>
 </div>
 <script>
-        grecaptcha.ready(function () {
+        const googleCaptcha = function (jqueryElm) {
+            grecaptcha.ready(function () {
             grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', { action: 'contact' }).then(function (token) {
-                var recaptchaResponse = document.getElementById('recaptchaResponse4');
-                recaptchaResponse.value = token;
+                var recaptchaResponse = document.getElementById('recaptchaResponse5');
+                recaptchaResponse.value = token;                 
             });
         });
+    };
+        
+    if ('undefined'!= typeof grecaptcha) {
+        $('button[name="sendPartsOrder"]').click(() => googleCaptcha($(this)));
+    }
+    
+</script>
+<script>
+        // grecaptcha.ready(function () {
+        //     grecaptcha.execute('6LdA1L4UAAAAAIyOJGnOLhyeBaSHBfnRbrSHUhVb', { action: 'contact' }).then(function (token) {
+        //         var recaptchaResponse = document.getElementById('recaptchaResponse5');
+        //         recaptchaResponse.value = token;
+        //     });
+        // });
     </script>
 <?php if($jobs && !empty($jobs)): ?>
     <?php foreach($jobs as $key => $value): ?>

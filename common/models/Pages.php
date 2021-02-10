@@ -1,7 +1,9 @@
 <?php
 
 namespace common\models;
-
+// @changed 8.02.2021
+use common\helpers\traits\DoubleTableModel;
+use common\helpers\traits\EscapeEmojiTrait;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
@@ -25,6 +27,14 @@ use yii\db\Expression;
  */
 class Pages extends \yii\db\ActiveRecord
 {
+    use DoubleTableModel;
+    // use EscapeEmojiTrait;
+    const DESKTOP = 'pages';
+    const MOBILE = 'pages_mobile';
+    const TABLE_NAME_PROP = 'tableName';
+    public static $tableName = 'pages';
+
+
     public function behaviors()
     {
         return [
@@ -39,13 +49,7 @@ class Pages extends \yii\db\ActiveRecord
             ]
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
-    {
-        return 'pages';
-    }
+
 
     /**
      * {@inheritdoc}
@@ -87,4 +91,15 @@ class Pages extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Banners::className(), ['id' => 'banner_id'])->viaTable('banners_pages', ['page_id' => 'id']);
     }
+
+   
+
+    // public function escapingAttributes()
+    // {
+    //     return [
+    //         'title',
+    //         'meta_title',
+    //         'description'
+    //     ];
+    // }
 }

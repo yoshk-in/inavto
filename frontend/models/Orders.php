@@ -1,7 +1,8 @@
 <?php
 
 namespace frontend\models;
-
+// @changed 8.02.2021
+use common\helpers\Format;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
@@ -22,7 +23,7 @@ use yii\helpers\VarDumper;
  * @property string $created
  * @property string $modified
  */
-class Orders extends \yii\db\ActiveRecord
+class Orders extends \yii\db\ActiveRecord implements Format
 {
     public $works;
     public $sets;
@@ -56,7 +57,10 @@ class Orders extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['model', 'email', 'phone'], 'required'],
+            [['phone'], 'required'],
+            [['email'], 'email'],
+            [['phone'], 'match', 'pattern' => self::PHONE_PATTERN],
+            [['model'], 'required'],
             [['generation_id', 'engine_id', 'year'], 'integer'],
             [['created', 'modified', 'works', 'sets'], 'safe'],
             [['model', 'email', 'phone'], 'string', 'max' => 100],
@@ -159,6 +163,7 @@ class Orders extends \yii\db\ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
+        
         $jobs_arr = array();
         $parts_arr = array();
         $recommend_jobs = array();
